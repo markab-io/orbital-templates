@@ -9,6 +9,7 @@ import {
   Icon,
   Typography
 } from "@material-ui/core";
+import { toJS } from "mobx";
 import validate from "../Forms/Forms.Validate";
 
 export default class ModelAdd extends React.Component {
@@ -44,7 +45,7 @@ export default class ModelAdd extends React.Component {
           errors = validate(values, form, modelSchema);
           return errors;
         }}
-        initialValues={this.state.initialValues}
+        initialValues={toJS(this.state.initialValues)}
         render={({
           values,
           errors,
