@@ -2,10 +2,10 @@ import React from "react";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import ImageGallery from "react-image-gallery";
-import ConfirmDeleteModal from "Templates/_shared/ConfirmDeleteModal/ConfirmDeleteModal";
+import ConfirmDeleteModal from "../ConfirmDeleteModal/ConfirmDeleteModal";
 import "react-image-gallery/styles/css/image-gallery.css";
 import { withState, compose } from "recompose";
-import { MarkdownInput } from "Templates/_shared/Forms/Inputs";
+import { MarkdownInput } from "../Forms/Inputs";
 import {
   Grid,
   Card,

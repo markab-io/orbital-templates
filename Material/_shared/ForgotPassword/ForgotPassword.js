@@ -6,8 +6,8 @@ import LockIcon from "@material-ui/icons/LockOutlined";
 import theme from "Theme";
 import { styles } from "./ForgotPassword.styles";
 import { Route } from "react-router-dom";
-import ForgotPasswordConfirm from "Templates/_shared/ForgotPassword/ForgotPasswordConfirm";
-import FormFields from "Templates/_shared/Forms/Forms";
+import ForgotPasswordConfirm from "../ForgotPassword/ForgotPasswordConfirm";
+import FormFields from "../Forms/Forms";
 import {
   Button,
   Typography,

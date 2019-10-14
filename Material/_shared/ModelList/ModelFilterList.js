@@ -1,6 +1,6 @@
 import React from "react";
 import { Typography, Grid } from "@material-ui/core";
-import CheckboxInput from "Templates/_shared/Forms/Inputs/Forms.CheckboxInput";
+import CheckboxInput from "../Forms/Inputs/Forms.CheckboxInput";
 // import ModelListItem from "./ModelListItem";
 const ModelFilterList = ({ form, modelCount, ...rest }) => {
   const [filterList, setFilterList] = React.useState([]);

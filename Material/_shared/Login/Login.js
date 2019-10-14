@@ -4,7 +4,7 @@ import theme from "Theme";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import LockIcon from "@material-ui/icons/LockOutlined";
-import FormFields from "Templates/_shared/Forms/Forms";
+import FormFields from "../Forms/Forms";
 import { styles } from "./Login.styles";
 
 import {

@@ -6,7 +6,7 @@ import * as Yup from "yup";
 import LockIcon from "@material-ui/icons/LockOutlined";
 import { Route } from "react-router-dom";
 import { styles } from "./ResetPassword.styles";
-import ResetPasswordConfirm from "Templates/_shared/ResetPassword/ResetPasswordConfirm";
+import ResetPasswordConfirm from "../ResetPassword/ResetPasswordConfirm";
 import queryString from "query-string";
 import {
   Button,

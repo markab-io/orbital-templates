@@ -5,23 +5,23 @@ import { styles } from "./ModelList.styles";
 import { withStyles } from "@material-ui/styles";
 //infinite scroller
 import infiniteScroll from "react-infinite-scroller";
-import Loading from "Templates/_shared/Loading/Loading";
-import Empty from "Templates/_shared/Empty/Empty";
+import Loading from "../Loading/Loading";
+import Empty from "../Empty/Empty";
 // import theme from "Theme";
 
 //recompose
 import { withState, compose, lifecycle } from "recompose";
 //Different template pages
-import ModelAdd from "Templates/_shared/ModelAdd/ModelAdd";
-import ModelEdit from "Templates/_shared/ModelEdit/ModelEdit";
-import ModelPreview from "Templates/_shared/ModelPreview/ModelPreview";
-import ModelListItems from "Templates/_shared/ModelList/ModelListItems";
-import ModelFilterList from "Templates/_shared/ModelList/ModelFilterList";
+import ModelAdd from "../ModelAdd/ModelAdd";
+import ModelEdit from "../ModelEdit/ModelEdit";
+import ModelPreview from "../ModelPreview/ModelPreview";
+import ModelListItems from "../ModelList/ModelListItems";
+import ModelFilterList from "../ModelList/ModelFilterList";
 //shared components
-import FloatingAddButton from "Templates/_shared/FloatingAddButton/FloatingAddButton";
-import ClientNotification from "Templates/_shared/ClientNotification/ClientNotification";
-import Autocomplete from "Templates/_shared/Autocomplete/Autocomplete";
-import Table from "Templates/_shared/Table/Table";
+import FloatingAddButton from "../FloatingAddButton/FloatingAddButton";
+import ClientNotification from "../ClientNotification/ClientNotification";
+import Autocomplete from "../Autocomplete/Autocomplete";
+import Table from "../Table/Table";
 import {
   Paper,
   AppBar,
@@ -108,6 +108,7 @@ const ModelList = enhance(
     gridSizes,
     currentQuery,
     setCurrentQuery,
+    showFilters,
     ...rest
   }) => {
     const onEditWrapper = model => {
@@ -415,38 +416,40 @@ const ModelList = enhance(
                 {ModelListActions && <ModelListActions {...Actions} />}
                 {viewOption === 0 && (
                   <Grid container justify="space-between">
-                    <Grid item md={2} sm={2} xs={2}>
-                      <Card style={{ minHeight: "75vh" }}>
-                        <CardContent>
-                          <Autocomplete
-                            inputClassName={classes.autocomplete}
-                            placeholder={"Search…"}
-                            onSelect={suggestion => {
-                              onSearchSelect
-                                ? onSearchSelect(suggestion)
-                                : history.push(
-                                    `/${suggestion.resource}/view/${suggestion._id}`
-                                  );
-                            }}
-                            loadSuggestions={text => {
-                              let query = {
-                                [modelKey]: { $regex: event.target.value }
-                              };
-                              if (onSearch) {
-                                return onSearch(query);
-                              }
-                              return searchModel(query);
-                            }}
-                          />
-                          {modelCount && (
-                            <ModelFilterList
-                              form={form}
-                              modelCount={modelCount}
+                    {showFilters && (
+                      <Grid item md={2} sm={2} xs={2}>
+                        <Card style={{ minHeight: "75vh" }}>
+                          <CardContent>
+                            <Autocomplete
+                              inputClassName={classes.autocomplete}
+                              placeholder={"Search…"}
+                              onSelect={suggestion => {
+                                onSearchSelect
+                                  ? onSearchSelect(suggestion)
+                                  : history.push(
+                                      `/${suggestion.resource}/view/${suggestion._id}`
+                                    );
+                              }}
+                              loadSuggestions={text => {
+                                let query = {
+                                  [modelKey]: { $regex: event.target.value }
+                                };
+                                if (onSearch) {
+                                  return onSearch(query);
+                                }
+                                return searchModel(query);
+                              }}
                             />
-                          )}
-                        </CardContent>
-                      </Card>
-                    </Grid>
+                            {modelCount && (
+                              <ModelFilterList
+                                form={form}
+                                modelCount={modelCount}
+                              />
+                            )}
+                          </CardContent>
+                        </Card>
+                      </Grid>
+                    )}
                     <Grid item md={9}>
                       {defaultView ? (
                         defaultView

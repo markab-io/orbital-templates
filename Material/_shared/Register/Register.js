@@ -14,7 +14,7 @@ import theme from "Theme";
 import { withStyles } from "@material-ui/styles";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import FormFields from "Templates/_shared/Forms/Forms";
+import FormFields from "../Forms/Forms";
 import { styles } from "./Register.styles";
 
 // Synchronous validation

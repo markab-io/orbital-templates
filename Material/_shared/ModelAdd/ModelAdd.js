@@ -1,6 +1,6 @@
 import React from "react";
 import { Formik } from "formik";
-import FormFields from "Templates/_shared/Forms/Forms";
+import FormFields from "../Forms/Forms";
 import {
   Card,
   CardActions,
@@ -9,8 +9,7 @@ import {
   Icon,
   Typography
 } from "@material-ui/core";
-import validate from "Templates/_shared/Forms/Forms.Validate";
-import { toJS } from "mobx";
+import validate from "../Forms/Forms.Validate";
 
 export default class ModelAdd extends React.Component {
   state = {
@@ -45,7 +44,7 @@ export default class ModelAdd extends React.Component {
           errors = validate(values, form, modelSchema);
           return errors;
         }}
-        initialValues={toJS(this.state.initialValues)}
+        initialValues={this.state.initialValues}
         render={({
           values,
           errors,

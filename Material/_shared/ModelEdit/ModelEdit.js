@@ -1,8 +1,7 @@
 import React from "react";
-import { toJS } from "mobx";
 import { Formik } from "formik";
-import FormFields from "Templates/_shared/Forms/Forms";
-import validate from "Templates/_shared/Forms/Forms.Validate";
+import FormFields from "../Forms/Forms";
+import validate from "../Forms/Forms.Validate";
 import {
   Card,
   CardActions,
@@ -11,7 +10,7 @@ import {
   Button,
   Icon
 } from "@material-ui/core";
-import Loading from "Templates/_shared/Loading/Loading";
+import Loading from "../Loading/Loading";
 
 export default class ModelEdit extends React.Component {
   componentWillReceiveProps(nextProps) {}
@@ -40,7 +39,7 @@ export default class ModelEdit extends React.Component {
         onSubmit={(values, actions) => {
           onSave(model, values);
         }}
-        initialValues={toJS(model)}
+        initialValues={model}
         enableReinitialize={true}
         validate={(values, props) => {
           let errors;

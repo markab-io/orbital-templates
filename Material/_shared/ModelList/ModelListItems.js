@@ -1,9 +1,9 @@
 import React from "react";
 // import ModelListItem from "./ModelListItem";
 // import ModelListViewOptions from "./ModelListViewOptions";
-import ModelListCardItem from "Templates/_shared/ModelList/ModelListCardItem";
-import Loading from "Templates/_shared/Loading/Loading";
-import Empty from "Templates/_shared/Empty/Empty";
+import ModelListCardItem from "../ModelList/ModelListCardItem";
+import Loading from "../Loading/Loading";
+import Empty from "../Empty/Empty";
 import { compose, withState, lifecycle } from "recompose";
 import { Paper, Grid, Grow, Fade } from "@material-ui/core";
 const enhance = compose(
