@@ -11,7 +11,6 @@ import {
   Icon
 } from "@material-ui/core";
 import Loading from "../Loading/Loading";
-import { toJS } from "mobx";
 
 export default class ModelEdit extends React.Component {
   componentWillReceiveProps(nextProps) {}
@@ -40,7 +39,7 @@ export default class ModelEdit extends React.Component {
         onSubmit={(values, actions) => {
           onSave(model, values);
         }}
-        initialValues={toJS(model)}
+        initialValues={model}
         enableReinitialize={true}
         validate={(values, props) => {
           let errors;
