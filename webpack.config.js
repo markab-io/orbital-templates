@@ -1,11 +1,14 @@
 "use strict";
 var webpack = require("webpack");
 var path = require("path");
+var glob = require("glob");
 module.exports = env => {
   console.log("env", env);
-  return {
+  //entries
+  const all = glob.sync("./Material/**/*.js");
+  let config = {
     entry: {
-      main: "./index.js"
+      main: "./Material/index.js"
     },
     output: {
       path: path.join(__dirname, "lib"),
@@ -67,7 +70,24 @@ module.exports = env => {
           ? env.production
             ? path.resolve(__dirname, "./config/prod.js")
             : path.resolve(__dirname, "./config/qa.js")
-          : path.resolve(__dirname, "./config/index.js")
+          : path.resolve(__dirname, "./config/index.js"),
+        react: path.resolve(__dirname, "./node_modules/react"),
+        "react-dom": path.resolve(__dirname, "./node_modules/react-dom")
+      }
+    },
+    externals: {
+      // Don't bundle react or react-dom
+      react: {
+        commonjs: "react",
+        commonjs2: "react",
+        amd: "React",
+        root: "React"
+      },
+      "react-dom": {
+        commonjs: "react-dom",
+        commonjs2: "react-dom",
+        amd: "ReactDOM",
+        root: "ReactDOM"
       }
     },
     //To run development server
@@ -75,4 +95,8 @@ module.exports = env => {
       contentBase: __dirname
     }
   };
+  all.map(file => {
+    config.entry[file] = file;
+  });
+  return config;
 };
