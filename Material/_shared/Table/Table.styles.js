@@ -14,7 +14,7 @@ export const styles = theme => ({
 
 export const toolbarStyles = theme => ({
   root: {
-    paddingRight: theme && theme.spacing.unit
+    paddingRight: theme && theme.spacing && theme.spacing()
   },
   highlight:
     theme && theme.palette.type === "light"

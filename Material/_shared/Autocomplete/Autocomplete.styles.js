@@ -9,7 +9,7 @@ export const styles = theme => ({
   suggestionsContainerOpen: {
     position: "absolute",
     zIndex: 1,
-    marginTop: theme && theme.spacing.unit,
+    marginTop: theme && theme.spacing && theme.spacing(),
     left: 0,
     right: 0
   },

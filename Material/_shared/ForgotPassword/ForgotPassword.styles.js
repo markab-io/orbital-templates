@@ -19,12 +19,12 @@ export const styles = theme => ({
     alignItems: "center"
   },
   avatar: {
-    margin: theme && theme.spacing.unit,
+    margin: theme && theme.spacing && theme.spacing(),
     backgroundColor: theme && theme.palette.secondary.main
   },
   form: {
     width: "100%", // Fix IE11 issue.
-    marginTop: theme && theme.spacing.unit
+    marginTop: theme && theme.spacing && theme.spacing()
   },
   submit: {
     marginTop: theme && theme.spacing(3)

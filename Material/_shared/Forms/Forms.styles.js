@@ -18,7 +18,7 @@ export const styles = theme => ({
     margin: "1em 0"
   },
   formControl: {
-    margin: theme && theme.spacing.unit,
+    margin: theme && theme.spacing && theme.spacing(),
     minWidth: 120
   },
   selectEmpty: {
@@ -28,7 +28,7 @@ export const styles = theme => ({
     display: "flex",
     alignItems: "center",
     height: 50,
-    paddingLeft: theme && theme.spacing.unit * 4,
+    paddingLeft: theme && theme.spacing && theme.spacing() * 4,
     backgroundColor: theme && theme.palette.background.default
   },
   img: {
