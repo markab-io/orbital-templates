@@ -96,7 +96,7 @@ module.exports = env => {
     }
   };
   all.map(file => {
-    config.entry[file] = file;
+    config.entry[file] = file.replace(".js", "");
   });
   return config;
 };
