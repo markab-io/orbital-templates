@@ -1,11 +1,9 @@
 "use strict";
 var webpack = require("webpack");
 var path = require("path");
-var glob = require("glob");
 module.exports = env => {
   console.log("env", env);
   //entries
-  const all = glob.sync("./Material/**/*.js");
   let config = {
     entry: {
       main: "./Material/index.js"
@@ -95,9 +93,5 @@ module.exports = env => {
       contentBase: __dirname
     }
   };
-  all.map(file => {
-    const formattedFile = file.replace(".js", "");
-    config.entry[file] = formattedFile;
-  });
   return config;
 };
