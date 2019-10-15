@@ -25,10 +25,10 @@ const styles1 = theme => {
       backgroundColor: green[600]
     },
     error: {
-      backgroundColor: theme.palette.error.main
+      backgroundColor: theme && theme.palette.error.main
     },
     info: {
-      backgroundColor: theme.palette.secondary.main
+      backgroundColor: theme && theme.palette.secondary.main
     },
     warning: {
       backgroundColor: amber[700]
@@ -38,7 +38,7 @@ const styles1 = theme => {
     },
     iconVariant: {
       opacity: 0.9
-      // marginRight: theme.spacing(1)
+      // marginRight: theme && theme.spacing(1)
     },
     message: {
       display: "flex",
@@ -91,7 +91,7 @@ const MySnackbarContentWrapper = withStyles(styles1)(MySnackbarContent);
 const styles2 = theme => {
   return {
     margin: {
-      margin: theme.spacing(1)
+      margin: theme && theme.spacing(1)
     }
   };
 };

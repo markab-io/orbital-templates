@@ -6,9 +6,9 @@ export const styles = theme => ({
   layout: {
     width: "auto",
     display: "block", // Fix IE11 issue.
-    marginLeft: theme.spacing(3),
-    marginRight: theme.spacing(3),
-    [theme.breakpoints.up(400 + theme.spacing(3) * 2)]: {
+    marginLeft: theme && theme.spacing(3),
+    marginRight: theme && theme.spacing(3),
+    [theme && theme.breakpoints.up(400 + theme && theme.spacing(3) * 2)]: {
       width: 750,
       marginLeft: "auto",
       marginRight: "auto"
@@ -18,18 +18,18 @@ export const styles = theme => ({
     margin: "1em 0"
   },
   formControl: {
-    margin: theme.spacing.unit,
+    margin: theme && theme.spacing.unit,
     minWidth: 120
   },
   selectEmpty: {
-    marginTop: theme.spacing(2)
+    marginTop: theme && theme.spacing(2)
   },
   header: {
     display: "flex",
     alignItems: "center",
     height: 50,
-    paddingLeft: theme.spacing.unit * 4,
-    backgroundColor: theme.palette.background.default
+    paddingLeft: theme && theme.spacing.unit * 4,
+    backgroundColor: theme && theme.palette.background.default
   },
   img: {
     height: 255,

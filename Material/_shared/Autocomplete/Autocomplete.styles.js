@@ -9,7 +9,7 @@ export const styles = theme => ({
   suggestionsContainerOpen: {
     position: "absolute",
     zIndex: 1,
-    marginTop: theme.spacing.unit,
+    marginTop: theme && theme.spacing.unit,
     left: 0,
     right: 0
   },
@@ -22,6 +22,6 @@ export const styles = theme => ({
     listStyleType: "none"
   },
   divider: {
-    height: theme.spacing(2)
+    height: theme && theme.spacing(2)
   }
 });

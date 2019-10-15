@@ -10,7 +10,7 @@ import { Typography, Button, Fab } from "@material-ui/core";
 const styles = theme => ({
   fab: {
     bottom: "0px",
-    right: theme.spacing(2)
+    right: theme && theme && theme.spacing(2)
   }
 });
 
