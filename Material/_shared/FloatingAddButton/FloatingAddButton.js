@@ -4,15 +4,17 @@ import classNames from "classnames";
 import { withStyles } from "@material-ui/styles";
 // import theme from "Theme";
 import AddIcon from "@material-ui/icons/Add";
-
 import { Typography, Button, Fab } from "@material-ui/core";
 
-const styles = theme => ({
-  fab: {
-    bottom: "0px",
-    right: theme && theme && theme.spacing(2)
-  }
-});
+const styles = theme => {
+  console.log("theme", theme);
+  return {
+    fab: {
+      bottom: "0px",
+      right: theme && theme.spacing(2)
+    }
+  };
+};
 
 class FloatingAddButton extends React.Component {
   render() {
