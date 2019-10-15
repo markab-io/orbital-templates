@@ -1,6 +1,6 @@
 {
   "name": "@markab.io/orbital-templates",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "description": "A way to get up and running quickly with any programming task.",
   "main": "./lib",
   "scripts": {
