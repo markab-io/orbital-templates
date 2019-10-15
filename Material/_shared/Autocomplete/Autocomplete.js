@@ -1,5 +1,5 @@
 import React from "react";
-// import theme from "Theme";
+import theme from "Theme";
 import PropTypes from "prop-types";
 import Autosuggest from "react-autosuggest";
 import match from "autosuggest-highlight/match";
@@ -157,4 +157,4 @@ Autocomplete.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(Autocomplete);
+export default withStyles(styles, { defaultTheme: theme })(Autocomplete);

@@ -2,7 +2,7 @@ import React from "react";
 //Routing
 import { Route } from "react-router-dom";
 import { styles } from "./ModelList.styles";
-import { withStyles } from "@material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 //infinite scroller
 import infiniteScroll from "react-infinite-scroller";
 import Loading from "../Loading/Loading";
@@ -22,6 +22,7 @@ import FloatingAddButton from "../FloatingAddButton/FloatingAddButton";
 import ClientNotification from "../ClientNotification/ClientNotification";
 import Autocomplete from "../Autocomplete/Autocomplete";
 import Table from "../Table/Table";
+import theme from "Theme";
 import {
   Paper,
   AppBar,
@@ -545,4 +546,4 @@ const ModelList = enhance(
   }
 );
 
-export default withStyles(styles)(ModelList);
+export default withStyles(styles, { defaultTheme: theme })(ModelList);

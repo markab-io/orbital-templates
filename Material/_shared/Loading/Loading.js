@@ -1,5 +1,5 @@
 import React from "react";
-// import theme from "Theme";
+import theme from "Theme";
 import { withStyles } from "@material-ui/styles";
 import { styles } from "./Loading.styles";
 import { Grid, Typography, CircularProgress } from "@material-ui/core";
@@ -34,4 +34,4 @@ function Loading(props) {
   );
 }
 
-export default withStyles(styles)(Loading);
+export default withStyles(styles, { defaultTheme: theme })(Loading);

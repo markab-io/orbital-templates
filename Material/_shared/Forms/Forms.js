@@ -3,7 +3,7 @@ import { visibleWhenFilter } from "../Forms/VisibleWhenFilter";
 import { styles } from "./Forms.styles";
 import { withStyles } from "@material-ui/styles";
 import { withState, compose, lifecycle } from "recompose";
-// import theme from "Theme";
+import theme from "Theme";
 import RichTextEditor from "react-rte";
 import moment from "moment";
 import ClientNotification from "../ClientNotification/ClientNotification";
@@ -278,4 +278,4 @@ const Fields = enhance(
   }
 );
 
-export default withStyles(styles)(Fields);
+export default withStyles(styles, { defaultTheme: theme })(Fields);
