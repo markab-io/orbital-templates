@@ -13,7 +13,7 @@ module.exports = env => {
     output: {
       path: path.join(__dirname, "lib"),
       chunkFilename: "[name].bundle.js",
-      filename: "[name].js"
+      filename: "[name]"
     },
     module: {
       rules: [
@@ -96,7 +96,8 @@ module.exports = env => {
     }
   };
   all.map(file => {
-    config.entry[file] = file.replace(".js", "");
+    const formattedFile = file.replace(".js", "");
+    config.entry[file] = formattedFile;
   });
   return config;
 };
