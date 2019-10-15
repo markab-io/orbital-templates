@@ -5,6 +5,7 @@ import { withStyles } from "@material-ui/styles";
 // import theme from "Theme";
 import DeleteIcon from "@material-ui/icons/Delete";
 import FilterListIcon from "@material-ui/icons/FilterList";
+import theme from "Theme";
 import { styles, toolbarStyles } from "./Table.styles";
 import {
   Grid,
@@ -297,4 +298,4 @@ EnhancedTable.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(EnhancedTable);
+export default withStyles(styles, { defaultTheme: theme })(EnhancedTable);

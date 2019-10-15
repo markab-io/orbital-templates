@@ -1,4 +1,3 @@
-const padding = 20;
 export const styles = theme => ({
   layout: {
     width: "auto",

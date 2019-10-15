@@ -8,6 +8,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import green from "@material-ui/core/colors/green";
 import amber from "@material-ui/core/colors/amber";
 import WarningIcon from "@material-ui/icons/Warning";
+import theme from "Theme";
 // import theme from "Theme";
 import { withStyles } from "@material-ui/styles";
 import { IconButton, Snackbar, SnackbarContent } from "@material-ui/core";
@@ -25,10 +26,10 @@ const styles1 = theme => {
       backgroundColor: green[600]
     },
     error: {
-      backgroundColor: theme && theme.palette.error.main
+      backgroundColor: theme && theme.palette && theme.palette.error.main
     },
     info: {
-      backgroundColor: theme && theme.palette.secondary.main
+      backgroundColor: theme && theme.palette && theme.palette.secondary.main
     },
     warning: {
       backgroundColor: amber[700]
@@ -91,7 +92,7 @@ const MySnackbarContentWrapper = withStyles(styles1)(MySnackbarContent);
 const styles2 = theme => {
   return {
     margin: {
-      margin: theme && theme.spacing(1)
+      margin: theme && theme.spacing && theme.spacing(1)
     }
   };
 };
@@ -135,4 +136,6 @@ CustomizedSnackbars.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles2)(CustomizedSnackbars);
+export default withStyles(styles2, { defaultTheme: theme })(
+  CustomizedSnackbars
+);
