@@ -34,7 +34,7 @@ const EditableObjectArray = ({
     <Card>
       <CardHeader title={field.placeholder}></CardHeader>
       <CardContent>
-        {values.map((val, index) => {
+        {values && values.map((val, index) => {
           return (
             <>
               <FieldsComponent
