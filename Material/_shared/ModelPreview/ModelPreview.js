@@ -2,10 +2,9 @@ import React from "react";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import ImageGallery from "react-image-gallery";
-import ConfirmDeleteModal from "../ConfirmDeleteModal/ConfirmDeleteModal";
+import { ConfirmDeleteModal, Inputs } from "Templates";
 import "react-image-gallery/styles/css/image-gallery.css";
 import { withState, compose } from "recompose";
-import { MarkdownInput } from "../Forms/Inputs";
 import {
   Grid,
   Card,
@@ -107,7 +106,7 @@ const ModelPreview = enhance(
                 <Typography variant="subtitle2">{field.placeholder}</Typography>
               </TableCell>
               <TableCell>
-                <MarkdownInput
+                <Inputs.MarkdownInput
                   previewOnly={true}
                   field={field}
                   value={model[field.name]}

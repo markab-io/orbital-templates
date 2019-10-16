@@ -2,7 +2,7 @@ import LoginWrapper from "./Wrappers/LoginWrapper";
 import MainWrapper from "./Wrappers/MainWrapper";
 import Autocomplete from "./_shared/Autocomplete/Autocomplete";
 import ClientNotification from "./_shared/ClientNotification/ClientNotification";
-import ConfirmDeletModal from "./_shared/ConfirmDeleteModal/ConfirmDeleteModal";
+import ConfirmDeleteModal from "./_shared/ConfirmDeleteModal/ConfirmDeleteModal";
 import FloatingAddButton from "./_shared/FloatingAddButton/FloatingAddButton";
 import Forms from "./_shared/Forms/Forms";
 import * as Inputs from "./_shared/Forms/Inputs";
@@ -33,7 +33,7 @@ export {
   MainWrapper,
   Autocomplete,
   ClientNotification,
-  ConfirmDeletModal,
+  ConfirmDeleteModal,
   FloatingAddButton,
   Forms,
   FormsValidate,
