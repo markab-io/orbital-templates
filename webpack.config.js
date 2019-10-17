@@ -8,9 +8,9 @@ module.exports = env => ({
   entry: "./Material/index.js",
   output: {
     path: path.join(__dirname, "lib"),
-    filename: "orbital.js",
+    filename: "orbital-templates.js",
     publicPath: "/lib/",
-    library: "orbital",
+    library: "orbital-templates",
     libraryTarget: "umd",
     umdNamedDefine: true // Important
   },
@@ -26,12 +26,6 @@ module.exports = env => ({
       commonjs2: "react-dom",
       amd: "react-dom",
       root: "react-dom"
-    },
-    "react-router-dom": {
-      commonjs: "react-router-dom",
-      commonjs2: "react-router-dom",
-      amd: "react-router-dom",
-      root: "react-router-dom"
     },
     "@material-ui/core": {
       commonjs: "@material-ui/core",
