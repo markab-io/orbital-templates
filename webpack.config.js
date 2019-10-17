@@ -5,7 +5,7 @@ const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
   .BundleAnalyzerPlugin;
 
 module.exports = env => ({
-  entry: "./index.js",
+  entry: "./Material/index.js",
   output: {
     path: path.join(__dirname, "lib"),
     filename: "orbital.js",
@@ -27,24 +27,19 @@ module.exports = env => ({
       amd: "react-dom",
       root: "react-dom"
     },
-    mobx: {
-      commonjs: "mobx",
-      commonjs2: "mobx",
-      amd: "mobx",
-      root: "mobx"
+    "react-router-dom": {
+      commonjs: "react-router-dom",
+      commonjs2: "react-router-dom",
+      amd: "react-router-dom",
+      root: "react-router-dom"
     },
-    "mobx-react": {
-      commonjs: "mobx-react",
-      commonjs2: "mobx-react",
-      amd: "mobx-react",
-      root: "mobx-react"
+    "@material-ui/core": {
+      commonjs: "@material-ui/core",
+      commonjs2: "@material-ui/core",
+      amd: "@material-ui/core",
+      root: "@material-ui/core"
     },
-    "mobx-state-tree": {
-      commonjs: "mobx-state-tree",
-      commonjs2: "mobx-state-tree",
-      amd: "mobx-state-tree",
-      root: "mobx-state-tree"
-    },
+
     moment: {
       commonjs: "moment",
       commonjs2: "moment",
@@ -101,4 +96,3 @@ module.exports = env => ({
     contentBase: __dirname
   }
 });
-
