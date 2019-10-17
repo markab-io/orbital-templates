@@ -1,15 +1,24 @@
-import React from "react";
-import Dropzone from "react-dropzone";
+import React, { useCallback } from "react";
+import { useDropzone } from "react-dropzone";
 
-const ImageFileInput = ({ field, onMediaDrop, media }) => {
+function MyDropzone({ field, onMediaDrop, media }) {
+  const onDrop = useCallback(acceptedFiles => {
+    // Do something with the files
+  }, []);
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onMediaDrop
+  });
+
   return (
-    <div>
-      <h2>{field.placeholder}</h2>
-      <Dropzone onDrop={acceptedFiles => onMediaDrop(acceptedFiles)}>
-        <img width="200px" height="auto" src={media} />
-      </Dropzone>
+    <div {...getRootProps()}>
+      <input {...getInputProps()} />
+      {isDragActive ? (
+        <p>Drop the files here ...</p>
+      ) : (
+        <p>Drag 'n' drop some files here, or click to select files</p>
+      )}
     </div>
   );
-};
+}
 
-export default ImageFileInput;
+export default MyDropzone;

@@ -2,7 +2,7 @@ import React from "react";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
-import ConfirmDeleteModal from "../ConfirmDeleteModal/ConfirmDeleteModal";
+import { ConfirmDeleteModal } from "Templates";
 import { withState, compose } from "recompose";
 
 import {
@@ -14,8 +14,8 @@ import {
   Menu,
   MenuItem,
   IconButton,
-  Button,
-} from '@material-ui/core';
+  Button
+} from "@material-ui/core";
 
 const enhance = compose(
   withState("actionOpen", "setActionOpen", false),
