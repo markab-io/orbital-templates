@@ -71,6 +71,7 @@ const ModelList = enhance(
     removeFromMedia,
     deleteMedia,
     media,
+    mode,
     match,
     history,
     classes,
@@ -470,6 +471,7 @@ const ModelList = enhance(
                             onView={onViewWrapper}
                             onEdit={onEditWrapper}
                             loading={loading}
+                            mode={mode}
                           />
                         </Grid>
                       )}

@@ -37,6 +37,7 @@ const ModelListItems = enhance(
     history,
     page,
     loading,
+    mode,
     In,
     setIn,
     ...rest
@@ -91,6 +92,7 @@ const ModelListItems = enhance(
                       onEdit={onEdit}
                       onView={onView}
                       page={page}
+                      mode={mode}
                       {...rest}
                     />
                   )}
