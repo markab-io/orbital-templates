@@ -2,7 +2,7 @@
   "name": "@markab.io/orbital-templates",
   "version": "0.2.0",
   "description": "A way to get up and running quickly with any programming task.",
-  "main": "./Material/index.js",
+  "main": "lib/orbital-templates.js",
   "scripts": {
     "start": "./node_modules/.bin/webpack-dev-server --mode=development --port 8085",
     "deploy": "./node_modules/.bin/webpack --env.production && cp -a lib/ client/ && cp -a ./index.html client/ && ./node_modules/.bin/serverless client deploy --no-confirm",
