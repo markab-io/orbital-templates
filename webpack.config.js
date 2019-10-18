@@ -69,8 +69,6 @@ module.exports = env => ({
   resolve: {
     alias: {
       react: path.resolve("./node_modules/react"),
-      Templates: path.resolve(__dirname, "../orbital-templates/Material"),
-      Orbital: path.resolve(__dirname, "./orbital"),
       Theme: path.resolve(__dirname, "./theme.js"),
       "@material-ui/styles": path.resolve("./node_modules/@material-ui/styles"),
       Config: env
