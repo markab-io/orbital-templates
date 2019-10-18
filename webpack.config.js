@@ -68,7 +68,8 @@ module.exports = env => ({
   },
   resolve: {
     alias: {
-      react: path.resolve("./node_modules/react"),
+      react: path.resolve(__dirname, "./node_modules/react"),
+      Templates: path.resolve(__dirname, "./Material/index"),
       Theme: path.resolve(__dirname, "./theme.js"),
       "@material-ui/styles": path.resolve("./node_modules/@material-ui/styles"),
       Config: env
