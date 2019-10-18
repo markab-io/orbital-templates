@@ -1,8 +1,8 @@
 import React from "react";
 import ImageGallery from "react-image-gallery";
-import Dropzone from "react-dropzone";
 import "react-image-gallery/styles/css/image-gallery.css";
-import { Button } from '@material-ui/core';
+import { Button } from "@material-ui/core";
+import ImageFileInput from "./Forms.ImageFileInput";
 
 const GalleryInput = ({
   gallery,
@@ -14,7 +14,7 @@ const GalleryInput = ({
 }) => (
   <div>
     <h2>{field.placeholder}</h2>
-    <Dropzone multiple id={field.name} onDrop={onGalleryDrop} />
+    <ImageFileInput multiple id={field.name} onDrop={onGalleryDrop} />
     {gallery && gallery.length > 0 ? (
       <ImageGallery
         items={gallery.map(image => {
