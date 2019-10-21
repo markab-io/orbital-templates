@@ -6,6 +6,17 @@ import ConfirmDeleteModal from "./_shared/ConfirmDeleteModal/ConfirmDeleteModal"
 import FloatingAddButton from "./_shared/FloatingAddButton/FloatingAddButton";
 import Forms from "./_shared/Forms/Forms";
 import * as Inputs from "./_shared/Forms/Inputs";
+import {
+  Card,
+  CardActions,
+  CardContent,
+  CardHeader,
+  Button,
+  Icon,
+  Typography,
+  CircularProgress,
+  TablePagination
+} from "@material-ui/core";
 import Empty from "./_shared/Empty/Empty";
 import Register from "./_shared/Register/Register";
 import Login from "./_shared/Login/Login";
@@ -41,5 +52,14 @@ export {
   ModelEdit,
   ModelList,
   ModelPreview,
-  Table
+  Table,
+  CircularProgress,
+  Card,
+  CardActions,
+  CardContent,
+  CardHeader,
+  Button,
+  Icon,
+  Typography,
+  TablePagination
 };

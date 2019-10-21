@@ -1,16 +1,6 @@
 import React from "react";
 import { Formik } from "formik";
-import FormFields from "../Forms/Forms";
-import validate from "../Forms/Forms.Validate";
-import {
-  Card,
-  CardActions,
-  CardContent,
-  CardHeader,
-  Button,
-  Icon
-} from "@material-ui/core";
-import Loading from "../Loading/Loading";
+import { Loading, FormsValidate, Forms } from "Templates";
 
 export default class ModelEdit extends React.Component {
   componentWillReceiveProps(nextProps) {}
@@ -60,7 +50,7 @@ export default class ModelEdit extends React.Component {
               <CardHeader title={model && model.title} />
               <CardContent>
                 <form id="edit-form">
-                  <FormFields
+                  <Forms
                     id="edit-fields"
                     form={form}
                     errors={errors}

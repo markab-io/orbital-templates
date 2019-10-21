@@ -18,21 +18,21 @@ import ModelPreview from "../ModelPreview/ModelPreview";
 import ModelListItems from "../ModelList/ModelListItems";
 import ModelFilterList from "../ModelList/ModelFilterList";
 //shared components
-import FloatingAddButton from "../FloatingAddButton/FloatingAddButton";
-import ClientNotification from "../ClientNotification/ClientNotification";
-import Autocomplete from "../Autocomplete/Autocomplete";
-import Table from "../Table/Table";
 import theme from "Theme";
 import {
   Paper,
   AppBar,
   Toolbar,
   Grid,
+  FloatingAddButton,
+  ClientNotification,
+  Autocomplete,
+  Table,
   TablePagination,
   Fade,
   Card,
   CardContent
-} from "@material-ui/core";
+} from "Templates";
 
 const enhance = compose(
   withState("viewOption", "setViewOption", 0),

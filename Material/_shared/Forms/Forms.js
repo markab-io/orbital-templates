@@ -2,23 +2,18 @@ import React from "react";
 import { visibleWhenFilter } from "../Forms/VisibleWhenFilter";
 import { styles } from "./Forms.styles";
 import { withStyles } from "@material-ui/styles";
-import { withState, compose, lifecycle } from "recompose";
+import { withState, compose } from "recompose";
 import theme from "Theme";
 import RichTextEditor from "react-rte";
 import moment from "moment";
-import ClientNotification from "../ClientNotification/ClientNotification";
-import Autocomplete from "../Autocomplete/Autocomplete";
 import {
-  EditableArray,
-  EditableObjectArray,
-  TextFieldInput,
-  SelectInput,
-  GalleryInput,
-  ImageFileInput,
-  CheckboxInput,
-  MarkdownInput
-} from "../Forms/Inputs";
-import { CircularProgress, Typography, Button } from "@material-ui/core";
+  Inputs,
+  ClientNotification,
+  Button,
+  Typography,
+  CircularProgress,
+  Autocomplete
+} from "Templates";
 
 const enhance = compose(
   withState(
@@ -81,7 +76,7 @@ const Fields = enhance(
               field.type === "number" ||
               field.type === "password" ||
               field.type === "email") && (
-              <TextFieldInput
+              <Inputs.TextFieldInput
                 field={field}
                 value={values[field.name]}
                 type={field.type}
@@ -90,7 +85,7 @@ const Fields = enhance(
               />
             )}
             {field.type === "select" && (
-              <SelectInput
+              <Inputs.SelectInput
                 setFieldValue={setFieldValue}
                 setFieldTouched={setFieldTouched}
                 field={field}
@@ -99,7 +94,7 @@ const Fields = enhance(
               />
             )}
             {field.type === "checkbox" && (
-              <CheckboxInput
+              <Inputs.CheckboxInput
                 setFieldValue={setFieldValue}
                 setFieldTouched={setFieldTouched}
                 field={field}
@@ -109,7 +104,7 @@ const Fields = enhance(
             )}
             {field.type === "markdown" && (
               <div>
-                <MarkdownInput
+                <Inputs.MarkdownInput
                   field={field}
                   setFieldValue={setFieldValue}
                   value={values[field.name]}
@@ -119,7 +114,7 @@ const Fields = enhance(
             )}
             {field.type === "date" && (
               <div>
-                <TextFieldInput
+                <Inputs.TextFieldInput
                   type="date"
                   value={moment(values[field.name]).format("YYYY-MM-DD")}
                   field={field}
@@ -129,7 +124,7 @@ const Fields = enhance(
             )}
             {field.type === "datetime" && (
               <div>
-                <TextFieldInput
+                <Inputs.TextFieldInput
                   type="datetime-local"
                   value={moment(values[field.name]).format("YYYY-MM-DDThh:mm")}
                   field={field}
@@ -139,7 +134,7 @@ const Fields = enhance(
             )}
             {field.type === "text-editor" && (
               <div>
-                <RichTextEditor
+                <Inputs.RichTextEditor
                   value={textEditorValue}
                   onChange={value => {
                     setTextEditorValue(value);
@@ -156,7 +151,7 @@ const Fields = enhance(
               </div>
             )}
             {field.type === "array" && (
-              <EditableArray
+              <Inputs.EditableArray
                 field={field}
                 setFieldValue={setFieldValue}
                 classes={classes}
@@ -165,7 +160,7 @@ const Fields = enhance(
               />
             )}
             {field.type === "object-array" && (
-              <EditableObjectArray
+              <Inputs.EditableObjectArray
                 form={field.form}
                 field={field}
                 values={values[field.name]}
@@ -196,14 +191,14 @@ const Fields = enhance(
               />
             )}
             {field.type === "image" && (
-              <ImageFileInput
+              <Inputs.ImageFileInput
                 onMediaDrop={onMediaDrop}
                 media={media}
                 field={field}
               />
             )}
             {field.type === "gallery" && (
-              <GalleryInput
+              <Inputs.GalleryInput
                 gallery={gallery}
                 onMediaDelete={onMediaDelete}
                 setCurrentGalleryIndex={setCurrentGalleryIndex}
