@@ -22,7 +22,7 @@ import {
   DialogActions,
   Dialog,
   Grid,
-  Table,
+  Table as MaterialTable,
   TableBody,
   TableCell,
   TableHead,
@@ -38,7 +38,10 @@ import {
   MenuItem,
   Snackbar,
   SnackbarContent,
-  Fab
+  Fab,
+  Fade,
+  Avatar,
+  CssBaseline
 } from "@material-ui/core";
 import Empty from "./_shared/Empty/Empty";
 import Register from "./_shared/Register/Register";
@@ -91,6 +94,7 @@ export {
   Dialog,
   Grid,
   Table,
+  MaterialTable,
   TableBody,
   TableCell,
   TableHead,
@@ -107,5 +111,8 @@ export {
   MenuItem,
   Snackbar,
   SnackbarContent,
-  Fab
+  Fab,
+  Fade,
+  Avatar,
+  CssBaseline
 };
