@@ -11,7 +11,7 @@ import WarningIcon from "@material-ui/icons/Warning";
 import theme from "Theme";
 // import theme from "Theme";
 import { withStyles } from "@material-ui/styles";
-import { IconButton, Snackbar, SnackbarContent } from "@material-ui/core";
+import { IconButton, Snackbar, SnackbarContent } from "Templates";
 
 const variantIcon = {
   success: CheckCircleIcon,

@@ -10,12 +10,12 @@ import ResetPasswordConfirm from "../ResetPassword/ResetPasswordConfirm";
 import queryString from "query-string";
 import {
   Button,
-  TextField,
+  Inputs,
   Typography,
   Avatar,
   CssBaseline,
   Paper
-} from "@material-ui/core";
+} from "Templates";
 
 // Synchronous validation
 const ResetPasswordSchema = Yup.object().shape({
@@ -95,7 +95,7 @@ export const ResetPassword = ({
                         {fields.map((field, index) => {
                           return (
                             <div key={index}>
-                              <TextField
+                              <Inputs.TextField
                                 id={field.name}
                                 label={field.placeholder}
                                 type={field.type}

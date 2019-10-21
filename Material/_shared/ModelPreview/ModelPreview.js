@@ -17,7 +17,7 @@ import {
   TableRow,
   IconButton,
   Typography
-} from "@material-ui/core";
+} from "Templates";
 
 const enhance = compose(withState("open", "setOpen", false));
 

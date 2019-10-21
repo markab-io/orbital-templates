@@ -8,7 +8,7 @@ import { styles } from "./Autocomplete.styles";
 import { withStyles } from "@material-ui/styles";
 import { throttle } from "lodash";
 
-import { TextField, Paper, MenuItem } from "@material-ui/core";
+import { MenuItem, Paper, Inputs } from "Templates";
 
 function renderInputComponent(inputProps) {
   const {
@@ -19,7 +19,7 @@ function renderInputComponent(inputProps) {
     ...other
   } = inputProps;
   return (
-    <TextField
+    <Inputs.TextField
       fullWidth
       InputProps={{
         inputRef: node => {

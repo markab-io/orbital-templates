@@ -33,7 +33,7 @@ export default class ModelEdit extends React.Component {
         enableReinitialize={true}
         validate={(values, props) => {
           let errors;
-          errors = validate(values, form, modelSchema);
+          errors = FormsValidate(values, form, modelSchema);
           return errors;
         }}
         render={({

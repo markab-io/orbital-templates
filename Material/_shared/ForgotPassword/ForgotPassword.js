@@ -7,7 +7,6 @@ import theme from "Theme";
 import { styles } from "./ForgotPassword.styles";
 import { Route } from "react-router-dom";
 import ForgotPasswordConfirm from "../ForgotPassword/ForgotPasswordConfirm";
-import FormFields from "../Forms/Forms";
 import {
   Button,
   Typography,
@@ -16,8 +15,9 @@ import {
   CardHeader,
   CardActions,
   CardContent,
-  Grid
-} from "@material-ui/core";
+  Grid,
+  Forms
+} from "Templates";
 
 // Synchronous validation
 const forgotPasswordSchema = Yup.object().shape({
@@ -92,7 +92,7 @@ export const ForgotPassword = ({ forgotPassword, history, classes, match }) => {
                     <>
                       <CardContent>
                         <form onSubmit={handleSubmit}>
-                          <FormFields
+                          <Forms
                             id="login-fields"
                             form={form}
                             errors={errors}

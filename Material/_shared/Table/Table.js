@@ -21,7 +21,7 @@ import {
   Checkbox,
   IconButton,
   Tooltip
-} from "@material-ui/core";
+} from "Templates";
 
 function desc(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
