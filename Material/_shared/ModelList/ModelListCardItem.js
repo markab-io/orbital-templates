@@ -57,7 +57,7 @@ const ModelListCardItem = ({
               component="img"
               image={
                 model.image ||
-                "https://orbital-clients.s3.amazonaws.com/card.jpg"
+                "https://orbital-clients.s3.amazonaws.com/_Main/Markab-logo-only.svg"
               }
             />
             <Divider />
