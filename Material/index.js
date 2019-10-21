@@ -11,11 +11,19 @@ import {
   CardActions,
   CardContent,
   CardHeader,
+  CardMedia,
   Button,
   Icon,
   Typography,
   CircularProgress,
-  TablePagination
+  TablePagination,
+  Button,
+  IconButton,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  Dialog
 } from "@material-ui/core";
 import Empty from "./_shared/Empty/Empty";
 import Register from "./_shared/Register/Register";
@@ -53,13 +61,21 @@ export {
   ModelList,
   ModelPreview,
   Table,
+  //@material-ui/core
   CircularProgress,
   Card,
   CardActions,
   CardContent,
   CardHeader,
+  CardMedia,
   Button,
+  IconButton,
   Icon,
   Typography,
-  TablePagination
+  TablePagination,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  Dialog
 };

@@ -3,12 +3,6 @@ import React from "react";
 import { Route } from "react-router-dom";
 import { styles } from "./ModelList.styles";
 import { withStyles } from "@material-ui/core/styles";
-//infinite scroller
-import infiniteScroll from "react-infinite-scroller";
-import Loading from "../Loading/Loading";
-import Empty from "../Empty/Empty";
-// import theme from "Theme";
-
 //recompose
 import { withState, compose, lifecycle } from "recompose";
 //Different template pages
@@ -21,8 +15,6 @@ import ModelFilterList from "../ModelList/ModelFilterList";
 import theme from "Theme";
 import {
   Paper,
-  AppBar,
-  Toolbar,
   Grid,
   FloatingAddButton,
   ClientNotification,
@@ -31,7 +23,9 @@ import {
   TablePagination,
   Fade,
   Card,
-  CardContent
+  CardContent,
+  Empty,
+  Loading
 } from "Templates";
 
 const enhance = compose(
@@ -387,34 +381,6 @@ const ModelList = enhance(
           render={props => {
             return (
               <React.Fragment>
-                {/* <AppBar
-                  className={classes.autocompleteContainer}
-                  position="static"
-                  color="default"
-                >
-                  <Toolbar>
-                    <Autocomplete
-                      inputClassName={classes.autocomplete}
-                      placeholder={"Search…"}
-                      onSelect={suggestion => {
-                        onSearchSelect
-                          ? onSearchSelect(suggestion)
-                          : history.push(
-                              `/${suggestion.resource}/view/${suggestion._id}`
-                            );
-                      }}
-                      loadSuggestions={text => {
-                        let query = {
-                          [modelKey]: { $regex: event.target.value }
-                        };
-                        if (onSearch) {
-                          return onSearch(query);
-                        }
-                        return searchModel(query);
-                      }}
-                    />
-                  </Toolbar>
-                </AppBar> */}
                 {ModelListActions && <ModelListActions {...Actions} />}
                 {viewOption === 0 && (
                   <Grid container justify="space-between">
