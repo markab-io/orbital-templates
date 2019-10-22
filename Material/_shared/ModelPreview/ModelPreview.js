@@ -11,7 +11,7 @@ import {
   CardHeader,
   CardMedia,
   CardContent,
-  Table,
+  MaterialTable,
   TableBody,
   TableCell,
   TableRow,
@@ -169,9 +169,9 @@ const ModelPreview = enhance(
               </>
             )}
             <CardContent>
-              <Table>
+              <MaterialTable>
                 <TableBody>{previewList}</TableBody>
-              </Table>
+              </MaterialTable>
             </CardContent>
           </Card>
           <ConfirmDeleteModal

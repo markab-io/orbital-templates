@@ -87,5 +87,6 @@ module.exports = env => ({
   //To run development server
   devServer: {
     contentBase: __dirname
-  }
+  },
+  devtool: "sourcemap"
 });

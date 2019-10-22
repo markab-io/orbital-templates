@@ -149,6 +149,7 @@ const ModelList = enhance(
       (!noPagination
         ? modelArray.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
         : modelArray);
+    console.log("models", models);
     return (
       <>
         <Route

@@ -132,6 +132,16 @@ const Fields = enhance(
                 />
               </div>
             )}
+            {field.type === "code-editor" && (
+              <div>
+                <Inputs.CodeInput
+                  type={field.type}
+                  value={values[field.name]}
+                  field={field}
+                  setFieldValue={setFieldValue}
+                />
+              </div>
+            )}
             {field.type === "text-editor" && (
               <div>
                 <Inputs.RichTextEditor
@@ -168,6 +178,8 @@ const Fields = enhance(
                   const el = values[field.name].find(
                     ({ _id }) => _id === value._id
                   );
+                  const elIndex = values[field.name].indexOf(el);
+                  setFieldValue(key, values[field.name]);
                 }}
                 setFieldTouched={setFieldTouched}
                 onMediaDrop={onMediaDrop}
@@ -178,7 +190,10 @@ const Fields = enhance(
                 handleBlur={handleBlur}
                 classes={classes}
                 onAdd={() => {
-                  setFieldValue(field.name, [...values[field.name], {}]);
+                  const passedValues = values[field.name]
+                    ? values[field.name]
+                    : [];
+                  setFieldValue(field.name, [...passedValues, {}]);
                 }}
                 onDelete={index => {
                   const filtered = values[field.name].filter(

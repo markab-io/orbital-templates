@@ -1,6 +1,16 @@
 import React from "react";
 import { Formik } from "formik";
-import { Loading, FormsValidate, Forms } from "Templates";
+import {
+  Loading,
+  FormsValidate,
+  Forms,
+  Card,
+  CardHeader,
+  CardContent,
+  CardActions,
+  Button,
+  Icon
+} from "Templates";
 
 export default class ModelEdit extends React.Component {
   componentWillReceiveProps(nextProps) {}
