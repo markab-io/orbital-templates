@@ -31,6 +31,7 @@ export default class ModelEdit extends React.Component {
       uploadGallery,
       gallery,
       media,
+      classes,
       ...rest
     } = this.props;
 
@@ -56,7 +57,7 @@ export default class ModelEdit extends React.Component {
           setFieldTouched
         }) => {
           return (
-            <Card>
+            <Card className={classes.editContent}>
               <CardHeader title={model && model.title} />
               <CardContent>
                 <form id="edit-form">

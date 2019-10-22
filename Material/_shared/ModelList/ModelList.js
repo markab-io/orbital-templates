@@ -149,7 +149,6 @@ const ModelList = enhance(
       (!noPagination
         ? modelArray.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
         : modelArray);
-    console.log("models", models);
     return (
       <>
         <Route
@@ -183,6 +182,7 @@ const ModelList = enhance(
                     <ModelAdd
                       model={{}}
                       form={form}
+                      classes={classes}
                       modelSchema={modelSchema}
                       onSave={values => {
                         createModel(values).then(res => {
@@ -266,6 +266,7 @@ const ModelList = enhance(
                   <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                     <ModelEdit
                       modelName={modelName}
+                      classes={classes}
                       onCancel={() => {
                         history.goBack();
                       }}
@@ -423,7 +424,7 @@ const ModelList = enhance(
                       {defaultView ? (
                         defaultView
                       ) : (
-                        <Grid container>
+                        <Grid justify="center" container>
                           <ModelListItems
                             models={models}
                             classes={classes}

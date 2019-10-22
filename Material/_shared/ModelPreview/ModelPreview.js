@@ -22,7 +22,7 @@ import {
 const enhance = compose(withState("open", "setOpen", false));
 
 const ModelPreview = enhance(
-  ({ model, onEdit, form, open, setOpen, deleteModel, onDelete }) => {
+  ({ model, onEdit, form, open, setOpen, deleteModel, onDelete, classes }) => {
     if (form && model) {
       let previewList = form.fields.map((field, index) => {
         if (
@@ -118,7 +118,7 @@ const ModelPreview = enhance(
       });
       return (
         <>
-          <Card>
+          <Card className={classes.previewContent}>
             <CardHeader
               title={model.title || model.name}
               action={
@@ -153,7 +153,7 @@ const ModelPreview = enhance(
             )}
             {model.gallery && (
               <>
-                <Typography>Gallery</Typography>
+                {/* <Typography>Gallery</Typography> */}
                 {model.gallery.length > 0 ? (
                   <ImageGallery
                     items={model.gallery.map(image => {
