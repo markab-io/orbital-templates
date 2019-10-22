@@ -420,11 +420,11 @@ const ModelList = enhance(
                         </Card>
                       </Grid>
                     )}
-                    <Grid item md={9}>
+                    <Grid item md={12}>
                       {defaultView ? (
                         defaultView
                       ) : (
-                        <Grid justify="center" container>
+                        <Grid container>
                           <ModelListItems
                             models={models}
                             classes={classes}
