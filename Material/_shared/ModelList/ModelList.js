@@ -77,6 +77,8 @@ const ModelList = enhance(
     ModelEditPage,
     ModelAddPage,
     ModelPreviewPage,
+    ModelPreviewAction,
+    ModelPreviewActions,
     modelKey,
     columnNumber,
     xs,
@@ -345,6 +347,8 @@ const ModelList = enhance(
                       match={match}
                       location={location}
                       history={history}
+                      ModelPreviewActions={ModelPreviewActions}
+                      ModelPreviewAction={ModelPreviewAction}
                       {...rest}
                     />
                   </Grid>
@@ -368,6 +372,8 @@ const ModelList = enhance(
                         modelArray.length > 0 &&
                         modelArray.find(({ _id }) => _id === match.params.id)
                       }
+                      ModelPreviewActions={ModelPreviewActions}
+                      ModelPreviewAction={ModelPreviewAction}
                       {...rest}
                     />
                     <FloatingAddButton onClick={onAddWrapper} />

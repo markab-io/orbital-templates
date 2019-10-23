@@ -28,62 +28,82 @@ const EditableObjectArray = ({
   touched,
   handleBlur,
   FieldsComponent,
+  hideAdd,
+  hideDelete,
+  Actions,
+  onAction,
   ...rest
 }) => {
   return (
     <Card>
       <CardHeader title={field.placeholder}></CardHeader>
       <CardContent>
-        {values && values.map((val, index) => {
-          return (
-            <>
-              <FieldsComponent
-                form={field.form}
-                setFieldValue={(key, value) => {
-                  values[index] = { ...values[index], [key]: value };
-                  setFieldValue(field.name, values);
-                }}
-                setFieldTouched={setFieldTouched}
-                onMediaDrop={onMediaDrop}
-                onGalleryDrop={onGalleryDrop}
-                onMediaDelete={onMediaDelete}
-                values={val}
-                errors={errors}
-                touched={touched}
-                handleBlur={handleBlur}
-                classes={classes}
-                {...rest}
-              />
-              <Grid container justify="flex-end">
-                <Button
-                  onClick={() => {
-                    values = values.filter((v, i) => i !== index);
-                    setFieldValue(field.name, [...values]);
-                    onDelete(index);
+        {values &&
+          values.map((val, index) => {
+            return (
+              <>
+                {hideDelete ? (
+                  <></>
+                ) : (
+                  <Grid
+                    style={{ marginTop: "1em" }}
+                    container
+                    justify="flex-end"
+                  >
+                    <Button
+                      onClick={() => {
+                        values = values.filter((v, i) => i !== index);
+                        setFieldValue(field.name, [...values]);
+                        onDelete(index);
+                      }}
+                      variant="contained"
+                      color="secondary"
+                    >
+                      <Icon>delete</Icon>
+                    </Button>
+                  </Grid>
+                )}
+                <FieldsComponent
+                  form={field.form}
+                  setFieldValue={(key, value) => {
+                    values[index] = { ...values[index], [key]: value };
+                    setFieldValue(field.name, values);
                   }}
-                  variant="contained"
-                  color="secondary"
-                >
-                  <Icon>delete</Icon>
-                </Button>
-              </Grid>
-              <Divider />
-            </>
-          );
-        })}
+                  setFieldTouched={setFieldTouched}
+                  onMediaDrop={onMediaDrop}
+                  onGalleryDrop={onGalleryDrop}
+                  onMediaDelete={onMediaDelete}
+                  values={val}
+                  errors={errors}
+                  touched={touched}
+                  handleBlur={handleBlur}
+                  classes={classes}
+                  {...rest}
+                />
+
+                <Divider />
+                {Actions && <Actions index={index} onAction={onAction} />}
+              </>
+            );
+          })}
       </CardContent>
-      <CardActionArea>
-        <Grid container justify="flex-end">
-          <Button
-            onClick={() => onAdd()}
-            variant="contained"
-            style={{ marginLeft: "10px" }}
-          >
-            <Icon>add</Icon>
-            Add {field.placeholder}
-          </Button>
-        </Grid>
-      </CardActionArea>
+      {hideAdd ? (
+        <></>
+      ) : (
+        <CardActionArea>
+          <Grid container justify="flex-end">
+            <Button
+              onClick={() => onAdd()}
+              variant="contained"
+              style={{ marginLeft: "10px" }}
+            >
+              <Icon>add</Icon>
+              Add {field.placeholder}
+            </Button>
+          </Grid>
+        </CardActionArea>
+      )}
+      {}
     </Card>
   );
 };

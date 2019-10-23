@@ -260,21 +260,23 @@ const Fields = enhance(
                   <Button onClick={onRefCreate}>Add new Fields</Button>
                 </>
               ))}
-            {errors[field.name] && touched[field.name] && (
+            {errors && errors[field.name] && touched[field.name] && (
               <Typography>{errors[field.name]}</Typography>
             )}
           </div>
         );
       });
-      let notifications = Object.keys(errors).map(k => {
-        return {
-          message: `${k}: ${errors[k]}`,
-          type: "error"
-        };
-      });
+      let notifications =
+        errors &&
+        Object.keys(errors).map(k => {
+          return {
+            message: `${k}: ${errors[k]}`,
+            type: "error"
+          };
+        });
       return (
         <>
-          {notifications.length > 0 && (
+          {notifications && notifications.length > 0 && (
             <ClientNotification
               notifications={(notifications.length > 0 && notifications) || []}
               handleClose={() => {}}
