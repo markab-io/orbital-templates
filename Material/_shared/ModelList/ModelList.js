@@ -79,6 +79,7 @@ const ModelList = enhance(
     ModelPreviewPage,
     ModelPreviewAction,
     ModelPreviewActions,
+    ModelPreviewAttachment,
     modelKey,
     columnNumber,
     xs,
@@ -376,6 +377,7 @@ const ModelList = enhance(
                       ModelPreviewAction={ModelPreviewAction}
                       {...rest}
                     />
+                    {ModelPreviewAttachment && <ModelPreviewAttachment />}
                     <FloatingAddButton onClick={onAddWrapper} />
                   </Grid>
                 </Grid>
