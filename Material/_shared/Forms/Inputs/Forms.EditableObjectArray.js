@@ -82,7 +82,9 @@ const EditableObjectArray = ({
                 />
 
                 <Divider />
-                {Actions && <Actions index={index} onAction={onAction} />}
+                {Actions && (
+                  <Actions model={values} index={index} onAction={onAction} />
+                )}
               </>
             );
           })}

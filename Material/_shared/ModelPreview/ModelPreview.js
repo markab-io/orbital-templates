@@ -149,6 +149,7 @@ const ModelPreview = enhance(
                 {ModelPreviewAction && (
                   <ModelPreviewAction
                     onAction={event => onAction(event, model)}
+                    model={model}
                   />
                 )}
               </Grid>
