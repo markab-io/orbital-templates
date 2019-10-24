@@ -377,7 +377,15 @@ const ModelList = enhance(
                       ModelPreviewAction={ModelPreviewAction}
                       {...rest}
                     />
-                    {ModelPreviewAttachment && <ModelPreviewAttachment />}
+                    {ModelPreviewAttachment && (
+                      <ModelPreviewAttachment
+                        model={
+                          modelArray &&
+                          modelArray.length > 0 &&
+                          modelArray.find(({ _id }) => _id === match.params.id)
+                        }
+                      />
+                    )}
                     <FloatingAddButton onClick={onAddWrapper} />
                   </Grid>
                 </Grid>
