@@ -19,8 +19,11 @@ function renderInputComponent(inputProps) {
     ...other
   } = inputProps;
   return (
-    <Inputs.TextField
+    <Inputs.TextFieldInput
       fullWidth
+      field={{ name: "Build Something" }}
+      standAlone={true}
+      value={"Type"}
       InputProps={{
         inputRef: node => {
           ref(node);
@@ -117,7 +120,6 @@ class Autocomplete extends React.Component {
       getSuggestionValue,
       renderSuggestion
     };
-
     return (
       <Autosuggest
         className={inputClassName}
