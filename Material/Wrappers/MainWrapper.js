@@ -35,6 +35,7 @@ const MainWrapper = props => {
   const {
     children,
     location,
+    match,
     history,
     auth,
     user,
@@ -128,7 +129,9 @@ const MainWrapper = props => {
                       onClick={event => {
                         onLogout();
                         setMenuOpen(false);
-                        history.push("/auth/login");
+                        onRouteClick
+                          ? onRouteClick("/auth/login")
+                          : history.push(`${match.path}/auth/login`);
                       }}
                     >
                       Log out
@@ -147,7 +150,9 @@ const MainWrapper = props => {
                 className={classes.tabs}
                 value={currentRoute || 0}
                 onChange={(event, route) => {
-                  history.push(routeList[route].url);
+                  onRouteClick
+                    ? onRouteClick(`${routeList[route].url}`)
+                    : history.push(`${match.path}/${routeList[route].url}`);
                 }}
                 variant="scrollable"
                 indicatorColor="primary"
@@ -176,7 +181,9 @@ const MainWrapper = props => {
                 isLoggedIn={user && !!user.name}
                 onClick={route => {
                   setOpen(false);
-                  history.push(route.url);
+                  onRouteClick
+                    ? onRouteClick(`${route.url}`)
+                    : history.push(`${match.path}/${route.url}`);
                 }}
               />
             </Drawer>
@@ -196,7 +203,11 @@ const MainWrapper = props => {
                   currentRoute={currentRoute || 0}
                   routeList={routeList}
                   isLoggedIn={user && !!user.name}
-                  onClick={route => history.push(route.url)}
+                  onClick={route =>
+                    onRouteClick
+                      ? onRouteClick(`${route.url}`)
+                      : history.push(`${match.path}/${route.url}`)
+                  }
                 />
               </List>
             </Hidden>
@@ -210,14 +221,17 @@ const MainWrapper = props => {
             style={{
               top: "auto",
               bottom: 0,
-              backgroundColor: "white"
+              backgroundColor: "white",
+              color: "black"
             }}
           >
             <Tabs
               className={classes.tabs}
               value={currentRoute || 0}
               onChange={(event, route) => {
-                history.push(routeList[route].url);
+                onRouteClick
+                  ? onRouteClick(`${routeList[route].url}`)
+                  : history.push(`${match.path}/${routeList[route].url}`);
               }}
               variant="scrollable"
               indicatorColor="primary"
