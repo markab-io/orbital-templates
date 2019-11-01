@@ -131,7 +131,7 @@ const MainWrapper = props => {
                         setMenuOpen(false);
                         onRouteClick
                           ? onRouteClick("/auth/login")
-                          : history.push(`${match.path}/auth/login`);
+                          : history.push(`${match.path}auth/login`);
                       }}
                     >
                       Log out
@@ -152,7 +152,7 @@ const MainWrapper = props => {
                 onChange={(event, route) => {
                   onRouteClick
                     ? onRouteClick(`${routeList[route].url}`)
-                    : history.push(`${match.path}/${routeList[route].url}`);
+                    : history.push(`${match.path}${routeList[route].url}`);
                 }}
                 variant="scrollable"
                 indicatorColor="primary"
@@ -183,7 +183,7 @@ const MainWrapper = props => {
                   setOpen(false);
                   onRouteClick
                     ? onRouteClick(`${route.url}`)
-                    : history.push(`${match.path}/${route.url}`);
+                    : history.push(`${match.path}${route.url}`);
                 }}
               />
             </Drawer>
@@ -203,11 +203,11 @@ const MainWrapper = props => {
                   currentRoute={currentRoute || 0}
                   routeList={routeList}
                   isLoggedIn={user && !!user.name}
-                  onClick={route =>
+                  onClick={route => {
                     onRouteClick
                       ? onRouteClick(`${route.url}`)
-                      : history.push(`${match.path}/${route.url}`)
-                  }
+                      : history.push(`${match.path}${route.url}`);
+                  }}
                 />
               </List>
             </Hidden>
@@ -231,7 +231,7 @@ const MainWrapper = props => {
               onChange={(event, route) => {
                 onRouteClick
                   ? onRouteClick(`${routeList[route].url}`)
-                  : history.push(`${match.path}/${routeList[route].url}`);
+                  : history.push(`${match.path}${routeList[route].url}`);
               }}
               variant="scrollable"
               indicatorColor="primary"

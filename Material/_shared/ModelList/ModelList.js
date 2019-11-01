@@ -156,7 +156,6 @@ const ModelList = enhance(
       <Router>
         <Switch>
           <Route
-            exact
             path={`${match.path}/add`}
             render={({ match }) => {
               return ModelAddPage ? (
@@ -397,7 +396,6 @@ const ModelList = enhance(
             }}
           />
           <Route
-            exact
             path={`${match.path}`}
             render={props => {
               return (
