@@ -1,6 +1,6 @@
 import React from "react";
 //Routing
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, HashRouter as Router } from "react-router-dom";
 import { styles } from "./ModelList.styles";
 import { withStyles } from "@material-ui/core/styles";
 //recompose
@@ -184,7 +184,7 @@ const ModelList = enhance(
               <Fade timeout={1000} in={!loading}>
                 <Grid container justify="center">
                   <Grid item xs={12}>
-                    <ModelAddPage
+                    <ModelAdd
                       model={{}}
                       form={form}
                       modelSchema={modelSchema}
@@ -271,95 +271,8 @@ const ModelList = enhance(
               <Fade timeout={1000} in={!loading}>
                 <Grid container justify="center">
                   <Grid xs={12}>
-                    <ModelEditPage
-                      modelName={modelName}
-                      onCancel={() => {
-                        history.goBack();
-                      }}
-                      onSave={(updatedModel, values) => {
-                        updateModel(updatedModel, values);
-                      }}
-                      form={form}
-                      modelSchema={modelSchema}
-                      model={
-                        modelArray &&
-                        modelArray.length > 0 &&
-                        modelArray.find(({ _id }) => _id === match.params.id)
-                      }
-                      media={media}
-                      gallery={
-                        gallery &&
-                        gallery.length > 0 &&
-                        gallery.filter(
-                          ({ modelId }) => modelId === match.params.id
-                        )
-                      }
-                      uploadMedia={uploadMedia}
-                      uploadGallery={uploadGallery}
-                      addToGallery={addToGallery}
-                      removeFromGallery={removeFromGallery}
-                      addToMedia={addToMedia}
-                      deleteMedia={deleteMedia}
-                      removeFromMedia={removeFromMedia}
-                      onMediaUploadComplete={(model, media) => {
-                        updateModel(model, {
-                          image: `${media}&q=${Date.now()}`
-                        });
-                      }}
-                      onGalleryUploadComplete={(model, media) => {
-                        updateModel(model, {
-                          gallery: [...model.gallery, ...media]
-                        });
-                      }}
-                      onMediaDeleteComplete={(model, media) => {
-                        updateModel(model, { image: `` });
-                      }}
-                      onGalleryDeleteComplete={(model, index) => {
-                        model.gallery.remove(index);
-                        updateModel(model, { gallery: model.gallery });
-                      }}
-                      {...rest}
-                    />
-                    <FloatingAddButton onClick={onAddWrapper} />
-                  </Grid>
-                </Grid>
-              </Fade>
-            );
-          }}
-        />
-        <Route
-          path={`${match.path}/view/:id`}
-          render={props => {
-            return ModelPreviewPage ? (
-              <Grid container>
-                <Grid item xs={12}>
-                  <ModelPreviewPage
-                    modelName={modelName}
-                    onEdit={onEditWrapper}
-                    onDelete={onDeleteWrapper}
-                    deleteModel={deleteModel}
-                    updateModel={updateModel}
-                    searchModel={searchModel}
-                    form={form}
-                    model={
-                      modelArray &&
-                      modelArray.length > 0 &&
-                      modelArray.find(({ _id }) => _id === match.params.id)
-                    }
-                    classes={classes}
-                    match={match}
-                    deleteModel={deleteModel}
-                    {...rest}
-                  />
-                </Grid>
-              </Grid>
-            ) : (
-              <Fade timeout={1000} in={!loading}>
-                <Grid container justify="center">
-                  <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                     <ModelEdit
                       modelName={modelName}
-                      classes={classes}
                       onCancel={() => {
                         history.goBack();
                       }}
@@ -548,61 +461,6 @@ const ModelList = enhance(
                       )}
                     </Grid>
                   </Grid>
-                )}
-                {viewOption === 1 && (
-                  <Table
-                    title={modelName}
-                    columns={columns.map((col, i) => {
-                      return {
-                        label: col,
-                        id: i
-                      };
-                    })}
-                    rows={models}
-                    count={modelArray && modelArray.length}
-                    page={page}
-                    rowsPerPage={rowsPerPage}
-                    setPage={setPage}
-                    setRowsPerPage={setRowsPerPage}
-                  />
-                )}
-                {noPagination ? (
-                  <></>
-                ) : (
-                  <Paper>
-                    <Grid
-                      justify={"flex-start"}
-                      style={{ position: "fixed", bottom: "0" }}
-                      container
-                    >
-                      <Grid item>
-                        <Paper>
-                          <TablePagination
-                            rowsPerPageOptions={[5]}
-                            component="div"
-                            count={modelArray && modelArray.length}
-                            rowsPerPage={rowsPerPage}
-                            page={page}
-                            backIconButtonProps={{
-                              "aria-label": "Previous Page"
-                            }}
-                            nextIconButtonProps={{
-                              "aria-label": "Next Page"
-                            }}
-                            onChangePage={(event, page) => {
-                              setPage(page);
-                            }}
-                            onChangeRowsPerPage={event =>
-                              setRowsPerPage(event.target.value)
-                            }
-                          />
-                        </Paper>
-                      </Grid>
-                      <Grid item>
-                        <FloatingAddButton onClick={onAddWrapper} />
-                      </Grid>
-                    </Grid>
-                  </Paper>
                 )}
               </>
             );
