@@ -155,7 +155,6 @@ const ModelList = enhance(
     return (
       <Switch>
         <Route
-          exact
           path={`${match.path}/add`}
           render={props => {
             return ModelAddPage ? (
@@ -417,35 +416,33 @@ const ModelList = enhance(
         />
         <Route
           path={`${match.path}/view/:id`}
-          render={({ match }) => {
+          render={props => {
             return ModelPreviewPage ? (
-              <Fade timeout={1000} in={!loading}>
-                <Grid container>
-                  <Grid item xs={12}>
-                    <ModelPreviewPage
-                      modelName={modelName}
-                      onEdit={onEditWrapper}
-                      onDelete={onDeleteWrapper}
-                      deleteModel={deleteModel}
-                      updateModel={updateModel}
-                      searchModel={searchModel}
-                      form={form}
-                      model={
-                        modelArray &&
-                        modelArray.length > 0 &&
-                        modelArray.find(({ _id }) => _id === match.params.id)
-                      }
-                      classes={classes}
-                      match={match}
-                      location={location}
-                      history={history}
-                      ModelPreviewActions={ModelPreviewActions}
-                      ModelPreviewAction={ModelPreviewAction}
-                      {...rest}
-                    />
-                  </Grid>
+              <Grid container>
+                <Grid item xs={12}>
+                  <ModelPreviewPage
+                    modelName={modelName}
+                    onEdit={onEditWrapper}
+                    onDelete={onDeleteWrapper}
+                    deleteModel={deleteModel}
+                    updateModel={updateModel}
+                    searchModel={searchModel}
+                    form={form}
+                    model={
+                      modelArray &&
+                      modelArray.length > 0 &&
+                      modelArray.find(({ _id }) => _id === match.params.id)
+                    }
+                    classes={classes}
+                    match={match}
+                    location={location}
+                    history={history}
+                    ModelPreviewActions={ModelPreviewActions}
+                    ModelPreviewAction={ModelPreviewAction}
+                    {...rest}
+                  />
                 </Grid>
-              </Fade>
+              </Grid>
             ) : (
               <Fade timeout={1000} in={!loading}>
                 <Grid container>
@@ -485,11 +482,10 @@ const ModelList = enhance(
           }}
         />
         <Route
-          exact
           path={`${match.path}`}
           render={props => {
             return (
-              <React.Fragment>
+              <>
                 {ModelListActions && <ModelListActions {...Actions} />}
                 {viewOption === 0 && (
                   <Grid container justify="space-between">
@@ -608,7 +604,7 @@ const ModelList = enhance(
                     </Grid>
                   </Paper>
                 )}
-              </React.Fragment>
+              </>
             );
           }}
         />
