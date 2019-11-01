@@ -1,13 +1,12 @@
 import React from "react";
-
 import {
   DialogTitle,
   DialogContent,
   DialogContentText,
   DialogActions,
   Button,
-  Dialog,
-} from '@material-ui/core';
+  Dialog
+} from "Templates";
 
 const ConfirmDeleteModal = ({ open, setOpen, onConfirm }) => {
   return (

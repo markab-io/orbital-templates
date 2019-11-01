@@ -1,14 +1,8 @@
 import React from "react";
 //Routing
-import { Route } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import { styles } from "./ModelList.styles";
 import { withStyles } from "@material-ui/core/styles";
-//infinite scroller
-import infiniteScroll from "react-infinite-scroller";
-import Loading from "../Loading/Loading";
-import Empty from "../Empty/Empty";
-// import theme from "Theme";
-
 //recompose
 import { withState, compose, lifecycle } from "recompose";
 //Different template pages
@@ -18,21 +12,21 @@ import ModelPreview from "../ModelPreview/ModelPreview";
 import ModelListItems from "../ModelList/ModelListItems";
 import ModelFilterList from "../ModelList/ModelFilterList";
 //shared components
-import FloatingAddButton from "../FloatingAddButton/FloatingAddButton";
-import ClientNotification from "../ClientNotification/ClientNotification";
-import Autocomplete from "../Autocomplete/Autocomplete";
-import Table from "../Table/Table";
 import theme from "Theme";
 import {
   Paper,
-  AppBar,
-  Toolbar,
   Grid,
+  FloatingAddButton,
+  ClientNotification,
+  Autocomplete,
+  Table,
   TablePagination,
   Fade,
   Card,
-  CardContent
-} from "@material-ui/core";
+  CardContent,
+  Empty,
+  Loading
+} from "Templates";
 
 const enhance = compose(
   withState("viewOption", "setViewOption", 0),
@@ -71,6 +65,7 @@ const ModelList = enhance(
     removeFromMedia,
     deleteMedia,
     media,
+    mode,
     match,
     history,
     classes,
@@ -82,6 +77,9 @@ const ModelList = enhance(
     ModelEditPage,
     ModelAddPage,
     ModelPreviewPage,
+    ModelPreviewAction,
+    ModelPreviewActions,
+    ModelPreviewAttachment,
     modelKey,
     columnNumber,
     xs,
@@ -112,7 +110,6 @@ const ModelList = enhance(
     showFilters,
     ...rest
   }) => {
-    console.log(match.path, "PATH!!");
     const onEditWrapper = model => {
       if (onEdit) {
         return onEdit(model);
@@ -156,7 +153,7 @@ const ModelList = enhance(
         ? modelArray.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
         : modelArray);
     return (
-      <>
+      <Switch>
         <Route
           exact
           path={`${match.path}/add`}
@@ -187,8 +184,8 @@ const ModelList = enhance(
             ) : (
               <Fade timeout={1000} in={!loading}>
                 <Grid container justify="center">
-                  <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-                    <ModelAdd
+                  <Grid item xs={12}>
+                    <ModelAddPage
                       model={{}}
                       form={form}
                       modelSchema={modelSchema}
@@ -274,8 +271,8 @@ const ModelList = enhance(
             ) : (
               <Fade timeout={1000} in={!loading}>
                 <Grid container justify="center">
-                  <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-                    <ModelEdit
+                  <Grid xs={12}>
+                    <ModelEditPage
                       modelName={modelName}
                       onCancel={() => {
                         history.goBack();
@@ -335,6 +332,93 @@ const ModelList = enhance(
           path={`${match.path}/view/:id`}
           render={props => {
             return ModelPreviewPage ? (
+              <Grid container>
+                <Grid item xs={12}>
+                  <ModelPreviewPage
+                    modelName={modelName}
+                    onEdit={onEditWrapper}
+                    onDelete={onDeleteWrapper}
+                    deleteModel={deleteModel}
+                    updateModel={updateModel}
+                    searchModel={searchModel}
+                    form={form}
+                    model={
+                      modelArray &&
+                      modelArray.length > 0 &&
+                      modelArray.find(({ _id }) => _id === match.params.id)
+                    }
+                    classes={classes}
+                    match={match}
+                    deleteModel={deleteModel}
+                    {...rest}
+                  />
+                </Grid>
+              </Grid>
+            ) : (
+              <Fade timeout={1000} in={!loading}>
+                <Grid container justify="center">
+                  <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+                    <ModelEdit
+                      modelName={modelName}
+                      classes={classes}
+                      onCancel={() => {
+                        history.goBack();
+                      }}
+                      onSave={(updatedModel, values) => {
+                        updateModel(updatedModel, values);
+                      }}
+                      form={form}
+                      modelSchema={modelSchema}
+                      model={
+                        modelArray &&
+                        modelArray.length > 0 &&
+                        modelArray.find(({ _id }) => _id === match.params.id)
+                      }
+                      media={media}
+                      gallery={
+                        gallery &&
+                        gallery.length > 0 &&
+                        gallery.filter(
+                          ({ modelId }) => modelId === match.params.id
+                        )
+                      }
+                      uploadMedia={uploadMedia}
+                      uploadGallery={uploadGallery}
+                      addToGallery={addToGallery}
+                      removeFromGallery={removeFromGallery}
+                      addToMedia={addToMedia}
+                      deleteMedia={deleteMedia}
+                      removeFromMedia={removeFromMedia}
+                      onMediaUploadComplete={(model, media) => {
+                        updateModel(model, {
+                          image: `${media}&q=${Date.now()}`
+                        });
+                      }}
+                      onGalleryUploadComplete={(model, media) => {
+                        updateModel(model, {
+                          gallery: [...model.gallery, ...media]
+                        });
+                      }}
+                      onMediaDeleteComplete={(model, media) => {
+                        updateModel(model, { image: `` });
+                      }}
+                      onGalleryDeleteComplete={(model, index) => {
+                        model.gallery.remove(index);
+                        updateModel(model, { gallery: model.gallery });
+                      }}
+                      {...rest}
+                    />
+                    <FloatingAddButton onClick={onAddWrapper} />
+                  </Grid>
+                </Grid>
+              </Fade>
+            );
+          }}
+        />
+        <Route
+          path={`${match.path}/view/:id`}
+          render={({ match }) => {
+            return ModelPreviewPage ? (
               <Fade timeout={1000} in={!loading}>
                 <Grid container>
                   <Grid item xs={12}>
@@ -355,6 +439,8 @@ const ModelList = enhance(
                       match={match}
                       location={location}
                       history={history}
+                      ModelPreviewActions={ModelPreviewActions}
+                      ModelPreviewAction={ModelPreviewAction}
                       {...rest}
                     />
                   </Grid>
@@ -378,8 +464,19 @@ const ModelList = enhance(
                         modelArray.length > 0 &&
                         modelArray.find(({ _id }) => _id === match.params.id)
                       }
+                      ModelPreviewActions={ModelPreviewActions}
+                      ModelPreviewAction={ModelPreviewAction}
                       {...rest}
                     />
+                    {ModelPreviewAttachment && (
+                      <ModelPreviewAttachment
+                        model={
+                          modelArray &&
+                          modelArray.length > 0 &&
+                          modelArray.find(({ _id }) => _id === match.params.id)
+                        }
+                      />
+                    )}
                     <FloatingAddButton onClick={onAddWrapper} />
                   </Grid>
                 </Grid>
@@ -393,34 +490,6 @@ const ModelList = enhance(
           render={props => {
             return (
               <React.Fragment>
-                {/* <AppBar
-                  className={classes.autocompleteContainer}
-                  position="static"
-                  color="default"
-                >
-                  <Toolbar>
-                    <Autocomplete
-                      inputClassName={classes.autocomplete}
-                      placeholder={"Search…"}
-                      onSelect={suggestion => {
-                        onSearchSelect
-                          ? onSearchSelect(suggestion)
-                          : history.push(
-                              `/${suggestion.resource}/view/${suggestion._id}`
-                            );
-                      }}
-                      loadSuggestions={text => {
-                        let query = {
-                          [modelKey]: { $regex: event.target.value }
-                        };
-                        if (onSearch) {
-                          return onSearch(query);
-                        }
-                        return searchModel(query);
-                      }}
-                    />
-                  </Toolbar>
-                </AppBar> */}
                 {ModelListActions && <ModelListActions {...Actions} />}
                 {viewOption === 0 && (
                   <Grid container justify="space-between">
@@ -458,7 +527,7 @@ const ModelList = enhance(
                         </Card>
                       </Grid>
                     )}
-                    <Grid item md={9}>
+                    <Grid item md={12}>
                       {defaultView ? (
                         defaultView
                       ) : (
@@ -477,6 +546,7 @@ const ModelList = enhance(
                             onView={onViewWrapper}
                             onEdit={onEditWrapper}
                             loading={loading}
+                            mode={mode}
                           />
                         </Grid>
                       )}
@@ -548,7 +618,7 @@ const ModelList = enhance(
             removeNotification(notification);
           }}
         />
-      </>
+      </Switch>
     );
   }
 );

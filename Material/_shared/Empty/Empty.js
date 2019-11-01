@@ -2,7 +2,7 @@ import React from "react";
 // import theme from "Theme";
 import { withStyles } from "@material-ui/styles";
 import { styles } from "./Empty.styles";
-import { Grid, Typography } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 
 function Empty(props) {
   const { modelName } = props;

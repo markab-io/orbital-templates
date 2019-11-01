@@ -8,13 +8,13 @@ import {
   Typography,
   Avatar,
   Icon,
-  Grid
-} from "@material-ui/core";
+  Grid,
+  Forms
+} from "Templates";
 import theme from "Theme";
 import { withStyles } from "@material-ui/styles";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import FormFields from "../Forms/Forms";
 import { styles } from "./Register.styles";
 
 // Synchronous validation
@@ -138,7 +138,7 @@ export const Register = ({
             <>
               <CardContent>
                 <form onSubmit={handleSubmit}>
-                  <FormFields
+                  <Forms
                     id="login-fields"
                     form={form}
                     errors={errors}

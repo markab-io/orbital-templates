@@ -11,7 +11,7 @@ import WarningIcon from "@material-ui/icons/Warning";
 import theme from "Theme";
 // import theme from "Theme";
 import { withStyles } from "@material-ui/styles";
-import { IconButton, Snackbar, SnackbarContent } from "@material-ui/core";
+import { IconButton, Snackbar, SnackbarContent } from "Templates";
 
 const variantIcon = {
   success: CheckCircleIcon,
@@ -59,7 +59,9 @@ function MySnackbarContent(props) {
       message={
         <span id="client-snackbar" className={classes.message}>
           <Icon className={classNames(classes.icon, classes.iconVariant)} />
-          {message}
+          {typeof message === "string"
+            ? message
+            : "Error! Please contact support at samalghanmi@markab.io, Error code: 001"}
         </span>
       }
       position={"bottom-right"}

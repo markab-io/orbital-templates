@@ -34,11 +34,13 @@ const ModelListCardItem = ({
   deleteModel,
   setDeletedModel,
   deletedModel,
+  mode,
   match,
   history,
   onEdit,
   onView
 }) => {
+  console.log("MODEL LIST CARD ITEM STYLES", classes);
   return (
     <>
       <Card style={{ width: "250px" }} key={model._id} className={classes.card}>
@@ -49,12 +51,14 @@ const ModelListCardItem = ({
               : history.push(`${match.url}/view/${model._id}`);
           }}
         >
-
           <Grid container direction="column" justify="center">
             <CardMedia
               className={classes.cardImage}
               component="img"
-              image={model.image || "https://orbital-clients.s3.amazonaws.com/card.jpg"}
+              image={
+                model.image ||
+                "https://orbital-clients.s3.amazonaws.com/_Main/Markab-logo-only.svg"
+              }
             />
             <Divider />
             <CardContent>

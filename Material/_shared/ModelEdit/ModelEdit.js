@@ -1,16 +1,16 @@
 import React from "react";
 import { Formik } from "formik";
-import FormFields from "../Forms/Forms";
-import validate from "../Forms/Forms.Validate";
 import {
+  Loading,
+  FormsValidate,
+  Forms,
   Card,
-  CardActions,
-  CardContent,
   CardHeader,
+  CardContent,
+  CardActions,
   Button,
   Icon
-} from "@material-ui/core";
-import Loading from "../Loading/Loading";
+} from "Templates";
 
 export default class ModelEdit extends React.Component {
   componentWillReceiveProps(nextProps) {}
@@ -31,6 +31,7 @@ export default class ModelEdit extends React.Component {
       uploadGallery,
       gallery,
       media,
+      classes,
       ...rest
     } = this.props;
 
@@ -43,7 +44,7 @@ export default class ModelEdit extends React.Component {
         enableReinitialize={true}
         validate={(values, props) => {
           let errors;
-          errors = validate(values, form, modelSchema);
+          errors = FormsValidate(values, form, modelSchema);
           return errors;
         }}
         render={({
@@ -56,11 +57,11 @@ export default class ModelEdit extends React.Component {
           setFieldTouched
         }) => {
           return (
-            <Card>
+            <Card className={classes.editContent}>
               <CardHeader title={model && model.title} />
               <CardContent>
                 <form id="edit-form">
-                  <FormFields
+                  <Forms
                     id="edit-fields"
                     form={form}
                     errors={errors}

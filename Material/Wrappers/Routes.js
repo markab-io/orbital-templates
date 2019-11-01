@@ -1,5 +1,5 @@
 import React from "react";
-import { ListItem, ListItemText, Icon } from '@material-ui/core';
+import { ListItem, ListItemText, Icon } from "@material-ui/core";
 
 export const Routes = ({ onClick, currentRoute, routeList }) => {
   return (
@@ -7,6 +7,7 @@ export const Routes = ({ onClick, currentRoute, routeList }) => {
       {routeList.map((route, index) => {
         return (
           <ListItem
+            style={{ borderRadius: "50px" }}
             selected={index === currentRoute}
             key={index}
             onClick={event => onClick(route)}

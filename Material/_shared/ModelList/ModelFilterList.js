@@ -1,6 +1,6 @@
 import React from "react";
-import { Typography, Grid } from "@material-ui/core";
-import CheckboxInput from "../Forms/Inputs/Forms.CheckboxInput";
+import { Grid } from "@material-ui/core";
+import { Inputs, Typography } from "Templates";
 // import ModelListItem from "./ModelListItem";
 const ModelFilterList = ({ form, modelCount, ...rest }) => {
   const [filterList, setFilterList] = React.useState([]);
@@ -17,7 +17,7 @@ const ModelFilterList = ({ form, modelCount, ...rest }) => {
         return (
           <Grid container style={{ marginBottom: "10px" }}>
             <Grid item md={2}>
-              <CheckboxInput
+              <Inputs.CheckboxInput
                 field={{}}
                 setFieldValue={(field, checked) => console.log(checked)}
               />

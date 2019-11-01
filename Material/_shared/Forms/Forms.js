@@ -2,23 +2,18 @@ import React from "react";
 import { visibleWhenFilter } from "../Forms/VisibleWhenFilter";
 import { styles } from "./Forms.styles";
 import { withStyles } from "@material-ui/styles";
-import { withState, compose, lifecycle } from "recompose";
+import { withState, compose } from "recompose";
 import theme from "Theme";
 import RichTextEditor from "react-rte";
 import moment from "moment";
-import ClientNotification from "../ClientNotification/ClientNotification";
-import Autocomplete from "../Autocomplete/Autocomplete";
 import {
-  EditableArray,
-  EditableObjectArray,
-  TextFieldInput,
-  SelectInput,
-  GalleryInput,
-  ImageFileInput,
-  CheckboxInput,
-  MarkdownInput
-} from "../Forms/Inputs";
-import { CircularProgress, Typography, Button } from "@material-ui/core";
+  Inputs,
+  ClientNotification,
+  Button,
+  Typography,
+  CircularProgress,
+  Autocomplete
+} from "Templates";
 
 const enhance = compose(
   withState(
@@ -81,7 +76,7 @@ const Fields = enhance(
               field.type === "number" ||
               field.type === "password" ||
               field.type === "email") && (
-              <TextFieldInput
+              <Inputs.TextFieldInput
                 field={field}
                 value={values[field.name]}
                 type={field.type}
@@ -90,7 +85,7 @@ const Fields = enhance(
               />
             )}
             {field.type === "select" && (
-              <SelectInput
+              <Inputs.SelectInput
                 setFieldValue={setFieldValue}
                 setFieldTouched={setFieldTouched}
                 field={field}
@@ -99,7 +94,7 @@ const Fields = enhance(
               />
             )}
             {field.type === "checkbox" && (
-              <CheckboxInput
+              <Inputs.CheckboxInput
                 setFieldValue={setFieldValue}
                 setFieldTouched={setFieldTouched}
                 field={field}
@@ -109,7 +104,7 @@ const Fields = enhance(
             )}
             {field.type === "markdown" && (
               <div>
-                <MarkdownInput
+                <Inputs.MarkdownInput
                   field={field}
                   setFieldValue={setFieldValue}
                   value={values[field.name]}
@@ -119,7 +114,7 @@ const Fields = enhance(
             )}
             {field.type === "date" && (
               <div>
-                <TextFieldInput
+                <Inputs.TextFieldInput
                   type="date"
                   value={moment(values[field.name]).format("YYYY-MM-DD")}
                   field={field}
@@ -129,7 +124,7 @@ const Fields = enhance(
             )}
             {field.type === "datetime" && (
               <div>
-                <TextFieldInput
+                <Inputs.TextFieldInput
                   type="datetime-local"
                   value={moment(values[field.name]).format("YYYY-MM-DDThh:mm")}
                   field={field}
@@ -137,9 +132,19 @@ const Fields = enhance(
                 />
               </div>
             )}
+            {field.type === "code-editor" && (
+              <div>
+                <Inputs.CodeInput
+                  type={field.type}
+                  value={values[field.name]}
+                  field={field}
+                  setFieldValue={setFieldValue}
+                />
+              </div>
+            )}
             {field.type === "text-editor" && (
               <div>
-                <RichTextEditor
+                <Inputs.RichTextEditor
                   value={textEditorValue}
                   onChange={value => {
                     setTextEditorValue(value);
@@ -156,7 +161,7 @@ const Fields = enhance(
               </div>
             )}
             {field.type === "array" && (
-              <EditableArray
+              <Inputs.EditableArray
                 field={field}
                 setFieldValue={setFieldValue}
                 classes={classes}
@@ -165,7 +170,7 @@ const Fields = enhance(
               />
             )}
             {field.type === "object-array" && (
-              <EditableObjectArray
+              <Inputs.EditableObjectArray
                 form={field.form}
                 field={field}
                 values={values[field.name]}
@@ -173,6 +178,8 @@ const Fields = enhance(
                   const el = values[field.name].find(
                     ({ _id }) => _id === value._id
                   );
+                  const elIndex = values[field.name].indexOf(el);
+                  setFieldValue(key, values[field.name]);
                 }}
                 setFieldTouched={setFieldTouched}
                 onMediaDrop={onMediaDrop}
@@ -183,7 +190,10 @@ const Fields = enhance(
                 handleBlur={handleBlur}
                 classes={classes}
                 onAdd={() => {
-                  setFieldValue(field.name, [...values[field.name], {}]);
+                  const passedValues = values[field.name]
+                    ? values[field.name]
+                    : [];
+                  setFieldValue(field.name, [...passedValues, {}]);
                 }}
                 onDelete={index => {
                   const filtered = values[field.name].filter(
@@ -196,14 +206,14 @@ const Fields = enhance(
               />
             )}
             {field.type === "image" && (
-              <ImageFileInput
+              <Inputs.ImageFileInput
                 onMediaDrop={onMediaDrop}
                 media={media}
                 field={field}
               />
             )}
             {field.type === "gallery" && (
-              <GalleryInput
+              <Inputs.GalleryInput
                 gallery={gallery}
                 onMediaDelete={onMediaDelete}
                 setCurrentGalleryIndex={setCurrentGalleryIndex}
@@ -250,21 +260,23 @@ const Fields = enhance(
                   <Button onClick={onRefCreate}>Add new Fields</Button>
                 </>
               ))}
-            {errors[field.name] && touched[field.name] && (
+            {errors && errors[field.name] && touched[field.name] && (
               <Typography>{errors[field.name]}</Typography>
             )}
           </div>
         );
       });
-      let notifications = Object.keys(errors).map(k => {
-        return {
-          message: `${k}: ${errors[k]}`,
-          type: "error"
-        };
-      });
+      let notifications =
+        errors &&
+        Object.keys(errors).map(k => {
+          return {
+            message: `${k}: ${errors[k]}`,
+            type: "error"
+          };
+        });
       return (
         <>
-          {notifications.length > 0 && (
+          {notifications && notifications.length > 0 && (
             <ClientNotification
               notifications={(notifications.length > 0 && notifications) || []}
               handleClose={() => {}}

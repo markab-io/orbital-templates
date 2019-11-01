@@ -5,28 +5,43 @@ import ImageGallery from "react-image-gallery";
 import { ConfirmDeleteModal, Inputs } from "Templates";
 import "react-image-gallery/styles/css/image-gallery.css";
 import { withState, compose } from "recompose";
+import { Formik } from "formik";
 import {
   Grid,
   Card,
   CardHeader,
   CardMedia,
   CardContent,
-  Table,
+  MaterialTable,
   TableBody,
   TableCell,
   TableRow,
   IconButton,
-  Typography
-} from "@material-ui/core";
+  Typography,
+  Forms
+} from "Templates";
 
 const enhance = compose(withState("open", "setOpen", false));
 
 const ModelPreview = enhance(
-  ({ model, onEdit, form, open, setOpen, deleteModel, onDelete }) => {
+  ({
+    model,
+    onEdit,
+    form,
+    open,
+    setOpen,
+    deleteModel,
+    onDelete,
+    classes,
+    ModelPreviewActions,
+    ModelPreviewAction,
+    onAction
+  }) => {
     if (form && model) {
       let previewList = form.fields.map((field, index) => {
+        const values = model[field.name];
         if (
-          field.type === "text" ||
+          (values !== model[field.name] && field.type === "text") ||
           field.type === "number" ||
           field.type === "checkbox"
         ) {
@@ -99,6 +114,48 @@ const ModelPreview = enhance(
             </TableRow>
           );
         }
+        if (field.type === "code-editor") {
+          return (
+            <TableRow selected={index % 2 === 0}>
+              <TableCell>
+                <Typography variant="subtitle2">{field.placeholder}</Typography>
+              </TableCell>
+              <TableCell>
+                <Inputs.CodeInput
+                  previewOnly={true}
+                  field={field}
+                  value={model[field.name]}
+                />
+              </TableCell>
+            </TableRow>
+          );
+        }
+        if (field.type === "object-array") {
+          return (
+            <>
+              <Formik>
+                <Inputs.EditableObjectArray
+                  form={field.form}
+                  field={field}
+                  values={values}
+                  hideAdd={true}
+                  hideDelete={true}
+                  Actions={ModelPreviewActions}
+                  onAction={(event, from) => onAction(event, model, from)}
+                  FieldsComponent={Forms}
+                />
+              </Formik>
+              <Grid container justify="flex-end">
+                {ModelPreviewAction && (
+                  <ModelPreviewAction
+                    onAction={event => onAction(event, model)}
+                    model={model}
+                  />
+                )}
+              </Grid>
+            </>
+          );
+        }
         if (field.type === "markdown") {
           return (
             <TableRow selected={index % 2 === 0}>
@@ -118,7 +175,7 @@ const ModelPreview = enhance(
       });
       return (
         <>
-          <Card>
+          <Card className={classes.previewContent}>
             <CardHeader
               title={model.title || model.name}
               action={
@@ -153,7 +210,7 @@ const ModelPreview = enhance(
             )}
             {model.gallery && (
               <>
-                <Typography>Gallery</Typography>
+                {/* <Typography>Gallery</Typography> */}
                 {model.gallery.length > 0 ? (
                   <ImageGallery
                     items={model.gallery.map(image => {
@@ -169,9 +226,9 @@ const ModelPreview = enhance(
               </>
             )}
             <CardContent>
-              <Table>
+              <MaterialTable>
                 <TableBody>{previewList}</TableBody>
-              </Table>
+              </MaterialTable>
             </CardContent>
           </Card>
           <ConfirmDeleteModal

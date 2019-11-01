@@ -1,15 +1,15 @@
 import React from "react";
 import { Formik } from "formik";
-import FormFields from "../Forms/Forms";
 import {
   Card,
   CardActions,
   CardContent,
   Button,
   Icon,
-  Typography
-} from "@material-ui/core";
-import validate from "../Forms/Forms.Validate";
+  Typography,
+  Forms,
+  FormsValidate
+} from "Templates";
 
 export default class ModelAdd extends React.Component {
   state = {
@@ -41,7 +41,7 @@ export default class ModelAdd extends React.Component {
         enableReinitialize={true}
         validate={(values, props) => {
           let errors;
-          errors = validate(values, form, modelSchema);
+          errors = FormsValidate(values, form, modelSchema);
           return errors;
         }}
         initialValues={this.state.initialValues}
@@ -60,7 +60,7 @@ export default class ModelAdd extends React.Component {
               <CardContent>
                 <Typography variant="title">Create {modelName}</Typography>
                 <form id="add-form">
-                  <FormFields
+                  <Forms
                     id="add-fields"
                     modelSchema={modelSchema}
                     form={form}

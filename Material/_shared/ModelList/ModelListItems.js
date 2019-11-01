@@ -1,11 +1,8 @@
 import React from "react";
-// import ModelListItem from "./ModelListItem";
-// import ModelListViewOptions from "./ModelListViewOptions";
 import ModelListCardItem from "../ModelList/ModelListCardItem";
-import Loading from "../Loading/Loading";
-import Empty from "../Empty/Empty";
 import { compose, withState, lifecycle } from "recompose";
 import { Paper, Grid, Grow, Fade } from "@material-ui/core";
+import { Loading, Empty } from "Templates";
 const enhance = compose(
   withState("open", "setOpen", false),
   withState("deletedModel", "setDeletedModel", {}),
@@ -37,6 +34,7 @@ const ModelListItems = enhance(
     history,
     page,
     loading,
+    mode,
     In,
     setIn,
     ...rest
@@ -47,7 +45,9 @@ const ModelListItems = enhance(
           return (
             <Fade in={In} timeout={index * 200}>
               <Grid
-                style={{ marginRight: "2em" }}
+                style={{
+                  marginRight: "2em"
+                }}
                 key={index}
                 xs={gridSizes ? gridSizes.xs : 12}
                 sm={gridSizes ? gridSizes.sm : 12}
@@ -91,6 +91,7 @@ const ModelListItems = enhance(
                       onEdit={onEdit}
                       onView={onView}
                       page={page}
+                      mode={mode}
                       {...rest}
                     />
                   )}

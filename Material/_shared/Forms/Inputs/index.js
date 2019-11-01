@@ -6,6 +6,7 @@ import CheckboxInput from "./Forms.CheckboxInput";
 import ImageFileInput from "./Forms.ImageFileInput";
 import GalleryInput from "./Forms.GalleryInput";
 import MarkdownInput from "./Forms.MarkdownInput";
+import CodeInput from "./Forms.CodeInput";
 
 export {
   EditableArray,
@@ -15,5 +16,6 @@ export {
   ImageFileInput,
   GalleryInput,
   CheckboxInput,
-  MarkdownInput
+  MarkdownInput,
+  CodeInput
 };

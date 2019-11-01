@@ -4,7 +4,7 @@ import classNames from "classnames";
 import { withStyles } from "@material-ui/styles";
 import theme from "Theme";
 import AddIcon from "@material-ui/icons/Add";
-import { Typography, Button, Fab } from "@material-ui/core";
+import { Fab } from "Templates";
 
 const styles = theme => {
   return {

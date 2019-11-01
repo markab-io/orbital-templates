@@ -8,7 +8,7 @@ import theme from "Theme";
 import { styles, toolbarStyles } from "./Table.styles";
 import {
   Grid,
-  Table,
+  MaterialTable,
   TableBody,
   TableCell,
   TableHead,
@@ -21,7 +21,7 @@ import {
   Checkbox,
   IconButton,
   Tooltip
-} from "@material-ui/core";
+} from "Templates";
 
 function desc(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -225,12 +225,11 @@ class EnhancedTable extends React.Component {
       count
     } = this.props;
     const { order, orderBy, selected } = this.state;
-    console.log("count", count);
     return (
       <Paper className={classes.root}>
         <EnhancedTableToolbar title={title} numSelected={selected.length} />
         <div className={classes.tableWrapper}>
-          <Table className={classes.table} aria-labelledby="tableTitle">
+          <MaterialTable className={classes.table} aria-labelledby="tableTitle">
             <EnhancedTableHead
               numSelected={selected.length}
               columns={columns}
@@ -267,7 +266,7 @@ class EnhancedTable extends React.Component {
                 );
               })}
             </TableBody>
-          </Table>
+          </MaterialTable>
         </div>
         <Grid justify={"flex-start"} container>
           <Grid item>

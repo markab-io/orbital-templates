@@ -2,7 +2,8 @@ import React from "react";
 import { withStyles } from "@material-ui/styles";
 import theme from "Theme";
 import { styles } from "./ForgotPassword.styles";
-import { Typography, CssBaseline, Button } from '@material-ui/core';
+import { CssBaseline } from "@material-ui/core";
+import { Typography, Button } from "Templates";
 
 export const ForgotPasswordConfirm = ({ classes, onDone }) => {
   return (
@@ -18,4 +19,6 @@ export const ForgotPasswordConfirm = ({ classes, onDone }) => {
   );
 };
 
-export default withStyles(styles, { defaultTheme: theme })(ForgotPasswordConfirm);
+export default withStyles(styles, { defaultTheme: theme })(
+  ForgotPasswordConfirm
+);
