@@ -1,6 +1,6 @@
 import React from "react";
 //Routing
-import { Route, HashRouter as Router, Switch } from "react-router-dom";
+import { Route, Switch, HashRouter as Router } from "react-router-dom";
 import { styles } from "./ModelList.styles";
 import { withStyles } from "@material-ui/core/styles";
 //recompose
@@ -157,7 +157,7 @@ const ModelList = enhance(
         <Switch>
           <Route
             path={`${match.path}/add`}
-            render={({ match }) => {
+            render={props => {
               return ModelAddPage ? (
                 <Grid container justify="center">
                   <Grid item xs={12}>
@@ -174,6 +174,9 @@ const ModelList = enhance(
                         history.goBack();
                       }}
                       modelName={modelName}
+                      location={location}
+                      match={match}
+                      history={history}
                       {...rest}
                     />
                   </Grid>
@@ -181,11 +184,10 @@ const ModelList = enhance(
               ) : (
                 <Fade timeout={1000} in={!loading}>
                   <Grid container justify="center">
-                    <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-                      <ModelAdd
+                    <Grid item xs={12}>
+                      <ModelAddPage
                         model={{}}
                         form={form}
-                        classes={classes}
                         modelSchema={modelSchema}
                         onSave={values => {
                           createModel(values).then(res => {
@@ -196,6 +198,9 @@ const ModelList = enhance(
                           history.goBack();
                         }}
                         modelName={modelName}
+                        location={location}
+                        match={match}
+                        history={history}
                         {...rest}
                       />
                     </Grid>
@@ -206,7 +211,7 @@ const ModelList = enhance(
           />
           <Route
             path={`${match.path}/edit/:id`}
-            render={({ match }) => {
+            render={props => {
               return ModelEditPage ? (
                 <Grid container justify="center">
                   <Grid xs={12}>
@@ -257,6 +262,92 @@ const ModelList = enhance(
                         model.gallery.remove(index);
                         updateModel(model, { gallery: model.gallery });
                       }}
+                      match={match}
+                      deleteModel={deleteModel}
+                      {...rest}
+                    />
+                  </Grid>
+                </Grid>
+              ) : (
+                <Fade timeout={1000} in={!loading}>
+                  <Grid container justify="center">
+                    <Grid xs={12}>
+                      <ModelEditPage
+                        modelName={modelName}
+                        onCancel={() => {
+                          history.goBack();
+                        }}
+                        onSave={(updatedModel, values) => {
+                          updateModel(updatedModel, values);
+                        }}
+                        form={form}
+                        modelSchema={modelSchema}
+                        model={
+                          modelArray &&
+                          modelArray.length > 0 &&
+                          modelArray.find(({ _id }) => _id === match.params.id)
+                        }
+                        media={media}
+                        gallery={
+                          gallery &&
+                          gallery.length > 0 &&
+                          gallery.filter(
+                            ({ modelId }) => modelId === match.params.id
+                          )
+                        }
+                        uploadMedia={uploadMedia}
+                        uploadGallery={uploadGallery}
+                        addToGallery={addToGallery}
+                        removeFromGallery={removeFromGallery}
+                        addToMedia={addToMedia}
+                        deleteMedia={deleteMedia}
+                        removeFromMedia={removeFromMedia}
+                        onMediaUploadComplete={(model, media) => {
+                          updateModel(model, {
+                            image: `${media}&q=${Date.now()}`
+                          });
+                        }}
+                        onGalleryUploadComplete={(model, media) => {
+                          updateModel(model, {
+                            gallery: [...model.gallery, ...media]
+                          });
+                        }}
+                        onMediaDeleteComplete={(model, media) => {
+                          updateModel(model, { image: `` });
+                        }}
+                        onGalleryDeleteComplete={(model, index) => {
+                          model.gallery.remove(index);
+                          updateModel(model, { gallery: model.gallery });
+                        }}
+                        {...rest}
+                      />
+                      <FloatingAddButton onClick={onAddWrapper} />
+                    </Grid>
+                  </Grid>
+                </Fade>
+              );
+            }}
+          />
+          <Route
+            path={`${match.path}/view/:id`}
+            render={props => {
+              return ModelPreviewPage ? (
+                <Grid container>
+                  <Grid item xs={12}>
+                    <ModelPreviewPage
+                      modelName={modelName}
+                      onEdit={onEditWrapper}
+                      onDelete={onDeleteWrapper}
+                      deleteModel={deleteModel}
+                      updateModel={updateModel}
+                      searchModel={searchModel}
+                      form={form}
+                      model={
+                        modelArray &&
+                        modelArray.length > 0 &&
+                        modelArray.find(({ _id }) => _id === match.params.id)
+                      }
+                      classes={classes}
                       match={match}
                       deleteModel={deleteModel}
                       {...rest}
@@ -326,35 +417,33 @@ const ModelList = enhance(
           />
           <Route
             path={`${match.path}/view/:id`}
-            render={({ match }) => {
+            render={props => {
               return ModelPreviewPage ? (
-                <Fade timeout={1000} in={!loading}>
-                  <Grid container>
-                    <Grid item xs={12}>
-                      <ModelPreviewPage
-                        modelName={modelName}
-                        onEdit={onEditWrapper}
-                        onDelete={onDeleteWrapper}
-                        deleteModel={deleteModel}
-                        updateModel={updateModel}
-                        searchModel={searchModel}
-                        form={form}
-                        model={
-                          modelArray &&
-                          modelArray.length > 0 &&
-                          modelArray.find(({ _id }) => _id === match.params.id)
-                        }
-                        classes={classes}
-                        match={match}
-                        location={location}
-                        history={history}
-                        ModelPreviewActions={ModelPreviewActions}
-                        ModelPreviewAction={ModelPreviewAction}
-                        {...rest}
-                      />
-                    </Grid>
+                <Grid container>
+                  <Grid item xs={12}>
+                    <ModelPreviewPage
+                      modelName={modelName}
+                      onEdit={onEditWrapper}
+                      onDelete={onDeleteWrapper}
+                      deleteModel={deleteModel}
+                      updateModel={updateModel}
+                      searchModel={searchModel}
+                      form={form}
+                      model={
+                        modelArray &&
+                        modelArray.length > 0 &&
+                        modelArray.find(({ _id }) => _id === match.params.id)
+                      }
+                      classes={classes}
+                      match={match}
+                      location={location}
+                      history={history}
+                      ModelPreviewActions={ModelPreviewActions}
+                      ModelPreviewAction={ModelPreviewAction}
+                      {...rest}
+                    />
                   </Grid>
-                </Fade>
+                </Grid>
               ) : (
                 <Fade timeout={1000} in={!loading}>
                   <Grid container>
