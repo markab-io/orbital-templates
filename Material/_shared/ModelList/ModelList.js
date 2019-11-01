@@ -112,6 +112,7 @@ const ModelList = enhance(
     showFilters,
     ...rest
   }) => {
+    console.log(match.path, "PATH!!");
     const onEditWrapper = model => {
       if (onEdit) {
         return onEdit(model);
@@ -159,7 +160,7 @@ const ModelList = enhance(
         <Route
           exact
           path={`${match.path}/add`}
-          render={({ match }) => {
+          render={props => {
             return ModelAddPage ? (
               <Grid container justify="center">
                 <Grid item xs={12}>
@@ -176,6 +177,9 @@ const ModelList = enhance(
                       history.goBack();
                     }}
                     modelName={modelName}
+                    location={location}
+                    match={match}
+                    history={history}
                     {...rest}
                   />
                 </Grid>
@@ -197,6 +201,9 @@ const ModelList = enhance(
                         history.goBack();
                       }}
                       modelName={modelName}
+                      location={location}
+                      match={match}
+                      history={history}
                       {...rest}
                     />
                   </Grid>
@@ -207,7 +214,7 @@ const ModelList = enhance(
         />
         <Route
           path={`${match.path}/edit/:id`}
-          render={({ match }) => {
+          render={props => {
             return ModelEditPage ? (
               <Grid container justify="center">
                 <Grid xs={12}>
@@ -326,7 +333,7 @@ const ModelList = enhance(
         />
         <Route
           path={`${match.path}/view/:id`}
-          render={({ match }) => {
+          render={props => {
             return ModelPreviewPage ? (
               <Fade timeout={1000} in={!loading}>
                 <Grid container>
