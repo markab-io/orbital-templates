@@ -153,38 +153,15 @@ const ModelList = enhance(
         ? modelArray.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
         : modelArray);
     return (
-      <Switch>
-        <Route
-          path={`${match.path}/add`}
-          render={props => {
-            return ModelAddPage ? (
-              <Grid container justify="center">
-                <Grid item xs={12}>
-                  <ModelAddPage
-                    model={{}}
-                    form={form}
-                    modelSchema={modelSchema}
-                    onSave={values => {
-                      createModel(values).then(res => {
-                        onCreateWrapper(res);
-                      });
-                    }}
-                    onCancel={() => {
-                      history.goBack();
-                    }}
-                    modelName={modelName}
-                    location={location}
-                    match={match}
-                    history={history}
-                    {...rest}
-                  />
-                </Grid>
-              </Grid>
-            ) : (
-              <Fade timeout={1000} in={!loading}>
+      <Router>
+        <Switch>
+          <Route
+            path={`${match.path}/add`}
+            render={props => {
+              return ModelAddPage ? (
                 <Grid container justify="center">
                   <Grid item xs={12}>
-                    <ModelAdd
+                    <ModelAddPage
                       model={{}}
                       form={form}
                       modelSchema={modelSchema}
@@ -204,74 +181,41 @@ const ModelList = enhance(
                     />
                   </Grid>
                 </Grid>
-              </Fade>
-            );
-          }}
-        />
-        <Route
-          path={`${match.path}/edit/:id`}
-          render={props => {
-            return ModelEditPage ? (
-              <Grid container justify="center">
-                <Grid xs={12}>
-                  <ModelEditPage
-                    modelName={modelName}
-                    onCancel={() => {
-                      history.goBack();
-                    }}
-                    onSave={(updatedModel, values) => {
-                      updateModel(updatedModel, values);
-                    }}
-                    form={form}
-                    modelSchema={modelSchema}
-                    model={
-                      modelArray &&
-                      modelArray.length > 0 &&
-                      modelArray.find(({ _id }) => _id === match.params.id)
-                    }
-                    media={media}
-                    gallery={
-                      gallery &&
-                      gallery.length > 0 &&
-                      gallery.filter(
-                        ({ modelId }) => modelId === match.params.id
-                      )
-                    }
-                    uploadMedia={uploadMedia}
-                    uploadGallery={uploadGallery}
-                    addToGallery={addToGallery}
-                    removeFromGallery={removeFromGallery}
-                    addToMedia={addToMedia}
-                    deleteMedia={deleteMedia}
-                    removeFromMedia={removeFromMedia}
-                    onMediaUploadComplete={(model, media) => {
-                      updateModel(model, {
-                        image: `${media}&q=${Date.now()}`
-                      });
-                    }}
-                    onGalleryUploadComplete={(model, media) => {
-                      updateModel(model, {
-                        gallery: [...model.gallery, ...media]
-                      });
-                    }}
-                    onMediaDeleteComplete={(model, media) => {
-                      updateModel(model, { image: `` });
-                    }}
-                    onGalleryDeleteComplete={(model, index) => {
-                      model.gallery.remove(index);
-                      updateModel(model, { gallery: model.gallery });
-                    }}
-                    match={match}
-                    deleteModel={deleteModel}
-                    {...rest}
-                  />
-                </Grid>
-              </Grid>
-            ) : (
-              <Fade timeout={1000} in={!loading}>
+              ) : (
+                <Fade timeout={1000} in={!loading}>
+                  <Grid container justify="center">
+                    <Grid item xs={12}>
+                      <ModelAdd
+                        model={{}}
+                        form={form}
+                        modelSchema={modelSchema}
+                        onSave={values => {
+                          createModel(values).then(res => {
+                            onCreateWrapper(res);
+                          });
+                        }}
+                        onCancel={() => {
+                          history.goBack();
+                        }}
+                        modelName={modelName}
+                        location={location}
+                        match={match}
+                        history={history}
+                        {...rest}
+                      />
+                    </Grid>
+                  </Grid>
+                </Fade>
+              );
+            }}
+          />
+          <Route
+            path={`${match.path}/edit/:id`}
+            render={props => {
+              return ModelEditPage ? (
                 <Grid container justify="center">
                   <Grid xs={12}>
-                    <ModelEdit
+                    <ModelEditPage
                       modelName={modelName}
                       onCancel={() => {
                         history.goBack();
@@ -318,49 +262,79 @@ const ModelList = enhance(
                         model.gallery.remove(index);
                         updateModel(model, { gallery: model.gallery });
                       }}
+                      match={match}
+                      deleteModel={deleteModel}
                       {...rest}
                     />
-                    <FloatingAddButton onClick={onAddWrapper} />
                   </Grid>
                 </Grid>
-              </Fade>
-            );
-          }}
-        />
-        <Route
-          path={`${match.path}/view/:id`}
-          render={props => {
-            return ModelPreviewPage ? (
-              <Grid container>
-                <Grid item xs={12}>
-                  <ModelPreviewPage
-                    modelName={modelName}
-                    onEdit={onEditWrapper}
-                    onDelete={onDeleteWrapper}
-                    deleteModel={deleteModel}
-                    updateModel={updateModel}
-                    searchModel={searchModel}
-                    form={form}
-                    model={
-                      modelArray &&
-                      modelArray.length > 0 &&
-                      modelArray.find(({ _id }) => _id === match.params.id)
-                    }
-                    classes={classes}
-                    match={match}
-                    location={location}
-                    history={history}
-                    ModelPreviewActions={ModelPreviewActions}
-                    ModelPreviewAction={ModelPreviewAction}
-                    {...rest}
-                  />
-                </Grid>
-              </Grid>
-            ) : (
-              <Fade timeout={1000} in={!loading}>
+              ) : (
+                <Fade timeout={1000} in={!loading}>
+                  <Grid container justify="center">
+                    <Grid xs={12}>
+                      <ModelEdit
+                        modelName={modelName}
+                        onCancel={() => {
+                          history.goBack();
+                        }}
+                        onSave={(updatedModel, values) => {
+                          updateModel(updatedModel, values);
+                        }}
+                        form={form}
+                        modelSchema={modelSchema}
+                        model={
+                          modelArray &&
+                          modelArray.length > 0 &&
+                          modelArray.find(({ _id }) => _id === match.params.id)
+                        }
+                        media={media}
+                        gallery={
+                          gallery &&
+                          gallery.length > 0 &&
+                          gallery.filter(
+                            ({ modelId }) => modelId === match.params.id
+                          )
+                        }
+                        uploadMedia={uploadMedia}
+                        uploadGallery={uploadGallery}
+                        addToGallery={addToGallery}
+                        removeFromGallery={removeFromGallery}
+                        addToMedia={addToMedia}
+                        deleteMedia={deleteMedia}
+                        removeFromMedia={removeFromMedia}
+                        onMediaUploadComplete={(model, media) => {
+                          updateModel(model, {
+                            image: `${media}&q=${Date.now()}`
+                          });
+                        }}
+                        onGalleryUploadComplete={(model, media) => {
+                          updateModel(model, {
+                            gallery: [...model.gallery, ...media]
+                          });
+                        }}
+                        onMediaDeleteComplete={(model, media) => {
+                          updateModel(model, { image: `` });
+                        }}
+                        onGalleryDeleteComplete={(model, index) => {
+                          model.gallery.remove(index);
+                          updateModel(model, { gallery: model.gallery });
+                        }}
+                        {...rest}
+                      />
+                      <FloatingAddButton onClick={onAddWrapper} />
+                    </Grid>
+                  </Grid>
+                </Fade>
+              );
+            }}
+          />
+          <Route
+            path={`${match.path}/view/:id`}
+            render={props => {
+              return ModelPreviewPage ? (
                 <Grid container>
-                  <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-                    <ModelPreview
+                  <Grid item xs={12}>
+                    <ModelPreviewPage
                       modelName={modelName}
                       onEdit={onEditWrapper}
                       onDelete={onDeleteWrapper}
@@ -368,111 +342,141 @@ const ModelList = enhance(
                       updateModel={updateModel}
                       searchModel={searchModel}
                       form={form}
-                      classes={classes}
                       model={
                         modelArray &&
                         modelArray.length > 0 &&
                         modelArray.find(({ _id }) => _id === match.params.id)
                       }
+                      classes={classes}
+                      match={match}
+                      location={location}
+                      history={history}
                       ModelPreviewActions={ModelPreviewActions}
                       ModelPreviewAction={ModelPreviewAction}
                       {...rest}
                     />
-                    {ModelPreviewAttachment && (
-                      <ModelPreviewAttachment
+                  </Grid>
+                </Grid>
+              ) : (
+                <Fade timeout={1000} in={!loading}>
+                  <Grid container>
+                    <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+                      <ModelPreview
+                        modelName={modelName}
+                        onEdit={onEditWrapper}
+                        onDelete={onDeleteWrapper}
+                        deleteModel={deleteModel}
+                        updateModel={updateModel}
+                        searchModel={searchModel}
+                        form={form}
+                        classes={classes}
                         model={
                           modelArray &&
                           modelArray.length > 0 &&
                           modelArray.find(({ _id }) => _id === match.params.id)
                         }
+                        ModelPreviewActions={ModelPreviewActions}
+                        ModelPreviewAction={ModelPreviewAction}
+                        {...rest}
                       />
-                    )}
-                    <FloatingAddButton onClick={onAddWrapper} />
-                  </Grid>
-                </Grid>
-              </Fade>
-            );
-          }}
-        />
-        <Route
-          path={`${match.path}`}
-          render={props => {
-            return (
-              <>
-                {ModelListActions && <ModelListActions {...Actions} />}
-                {viewOption === 0 && (
-                  <Grid container justify="space-between">
-                    {showFilters && (
-                      <Grid item md={2} sm={2} xs={2}>
-                        <Card style={{ minHeight: "75vh" }}>
-                          <CardContent>
-                            <Autocomplete
-                              inputClassName={classes.autocomplete}
-                              placeholder={"Search…"}
-                              onSelect={suggestion => {
-                                onSearchSelect
-                                  ? onSearchSelect(suggestion)
-                                  : history.push(
-                                      `/${suggestion.resource}/view/${suggestion._id}`
-                                    );
-                              }}
-                              loadSuggestions={text => {
-                                let query = {
-                                  [modelKey]: { $regex: event.target.value }
-                                };
-                                if (onSearch) {
-                                  return onSearch(query);
-                                }
-                                return searchModel(query);
-                              }}
-                            />
-                            {modelCount && (
-                              <ModelFilterList
-                                form={form}
-                                modelCount={modelCount}
-                              />
-                            )}
-                          </CardContent>
-                        </Card>
-                      </Grid>
-                    )}
-                    <Grid item md={12}>
-                      {defaultView ? (
-                        defaultView
-                      ) : (
-                        <Grid container>
-                          <ModelListItems
-                            models={models}
-                            classes={classes}
-                            gridSizes={gridSizes}
-                            ModelListItemComponent={ModelListItemComponent}
-                            deleteModel={deleteModel}
-                            updateModel={updateModel}
-                            columnNumber={columnNumber}
-                            page={page}
-                            history={history}
-                            match={match}
-                            onView={onViewWrapper}
-                            onEdit={onEditWrapper}
-                            loading={loading}
-                            mode={mode}
-                          />
-                        </Grid>
+                      {ModelPreviewAttachment && (
+                        <ModelPreviewAttachment
+                          model={
+                            modelArray &&
+                            modelArray.length > 0 &&
+                            modelArray.find(
+                              ({ _id }) => _id === match.params.id
+                            )
+                          }
+                        />
                       )}
+                      <FloatingAddButton onClick={onAddWrapper} />
                     </Grid>
                   </Grid>
-                )}
-              </>
-            );
-          }}
-        />
-        <ClientNotification
-          notifications={notifications}
-          handleClose={(event, reason, notification) => {
-            removeNotification(notification);
-          }}
-        />
-      </Switch>
+                </Fade>
+              );
+            }}
+          />
+          <Route
+            path={`${match.path}`}
+            render={props => {
+              return (
+                <>
+                  {ModelListActions && <ModelListActions {...Actions} />}
+                  {viewOption === 0 && (
+                    <Grid container justify="space-between">
+                      {showFilters && (
+                        <Grid item md={2} sm={2} xs={2}>
+                          <Card style={{ minHeight: "75vh" }}>
+                            <CardContent>
+                              <Autocomplete
+                                inputClassName={classes.autocomplete}
+                                placeholder={"Search…"}
+                                onSelect={suggestion => {
+                                  onSearchSelect
+                                    ? onSearchSelect(suggestion)
+                                    : history.push(
+                                        `/${suggestion.resource}/view/${suggestion._id}`
+                                      );
+                                }}
+                                loadSuggestions={text => {
+                                  let query = {
+                                    [modelKey]: { $regex: event.target.value }
+                                  };
+                                  if (onSearch) {
+                                    return onSearch(query);
+                                  }
+                                  return searchModel(query);
+                                }}
+                              />
+                              {modelCount && (
+                                <ModelFilterList
+                                  form={form}
+                                  modelCount={modelCount}
+                                />
+                              )}
+                            </CardContent>
+                          </Card>
+                        </Grid>
+                      )}
+                      <Grid item md={12}>
+                        {defaultView ? (
+                          defaultView
+                        ) : (
+                          <Grid container>
+                            <ModelListItems
+                              models={models}
+                              classes={classes}
+                              gridSizes={gridSizes}
+                              ModelListItemComponent={ModelListItemComponent}
+                              deleteModel={deleteModel}
+                              updateModel={updateModel}
+                              columnNumber={columnNumber}
+                              page={page}
+                              history={history}
+                              match={match}
+                              onView={onViewWrapper}
+                              onEdit={onEditWrapper}
+                              loading={loading}
+                              mode={mode}
+                            />
+                          </Grid>
+                        )}
+                      </Grid>
+                    </Grid>
+                  )}
+                </>
+              );
+            }}
+          />
+          <ClientNotification
+            notifications={notifications}
+            handleClose={(event, reason, notification) => {
+              removeNotification(notification);
+            }}
+          />
+        </Switch>
+      </Router>
     );
   }
 );
