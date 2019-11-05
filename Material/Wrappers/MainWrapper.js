@@ -52,7 +52,8 @@ const MainWrapper = props => {
     classes,
     noMargin,
     isTabMenu,
-    onRouteClick
+    onRouteClick,
+    marginTop
   } = props;
   const isAnchor = Boolean(anchorEl);
   let route = routeList.filter(({ name, url }) => {
@@ -65,8 +66,48 @@ const MainWrapper = props => {
     <>
       <CssBaseline />
       <div className={classes.root}>
+        {isTabMenu && (
+          <AppBar
+            style={{
+              bottom: "auto",
+              top: 0,
+              backgroundColor: "white",
+              color: "black"
+            }}
+          >
+            <Tabs
+              className={classes.tabs}
+              value={currentRoute || 0}
+              onChange={(event, route) => {
+                onRouteClick
+                  ? onRouteClick(`${routeList[route].url}`)
+                  : history.push(`${match.path}${routeList[route].url}`);
+              }}
+              variant="scrollable"
+              indicatorColor="primary"
+              textColor="primary"
+              scrollButtons="on"
+              aria-label="scrollable force tabs example"
+            >
+              {routeList.map((route, index) => {
+                return (
+                  <Tab
+                    label={route.name}
+                    icon={<Icon>{route.icon}</Icon>}
+                    key={index}
+                    button
+                  />
+                );
+              })}
+            </Tabs>
+          </AppBar>
+        )}
         {!isTabMenu && (
-          <AppBar>
+          <AppBar
+            style={{
+              marginTop: marginTop ? marginTop + appBarHeight : appBarHeight
+            }}
+          >
             <Toolbar className={classes.toolbar}>
               <IconButton
                 color="inherit"
@@ -193,7 +234,9 @@ const MainWrapper = props => {
               <List
                 style={{
                   position: "fixed",
-                  marginTop: noMargin ? "0px" : appBarHeight,
+                  marginTop: marginTop
+                    ? marginTop + appBarHeight
+                    : appBarHeight,
                   maxHeight: "680px",
                   overflowY: "scroll"
                 }}
@@ -213,45 +256,12 @@ const MainWrapper = props => {
             </Hidden>
           )}
         </>
-        <main style={{ marginBottom: "100px" }} className={classes.hasPadding}>
+        <main
+          style={{ marginTop: marginTop ? appBarHeight + 10 : appBarHeight }}
+          className={classes.hasPadding}
+        >
           {children}
         </main>
-        {isTabMenu && (
-          <AppBar
-            style={{
-              top: "auto",
-              bottom: 0,
-              backgroundColor: "white",
-              color: "black"
-            }}
-          >
-            <Tabs
-              className={classes.tabs}
-              value={currentRoute || 0}
-              onChange={(event, route) => {
-                onRouteClick
-                  ? onRouteClick(`${routeList[route].url}`)
-                  : history.push(`${match.path}${routeList[route].url}`);
-              }}
-              variant="scrollable"
-              indicatorColor="primary"
-              textColor="primary"
-              scrollButtons="on"
-              aria-label="scrollable force tabs example"
-            >
-              {routeList.map((route, index) => {
-                return (
-                  <Tab
-                    label={route.name}
-                    icon={<Icon>{route.icon}</Icon>}
-                    key={index}
-                    button
-                  />
-                );
-              })}
-            </Tabs>
-          </AppBar>
-        )}
       </div>
     </>
   );
