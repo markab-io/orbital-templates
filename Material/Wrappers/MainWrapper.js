@@ -105,7 +105,9 @@ const MainWrapper = props => {
         {!isTabMenu && (
           <AppBar
             style={{
-              marginTop: marginTop ? marginTop + appBarHeight : appBarHeight
+              marginTop: marginTop
+                ? marginTop + appBarHeight
+                : appBarHeight + 10
             }}
           >
             <Toolbar className={classes.toolbar}>
