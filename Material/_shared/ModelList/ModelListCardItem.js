@@ -43,7 +43,11 @@ const ModelListCardItem = ({
   console.log("MODEL LIST CARD ITEM STYLES", classes);
   return (
     <>
-      <Card style={{ width: "250px" }} key={model._id} className={classes.card}>
+      <Card
+        style={{ width: "300px" }}
+        key={model._id}
+        className={classes.card}
+      >
         <CardActionArea
           onClick={() => {
             onView

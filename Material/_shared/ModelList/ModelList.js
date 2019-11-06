@@ -40,8 +40,6 @@ const enhance = compose(
   withState("currentQuery", "setCurrentQuery", {})
 );
 
-const style = {};
-
 const ModelList = enhance(
   ({
     modelArray,
