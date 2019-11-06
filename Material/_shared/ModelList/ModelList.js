@@ -126,7 +126,7 @@ const ModelList = enhance(
       if (onAdd) {
         return onAdd();
       }
-      history.push(`${match.path}/add`);
+      history.push(`${match.path}/${modelName}/add`);
     };
     const onCreateWrapper = model => {
       if (onCreate) {
@@ -138,7 +138,7 @@ const ModelList = enhance(
       if (onView) {
         return onView(model);
       }
-      history.push(`${match.path}/view/${model._id}`);
+      history.push(`${match.path}/${modelName}/view/${model._id}`);
     };
     const Actions = {
       onEdit: onEditWrapper,
@@ -156,8 +156,9 @@ const ModelList = enhance(
       <Router>
         <Switch>
           <Route
-            path={`${match.path}/add`}
+            path={`${match.path}/${modelName}/add`}
             render={props => {
+              console.log("On Add");
               return ModelAddPage ? (
                 <Grid container justify="center">
                   <Grid item xs={12}>
@@ -210,8 +211,9 @@ const ModelList = enhance(
             }}
           />
           <Route
-            path={`${match.path}/edit/:id`}
+            path={`${match.path}/${modelName}/edit/:id`}
             render={props => {
+              console.log("On Edit");
               return ModelEditPage ? (
                 <Grid container justify="center">
                   <Grid xs={12}>
@@ -228,14 +230,16 @@ const ModelList = enhance(
                       model={
                         modelArray &&
                         modelArray.length > 0 &&
-                        modelArray.find(({ _id }) => _id === match.params.id)
+                        modelArray.find(
+                          ({ _id }) => _id === props.match.params.id
+                        )
                       }
                       media={media}
                       gallery={
                         gallery &&
                         gallery.length > 0 &&
                         gallery.filter(
-                          ({ modelId }) => modelId === match.params.id
+                          ({ modelId }) => modelId === props.match.params.id
                         )
                       }
                       uploadMedia={uploadMedia}
@@ -285,14 +289,16 @@ const ModelList = enhance(
                         model={
                           modelArray &&
                           modelArray.length > 0 &&
-                          modelArray.find(({ _id }) => _id === match.params.id)
+                          modelArray.find(
+                            ({ _id }) => _id === props.match.params.id
+                          )
                         }
                         media={media}
                         gallery={
                           gallery &&
                           gallery.length > 0 &&
                           gallery.filter(
-                            ({ modelId }) => modelId === match.params.id
+                            ({ modelId }) => modelId === props.match.params.id
                           )
                         }
                         uploadMedia={uploadMedia}
@@ -321,7 +327,6 @@ const ModelList = enhance(
                         }}
                         {...rest}
                       />
-                      <FloatingAddButton onClick={onAddWrapper} />
                     </Grid>
                   </Grid>
                 </Fade>
@@ -329,8 +334,9 @@ const ModelList = enhance(
             }}
           />
           <Route
-            path={`${match.path}/view/:id`}
+            path={`${match.path}/${modelName}/view/:id`}
             render={props => {
+              console.log("On View", props.match.params, modelArray);
               return ModelPreviewPage ? (
                 <Grid container>
                   <Grid item xs={12}>
@@ -345,10 +351,12 @@ const ModelList = enhance(
                       model={
                         modelArray &&
                         modelArray.length > 0 &&
-                        modelArray.find(({ _id }) => _id === match.params.id)
+                        modelArray.find(
+                          ({ _id }) => _id === props.match.params.id
+                        )
                       }
                       classes={classes}
-                      match={match}
+                      match={props.match}
                       location={location}
                       history={history}
                       ModelPreviewActions={ModelPreviewActions}
@@ -373,7 +381,9 @@ const ModelList = enhance(
                         model={
                           modelArray &&
                           modelArray.length > 0 &&
-                          modelArray.find(({ _id }) => _id === match.params.id)
+                          modelArray.find(
+                            ({ _id }) => _id === props.match.params.id
+                          )
                         }
                         ModelPreviewActions={ModelPreviewActions}
                         ModelPreviewAction={ModelPreviewAction}
@@ -385,7 +395,7 @@ const ModelList = enhance(
                             modelArray &&
                             modelArray.length > 0 &&
                             modelArray.find(
-                              ({ _id }) => _id === match.params.id
+                              ({ _id }) => _id === props.match.params.id
                             )
                           }
                         />
@@ -398,8 +408,9 @@ const ModelList = enhance(
             }}
           />
           <Route
-            path={`${match.path}`}
+            path={`${match.path}/${modelName}`}
             render={props => {
+              console.log("On Root");
               return (
                 <>
                   {ModelListActions && <ModelListActions {...Actions} />}
@@ -465,10 +476,12 @@ const ModelList = enhance(
                       </Grid>
                     </Grid>
                   )}
+                  <FloatingAddButton onClick={onAddWrapper} />
                 </>
               );
             }}
           />
+
           <ClientNotification
             notifications={notifications}
             handleClose={(event, reason, notification) => {

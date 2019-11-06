@@ -57,7 +57,7 @@ export default class ModelEdit extends React.Component {
           setFieldTouched
         }) => {
           return (
-            <Card className={classes.editContent}>
+            <Card className={classes && classes.editContent}>
               <CardHeader title={model && model.title} />
               <CardContent>
                 <form id="edit-form">

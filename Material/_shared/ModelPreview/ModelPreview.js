@@ -37,6 +37,7 @@ const ModelPreview = enhance(
     ModelPreviewAction,
     onAction
   }) => {
+    console.log("MODEL PREVIEW", form, model);
     if (form && model) {
       let previewList = form.fields.map((field, index) => {
         const values = model[field.name];
