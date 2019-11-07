@@ -21,7 +21,7 @@ function renderInputComponent(inputProps) {
   return (
     <Inputs.TextFieldInput
       fullWidth
-      field={{ name: "Build Something" }}
+      field={{ name: "" }}
       standAlone={true}
       value={"Type"}
       InputProps={{

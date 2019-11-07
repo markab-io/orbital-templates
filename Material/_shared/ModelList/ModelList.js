@@ -118,13 +118,13 @@ const ModelList = enhance(
       if (onDelete) {
         return onDelete(model);
       }
-      history.push(`${match.path}/${modelName}`);
+      history.push(`${match.path}}`);
     };
     const onAddWrapper = () => {
       if (onAdd) {
         return onAdd();
       }
-      history.push(`${match.path}/${modelName}/add`);
+      history.push(`${match.path}/add`);
     };
     const onCreateWrapper = model => {
       if (onCreate) {
@@ -136,7 +136,7 @@ const ModelList = enhance(
       if (onView) {
         return onView(model);
       }
-      history.push(`${match.path}/${modelName}/view/${model._id}`);
+      history.push(`${match.path}/view/${model._id}`);
     };
     const Actions = {
       onEdit: onEditWrapper,
@@ -154,7 +154,7 @@ const ModelList = enhance(
       <Router>
         <Switch>
           <Route
-            path={`${match.path}/${modelName}/add`}
+            path={`${match.path}/add`}
             render={props => {
               console.log("On Add");
               return ModelAddPage ? (
@@ -209,7 +209,7 @@ const ModelList = enhance(
             }}
           />
           <Route
-            path={`${match.path}/${modelName}/edit/:id`}
+            path={`${match.path}/edit/:id`}
             render={props => {
               console.log("On Edit");
               return ModelEditPage ? (
@@ -332,7 +332,7 @@ const ModelList = enhance(
             }}
           />
           <Route
-            path={`${match.path}/${modelName}/view/:id`}
+            path={`${match.path}/view/:id`}
             render={props => {
               console.log("On View", props.match.params, modelArray);
               return ModelPreviewPage ? (
@@ -406,7 +406,7 @@ const ModelList = enhance(
             }}
           />
           <Route
-            path={`${match.path}/${modelName}`}
+            path={`${match.path}`}
             render={props => {
               console.log("On Root");
               return (

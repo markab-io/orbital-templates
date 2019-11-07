@@ -10,11 +10,17 @@ export const Routes = ({ onClick, currentRoute, routeList }) => {
             style={{ borderRadius: "50px" }}
             selected={index === currentRoute}
             key={index}
-            onClick={event => onClick(route)}
+            onClick={event => (!route.external ? onClick(route) : "")}
             button
           >
             <Icon>{route.icon}</Icon>
-            <ListItemText primary={route.name} />
+            {!route.external ? (
+              <ListItemText primary={route.name} />
+            ) : (
+              <a href={route.url} target="_blank">
+                <ListItemText primary={route.name} />
+              </a>
+            )}
           </ListItem>
         );
       })}
