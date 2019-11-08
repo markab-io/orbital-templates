@@ -18,7 +18,8 @@ import {
   Tabs,
   Tab,
   Drawer,
-  Icon
+  Icon,
+  Paper
 } from "@material-ui/core";
 
 const appBarHeight = 64;
@@ -74,6 +75,7 @@ const MainWrapper = props => {
               backgroundColor: "white",
               color: "black"
             }}
+            className={classes.menu}
           >
             <Tabs
               className={classes.tabs}
@@ -109,6 +111,7 @@ const MainWrapper = props => {
                 ? marginTop + appBarHeight
                 : appBarHeight + 10
             }}
+            className={classes.menu}
           >
             <Toolbar className={classes.toolbar}>
               <IconButton
@@ -190,7 +193,7 @@ const MainWrapper = props => {
           <Hidden mdUp>
             {!isTabMenu && (
               <Tabs
-                className={classes.tabs}
+                className={`${classes.tabs} ${classes.menu}`}
                 value={currentRoute || 0}
                 onChange={(event, route) => {
                   onRouteClick
@@ -217,7 +220,11 @@ const MainWrapper = props => {
             )}
           </Hidden>
           {!isTabMenu && (
-            <Drawer open={open} onClose={() => setOpen(false)}>
+            <Drawer
+              className={classes.menu}
+              open={open}
+              onClose={() => setOpen(false)}
+            >
               <Routes
                 currentRoute={currentRoute || 0}
                 routeList={routeList}
@@ -236,34 +243,33 @@ const MainWrapper = props => {
               <List
                 style={{
                   position: "fixed",
-                  marginTop: marginTop
-                    ? marginTop + appBarHeight
-                    : appBarHeight,
-                  maxHeight: "680px",
-                  overflowY: "scroll"
+                  maxHeight: "680px"
                 }}
-                className={classes.sidebar}
+                className={classes.menu}
               >
-                <Routes
-                  currentRoute={currentRoute || 0}
-                  routeList={routeList}
-                  isLoggedIn={user && !!user.name}
-                  onClick={route => {
-                    onRouteClick
-                      ? onRouteClick(`${route.url}`)
-                      : history.push(`${match.path}${route.url}`);
-                  }}
-                />
+                <Paper>
+                  <Routes
+                    currentRoute={currentRoute || 0}
+                    routeList={routeList}
+                    isLoggedIn={user && !!user.name}
+                    onClick={route => {
+                      onRouteClick
+                        ? onRouteClick(`${route.url}`)
+                        : history.push(`${match.path}${route.url}`);
+                    }}
+                  />
+                </Paper>
               </List>
             </Hidden>
           )}
         </>
-        <main
-          style={{ marginTop: marginTop ? appBarHeight + 10 : appBarHeight }}
-          className={classes.hasPadding}
-        >
-          {children}
-        </main>
+        <Paper>
+          <main
+            className={`${classes.hasPadding} ${classes.content}`}
+          >
+            {children}
+          </main>
+        </Paper>
       </div>
     </>
   );
