@@ -67,8 +67,6 @@
     "image-webpack-loader": "^4.6.0",
     "jest": "^24.1.0",
     "json-loader": "^0.5.4",
-    "mobx-devtools-mst": "^0.9.18",
-    "mobx-react-devtools": "^6.0.3",
     "normalize.css": "^8.0.1",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
