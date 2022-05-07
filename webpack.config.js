@@ -6,6 +6,7 @@ const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
 
 module.exports = env => ({
   entry: "./Material/index.js",
+  mode: "development",
   output: {
     path: path.join(__dirname, "lib"),
     filename: "orbital-templates.js",
