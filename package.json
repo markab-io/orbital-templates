@@ -58,6 +58,7 @@
     "@material-ui/codemod": "^4.3.0",
     "babel-jest": "^24.1.0",
     "babel-loader": "^8.0.5",
+    "babel-plugin-prismjs": "^2.1.0",
     "css-loader": "^1.0.1",
     "enzyme": "^3.9.0",
     "enzyme-adapter-react-16": "^1.10.0",
