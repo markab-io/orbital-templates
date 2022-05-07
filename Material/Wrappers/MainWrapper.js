@@ -35,7 +35,7 @@ const enhance = compose(
 const MainWrapper = props => {
   const {
     children,
-    location,
+    pathname,
     match,
     history,
     auth,
@@ -58,7 +58,7 @@ const MainWrapper = props => {
   } = props;
   const isAnchor = Boolean(anchorEl);
   let route = routeList.filter(({ name, url }) => {
-    return location.pathname.replace("/", "/").indexOf(url) !== -1;
+    return pathname.replace("/", "/").indexOf(url) !== -1;
   });
   let currentRoute =
     (route.length > 0 && routeList.indexOf(route[route.length - 1])) || 0;
@@ -274,5 +274,4 @@ const MainWrapper = props => {
     </>
   );
 };
-
 export default compose(enhance)(MainWrapper);
