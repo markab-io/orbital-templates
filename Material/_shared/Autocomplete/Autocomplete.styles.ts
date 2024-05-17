@@ -1,27 +1,30 @@
-export const styles = (theme: { spacing: (arg0: number | undefined) => any; }) => ({
+import { Theme } from "@material-ui/core";
+import { createStyles } from "@mui/styles";
+
+export const styles = createStyles((theme: Theme) => ({
   root: {
     height: 250,
-    flexGrow: 1
+    flexGrow: 1,
   },
   container: {
-    position: "relative"
+    position: "relative",
   },
   suggestionsContainerOpen: {
     position: "absolute",
     zIndex: 1,
     marginTop: theme && theme.spacing && theme.spacing(),
     left: 0,
-    right: 0
+    right: 0,
   },
   suggestion: {
-    display: "block"
+    display: "block",
   },
   suggestionsList: {
     margin: 0,
     padding: 0,
-    listStyleType: "none"
+    listStyleType: "none",
   },
   divider: {
-    height: theme && theme.spacing(2)
-  }
-});
+    height: theme && theme.spacing(2),
+  },
+}));

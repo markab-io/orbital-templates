@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { FormEvent, useState } from "react";
 import Autosuggest, {
   ChangeEvent,
   SuggestionsFetchRequestedParams,
   SuggestionSelectedEventData,
   RenderSuggestionsContainerParams,
+  InputProps,
 } from "react-autosuggest";
 import match from "autosuggest-highlight/match";
 import parse from "autosuggest-highlight/parse";
@@ -14,10 +15,30 @@ import * as Inputs from "../Forms/Inputs";
 
 const useStyles = makeStyles(styles);
 
-const renderInputComponent = (inputProps: { 
-  inputRef?: (() => void) | React.RefObject<any>; 
-  ref: React.Ref<any>; 
-}) => {
+interface Suggestion {
+  name: string;
+  title: string;
+  [key: string]: unknown; // Change the type from 'any' to 'unknown'
+}
+
+interface Section {
+  modelName: string;
+  res: Suggestion[];
+}
+
+interface AutocompleteProps {
+  loadSuggestions: (
+    value: string,
+    updateSuggestions: (newState: Suggestion[], prevState: Suggestion[]) => void
+  ) => Promise<Suggestion[]>;
+  isMultiple?: boolean;
+  onSelect: (suggestion: Suggestion) => void;
+  placeholder?: string;
+  inputClassName?: string;
+  throttleSearch?: boolean;
+}
+
+const renderInputComponent = (inputProps: InputProps<Suggestion>) => {
   const {
     inputRef = () => {},
     ref,
@@ -29,16 +50,19 @@ const renderInputComponent = (inputProps: {
       fullWidth
       field={{ name: "" }}
       standAlone={true}
-      value={"Type"}
       type={""} // Add the 'type' property
       setFieldTouched={() => {}} // Add the 'setFieldTouched' property
       setFieldValue={() => {}} // Add the 'setFieldValue' property
       InputProps={{
-        inputRef: (node) => {
-          if (ref && typeof ref === 'function') {
+        inputRef: (node: HTMLInputElement) => {
+          if (typeof ref === 'function') {
             ref(node);
+          } else if (ref) {
+            ref.current = node;
           }
-          if (inputRef && inputRef.current) {
+          if (inputRef && typeof inputRef === 'function') {
+            inputRef(node);
+          } else if (inputRef) {
             inputRef.current = node;
           }
         },
@@ -48,7 +72,10 @@ const renderInputComponent = (inputProps: {
   );
 };
 
-const renderSuggestion = (suggestion: Suggestion, { query, isHighlighted }: { query: string; isHighlighted: boolean }) => {
+const renderSuggestion = (
+  suggestion: Suggestion,
+  { query, isHighlighted }: { query: string; isHighlighted: boolean }
+) => {
   const matches = match(suggestion.name || suggestion.title, query);
   const parts = parse(suggestion.name || suggestion.title, matches);
   return (
@@ -87,16 +114,16 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
   isMultiple = false,
   onSelect,
   placeholder,
-  inputClassName,
-  throttleSearch,
 }) => {
   const classes = useStyles();
 
-  const [single, setSingle] = useState("");
+  const [single, setSingle] = useState<string>("");
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
 
-  const handleSuggestionsFetchRequested = async ({ value }: SuggestionsFetchRequestedParams) => {
-    const updateSuggestions = (newState: any, prevState: any) =>
+  const handleSuggestionsFetchRequested = async ({
+    value,
+  }: SuggestionsFetchRequestedParams) => {
+    const updateSuggestions = (newState: Suggestion[]) =>
       setSuggestions(newState);
     const res = await loadSuggestions(value, updateSuggestions);
     setSuggestions(res);
@@ -106,9 +133,6 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
     setSuggestions([]);
   };
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>, { newValue }: ChangeEvent) => {
-    setSingle(newValue);
-  };
 
   const autosuggestProps = {
     renderInputComponent,
@@ -119,21 +143,18 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
     renderSuggestion,
   };
 
+  function handleChange // Add the onChange property
+    (event: FormEvent<HTMLElement>, params: ChangeEvent): void {
+      setSingle(params.newValue);
+  }
+
   return (
     <Autosuggest
-      className={inputClassName}
       {...autosuggestProps}
       inputProps={{
-        classes,
         placeholder: placeholder || "Search",
         value: single,
-        onChange: handleChange,
-      }}
-      theme={{
-        container: inputClassName || classes.container,
-        suggestionsContainerOpen: classes.suggestionsContainerOpen,
-        suggestionsList: classes.suggestionsList,
-        suggestion: classes.suggestion,
+        onChange: handleChange // Add the onChange property
       }}
       multiSection={isMultiple}
       getSectionSuggestions={getSectionSuggestions}
