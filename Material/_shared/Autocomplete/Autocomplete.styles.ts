@@ -1,4 +1,4 @@
-export const styles = theme => ({
+export const styles = (theme: { spacing: (arg0: number | undefined) => any; }) => ({
   root: {
     height: 250,
     flexGrow: 1
