@@ -1,24 +1,24 @@
-/**
- * A modal component for confirming deletion.
- *
- * @component
- * @param {Object} props - The component props.
- * @param {boolean} props.open - Whether the modal is open or not.
- * @param {function} props.setOpen - A function to set the open state of the modal.
- * @param {function} props.onConfirm - A function to be called when the delete button is clicked.
- * @returns {JSX.Element} The ConfirmDeleteModal component.
- */
 import React from "react";
 import {
+  Dialog,
   DialogTitle,
   DialogContent,
   DialogContentText,
   DialogActions,
   Button,
-  Dialog
-} from "@material-ui/core";
+} from "@mui/material";
 
-const ConfirmDeleteModal = ({ open, setOpen, onConfirm }) => {
+interface ConfirmDeleteModalProps {
+  open: boolean;
+  setOpen: (open: boolean) => void;
+  onConfirm: () => void;
+}
+
+const ConfirmDeleteModal: React.FC<ConfirmDeleteModalProps> = ({
+  open,
+  setOpen,
+  onConfirm,
+}) => {
   return (
     <Dialog
       open={open}
@@ -35,8 +35,10 @@ const ConfirmDeleteModal = ({ open, setOpen, onConfirm }) => {
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={() => setOpen(false)}>Cancel</Button>
-        <Button onClick={onConfirm} autoFocus>
+        <Button onClick={() => setOpen(false)} color="primary">
+          Cancel
+        </Button>
+        <Button onClick={onConfirm} color="primary" autoFocus>
           Delete
         </Button>
       </DialogActions>

@@ -18,6 +18,7 @@
   "homepage": "https://github.com/markab-io/orbital-templates#readme",
   "devDependencies": {
     "@types/autosuggest-highlight": "^3.2.3",
-    "@types/react-autosuggest": "^10.1.11"
+    "@types/react-autosuggest": "^10.1.11",
+    "@types/recharts": "^1.8.29"
   }
 }
