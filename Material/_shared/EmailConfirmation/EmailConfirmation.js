@@ -14,7 +14,6 @@ import { withStyles } from "@material-ui/styles";
 import theme from "theme";
 import { styles } from "./EmailConfirmation.styles";
 import { CssBaseline } from "@material-ui/core";
-import LockIcon from "@material-ui/icons/LockOutlined";
 import queryString from "query-string";
 import {
   Typography,
