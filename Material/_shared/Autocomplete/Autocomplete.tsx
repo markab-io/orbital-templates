@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from "react";
+import React, { useState, useCallback } from "react";
 import Autosuggest, {
   ChangeEvent,
   SuggestionsFetchRequestedParams,
@@ -16,9 +16,9 @@ import * as Inputs from "../Forms/Inputs";
 const useStyles = makeStyles(styles);
 
 interface Suggestion {
-  name: string;
-  title: string;
-  [key: string]: unknown; // Change the type from 'any' to 'unknown'
+  name?: string;
+  title?: string;
+  [key: string]: unknown;
 }
 
 interface Section {
@@ -50,17 +50,16 @@ const renderInputComponent = (inputProps: InputProps<Suggestion>) => {
       fullWidth
       field={{ name: "" }}
       standAlone={true}
-      type={""} // Add the 'type' property
+      type="" // Add the 'type' property
       setFieldTouched={() => {}} // Add the 'setFieldTouched' property
       setFieldValue={() => {}} // Add the 'setFieldValue' property
       InputProps={{
         inputRef: (node: HTMLInputElement) => {
-          if (typeof ref === 'function') {
+          if (typeof ref === "function") {
             ref(node);
           } else if (ref) {
-            ref.current = node;
           }
-          if (inputRef && typeof inputRef === 'function') {
+          if (inputRef && typeof inputRef === "function") {
             inputRef(node);
           } else if (inputRef) {
             inputRef.current = node;
@@ -98,7 +97,7 @@ const renderSuggestion = (
 };
 
 const getSuggestionValue = (suggestion: Suggestion) => {
-  return suggestion.name || suggestion.title;
+  return suggestion.name || suggestion.title || "";
 };
 
 const renderSectionTitle = (section: Section) => {
@@ -114,25 +113,34 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
   isMultiple = false,
   onSelect,
   placeholder,
+  inputClassName,
 }) => {
   const classes = useStyles();
 
   const [single, setSingle] = useState<string>("");
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
 
-  const handleSuggestionsFetchRequested = async ({
-    value,
-  }: SuggestionsFetchRequestedParams) => {
-    const updateSuggestions = (newState: Suggestion[]) =>
-      setSuggestions(newState);
-    const res = await loadSuggestions(value, updateSuggestions);
-    setSuggestions(res);
-  };
+  const handleSuggestionsFetchRequested = useCallback(
+    async ({ value }: SuggestionsFetchRequestedParams) => {
+      const updateSuggestions = (newState: Suggestion[]) => {
+        setSuggestions(newState);
+      };
+      const res = await loadSuggestions(value, updateSuggestions);
+      setSuggestions(res);
+    },
+    [loadSuggestions]
+  );
 
-  const handleSuggestionsClearRequested = () => {
+  const handleSuggestionsClearRequested = useCallback(() => {
     setSuggestions([]);
-  };
+  }, []);
 
+  const handleChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>, { newValue }: ChangeEvent) => {
+      setSingle(newValue);
+    },
+    []
+  );
 
   const autosuggestProps = {
     renderInputComponent,
@@ -143,18 +151,19 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
     renderSuggestion,
   };
 
-  function handleChange // Add the onChange property
-    (event: FormEvent<HTMLElement>, params: ChangeEvent): void {
-      setSingle(params.newValue);
-  }
-
   return (
     <Autosuggest
       {...autosuggestProps}
       inputProps={{
         placeholder: placeholder || "Search",
         value: single,
-        onChange: handleChange // Add the onChange property
+        onChange: handleChange,
+      }}
+      theme={{
+        container: inputClassName || classes.container,
+        suggestionsContainerOpen: classes.suggestionsContainerOpen,
+        suggestionsList: classes.suggestionsList,
+        suggestion: classes.suggestion,
       }}
       multiSection={isMultiple}
       getSectionSuggestions={getSectionSuggestions}
