@@ -11,8 +11,29 @@ import {
 import Forms from "../Forms/Forms";
 import ClientNotification from "../ClientNotification/ClientNotification";
 import FormsValidate from "../Forms/Forms.Validate";
+import { ObjectSchema } from "yup";
 
-const ModelAdd = ({
+interface FormField {
+  name: string;
+  value: unknown;
+  [key: string]: unknown;
+}
+
+interface FormSchema {
+  fields: FormField[];
+}
+
+interface ModelAddProps {
+  onSave: (values: Record<string, unknown>) => void;
+  onCancel: () => void;
+  form: FormSchema;
+  modelSchema: ObjectSchema<any>;
+  modelName: string;
+  notifications: unknown[];
+  removeNotification: (notification: unkown) => void;
+}
+
+const ModelAdd: React.FC<ModelAddProps> = ({
   onSave,
   onCancel,
   form,
@@ -22,13 +43,14 @@ const ModelAdd = ({
   removeNotification,
   ...rest
 }) => {
-  const [initialValues, setInitialValues] = useState({});
+  const [initialValues, setInitialValues] = useState<Record<string, unknown>>({});
 
   useEffect(() => {
-    const formKeyVal = {};
-    form && form.fields.map((field) => {
-      formKeyVal[field.name] = field.value;
-    });
+    const formKeyVal: Record<string, unknown> = {};
+    form &&
+      form.fields.map((field) => {
+        formKeyVal[field.name] = field.value;
+      });
     setInitialValues(formKeyVal);
   }, [form]);
 
@@ -57,11 +79,10 @@ const ModelAdd = ({
         <Card>
           <CardContent>
             <Typography variant="h6">Create {modelName}</Typography>
-            <form id="add-form">
+            <form id="add-form" onSubmit={handleSubmit}>
               <Forms
-                id="add-fields"
                 modelSchema={modelSchema}
-                form={form}
+                form={{ fields: form.fields.map(field => ({ ...field, type: '' })) }}
                 errors={errors}
                 isSubmitting={isSubmitting}
                 setFieldValue={setFieldValue}
@@ -74,19 +95,11 @@ const ModelAdd = ({
             </form>
           </CardContent>
           <CardActions style={{ justifyContent: "flex-end" }}>
-            <Button
-              variant="contained"
-              color="secondary"
-              onClick={handleSubmit}
-            >
+            <Button variant="contained" color="secondary" onClick={handleSubmit} disabled={isSubmitting}>
               <Icon>save</Icon>
               <span style={{ marginLeft: "3px" }}>Save</span>
             </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={onCancel}
-            >
+            <Button variant="contained" color="primary" onClick={onCancel}>
               Cancel
             </Button>
           </CardActions>
