@@ -1,8 +1,30 @@
 import React from "react";
 import { Grid } from "@material-ui/core";
 import ModelAdd from "../ModelAdd/ModelAdd";
+import { RouteComponentProps } from "react-router-dom";
 
-const ModelAddPage = ({
+interface FormField {
+  name: string;
+  placeholder: string;
+  type: string;
+  value?: unknown;
+  required?: boolean;
+  options?: string[];
+}
+
+interface ModelAddPageProps extends RouteComponentProps {
+  form: {
+    fields: FormField[];
+  };
+  modelSchema: unknown; // Define more specific types if necessary
+  createModel: (values: unknown, callback: (model: any) => void) => void;
+  onCreateSubmit?: (model: any) => void;
+  modelName: string;
+  notifications: any[]; // Define more specific types if necessary
+  removeNotification: (notification: any) => void;
+}
+
+const ModelAddPage: React.FC<ModelAddPageProps> = ({
   form,
   modelSchema,
   createModel,
@@ -18,7 +40,6 @@ const ModelAddPage = ({
     <Grid container justify="center">
       <Grid item xs={12}>
         <ModelAdd
-          model={{}}
           form={form}
           modelSchema={modelSchema}
           onSave={(values) => {
