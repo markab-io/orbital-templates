@@ -1,9 +1,43 @@
 import React from "react";
-import { Grid } from "@material-ui/core";
+import { Grid } from "@mui/material";
 import ModelPreview from "../ModelPreview/ModelPreview";
 import Loading from "../Loading/Loading";
 
-const ModelViewPage = ({
+interface Model {
+  _id: string;
+  [key: string]: any;
+}
+
+interface ModelArray {
+  data: Model[];
+}
+
+interface Notification {
+  message: string;
+  type: string;
+}
+
+interface ModelViewPageProps {
+  modelArray: ModelArray;
+  modelName: string;
+  onEditWrapper: (model: Model) => void;
+  onDeleteWrapper: (model: Model) => void;
+  deleteModel: (model: Model) => Promise<void>;
+  updateModel: (model: Model, values: any) => Promise<void>;
+  searchModel: (query: any) => Promise<{ data: Model[] }>;
+  form: any;
+  classes: any;
+  history: any; // Define a specific type if available
+  location: any; // Define a specific type if available
+  match: any; // Define a specific type if available
+  ModelPreviewActions?: React.ComponentType<any>;
+  ModelPreviewAction?: React.ComponentType<any>;
+  ModelPreviewAttachment?: React.ComponentType<any>;
+  notifications: Notification[];
+  removeNotification: (notification: Notification) => void;
+}
+
+const ModelViewPage: React.FC<ModelViewPageProps> = ({
   modelArray,
   modelName,
   onEditWrapper,
