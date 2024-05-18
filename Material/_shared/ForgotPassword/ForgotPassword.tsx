@@ -101,10 +101,9 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = ({ forgotPassword, history
                   <CardContent>
                     <form onSubmit={handleSubmit}>
                       <Forms
-                        id="login-fields"
                         form={form}
                         errors={errors}
-                        modelSchema={forgotPasswordSchema}
+                        modelSchema={forgotPasswordSchema} // Add the missing modelSchema property
                         setFieldValue={setFieldValue}
                         setFieldTouched={setFieldTouched}
                         values={values}
