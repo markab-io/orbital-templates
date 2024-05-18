@@ -16,6 +16,7 @@
  * @param {string} props.logo - The URL of the logo image.
  * @returns {JSX.Element} The Register component.
  */
+
 import React from "react";
 import {
   Card,
@@ -26,8 +27,8 @@ import {
   Typography,
   Avatar,
   Icon,
-  Grid
-} from "@material-ui/core";
+  Grid,
+} from "@mui/material";
 import Forms from "../Forms/Forms";
 import { Formik } from "formik";
 import ClientNotification from "../ClientNotification/ClientNotification";
@@ -35,46 +36,55 @@ import * as Yup from "yup";
 
 // Synchronous validation
 const registerSchema = Yup.object().shape({
-  email: Yup.string()
-    .email()
-    .required("Required"),
+  email: Yup.string().email().required("Required"),
   password: Yup.string().required("Required"),
-  confirmPassword: Yup.string().oneOf(
-    [Yup.ref("password")],
-    "Passwords do not match"
-  )
+  confirmPassword: Yup.string().oneOf([Yup.ref("password")], "Passwords do not match"),
 });
 
-let form = {
+const form = {
   fields: [
     {
       type: "text",
       name: "name",
       placeholder: "Name",
-      required: true
+      required: true,
     },
     {
       type: "email",
       name: "email",
       placeholder: "Email",
-      required: true
+      required: true,
     },
     {
       type: "password",
       name: "password",
       placeholder: "Password",
-      required: true
+      required: true,
     },
     {
       type: "password",
       name: "confirmPassword",
       placeholder: "Confirm password",
-      required: true
-    }
-  ]
+      required: true,
+    },
+  ],
 };
 
-export const Register = ({
+interface RegisterProps {
+  onChange: (event: React.ChangeEvent<any>) => void;
+  onSubmit: (values: any) => Promise<any>;
+  onProviderAuth: (provider: string) => void;
+  onSuccess: (values: any) => void;
+  onLogin: () => void;
+  onForgotPassword: () => void;
+  classes: any; // Replace with the appropriate type if using a specific styling solution
+  location: any; // Define a specific type if available
+  history: any; // Define a specific type if available
+  match: any; // Define a specific type if available
+  logo: string;
+}
+
+export const Register: React.FC<RegisterProps> = ({
   onChange,
   onSubmit,
   onProviderAuth,
@@ -85,50 +95,43 @@ export const Register = ({
   location,
   history,
   match,
-  logo
+  logo,
 }) => {
   return (
     <Card className={classes.layout}>
       <CardHeader
         style={{ justifyContent: "center" }}
-        component={props => (
-          <Grid
-            container
-            direction={"column"}
-            justifyContent={"center"}
-            alignContent="center"
-          >
+        component={() => (
+          <Grid container direction="column" justifyContent="center" alignContent="center">
             {logo ? (
-              <img className={classes.logo} src={logo} />
+              <img className={classes.logo} src={logo} alt="Logo" />
             ) : (
               <Avatar className={classes.avatar}>
                 <Icon>keyboard</Icon>
               </Avatar>
             )}
-            <Typography
-              style={{ textAlign: "center", fontWeight: "bold" }}
-              variant="headline"
-            >
+            <Typography style={{ textAlign: "center", fontWeight: "bold" }} variant="h5">
               Sign Up
             </Typography>
           </Grid>
         )}
       />
       <Formik
-        initialValues={{ email: "", password: "" }}
+        initialValues={{ email: "", password: "", confirmPassword: "", name: "" }}
         onSubmit={(values, actions) => {
           onSubmit(values)
-            .then(res => {
+            .then((res) => {
               onSuccess(res);
               actions.setSubmitting(false);
             })
-            .catch(err => {
-              actions.setErrors({ server: err });
+            .catch((err) => {
+              actions.setErrors({ server: err.message });
               actions.setSubmitting(false);
             });
         }}
         validationSchema={registerSchema}
-        render={({
+      >
+        {({
           values,
           errors,
           touched,
@@ -142,14 +145,13 @@ export const Register = ({
           setErrors,
           ...rest
         }) => {
-          let notifications =
+          const notifications =
             errors &&
-            Object.keys(errors).map(k => {
-              return {
-                message: `${k}: ${errors[k]}`,
-                type: "error"
-              };
-            });
+            Object.keys(errors).map((k) => ({
+              message: `${k}: ${errors[k]}`,
+              type: "error",
+            }));
+
           return (
             <>
               <CardContent>
@@ -181,25 +183,15 @@ export const Register = ({
                   </Button>
                 </CardActions>
                 <Grid container direction="column">
-                  <Button
-                    color="secondary"
-                    variant="outlined"
-                    onClick={onLogin}
-                  >
-                    <Typography
-                      style={{ textTransform: "lowercase" }}
-                      variant="subtitle2"
-                      color="primary"
-                    >
+                  <Button color="secondary" variant="outlined" onClick={onLogin}>
+                    <Typography style={{ textTransform: "lowercase" }} variant="subtitle2" color="primary">
                       already have an account? login here
                     </Typography>
                   </Button>
                 </Grid>
                 {notifications && notifications.length > 0 && submitCount > 0 && (
                   <ClientNotification
-                    notifications={
-                      (notifications.length > 0 && notifications) || []
-                    }
+                    notifications={notifications}
                     handleClose={() => {
                       setErrors({});
                     }}
@@ -209,7 +201,7 @@ export const Register = ({
             </>
           );
         }}
-      />
+      </Formik>
     </Card>
   );
 };

@@ -10,10 +10,21 @@
  * @param {function} props.onChangeRowsPerPage - The callback function to handle rows per page change.
  * @returns {JSX.Element} The Pagination component.
  */
+
 import React from "react";
-import TablePagination from "@material-ui/core/TablePagination";
-import { Paper, IconButton, Icon } from "@material-ui/core";
-const Pagination = ({
+import TablePagination from "@mui/material/TablePagination";
+import { Paper, IconButton, Icon } from "@mui/material";
+
+interface PaginationProps {
+  isSm: boolean;
+  rowsPerPage: number;
+  onChangePage: (page: number) => void;
+  page: number;
+  count: number;
+  onChangeRowsPerPage: (rowsPerPage: number) => void;
+}
+
+const Pagination: React.FC<PaginationProps> = ({
   isSm,
   rowsPerPage,
   onChangePage,
@@ -25,29 +36,35 @@ const Pagination = ({
     <Paper>
       <TablePagination
         rowsPerPageOptions={[5, 10, 25]}
-        isSm={isSm}
         component="div"
         count={count}
         rowsPerPage={rowsPerPage}
         page={page}
-        onChangePage={(ev, page) => {
-          onChangePage(page);
+        onPageChange={(event, newPage) => {
+          onChangePage(newPage);
         }}
-        onChangeRowsPerPage={(ev, rowsPerPage) =>
-          onChangeRowsPerPage(rowsPerPage)
-        }
+        onRowsPerPageChange={(event) => {
+          onChangeRowsPerPage(parseInt(event.target.value, 10));
+        }}
       />
     </Paper>
   ) : (
     <Paper>
-      <IconButton onClick={() => onChangePage(page - 1)}>
+      <IconButton
+        onClick={() => onChangePage(page - 1)}
+        disabled={page === 0}
+      >
         <Icon>navigate_before</Icon>
       </IconButton>
-      {10 * (page) - 9} to {`${10 * (page)}`} of {count}
-      <IconButton onClick={() => onChangePage(page + 1)}>
+      {`${10 * page + 1} to ${Math.min(10 * (page + 1), count)} of ${count}`}
+      <IconButton
+        onClick={() => onChangePage(page + 1)}
+        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+      >
         <Icon>navigate_next</Icon>
       </IconButton>
     </Paper>
   );
 };
+
 export default Pagination;
