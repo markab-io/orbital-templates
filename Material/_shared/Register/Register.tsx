@@ -85,16 +85,10 @@ interface RegisterProps {
 }
 
 export const Register: React.FC<RegisterProps> = ({
-  onChange,
   onSubmit,
-  onProviderAuth,
   onSuccess,
   onLogin,
-  onForgotPassword,
   classes,
-  location,
-  history,
-  match,
   logo,
 }) => {
   return (
@@ -124,8 +118,7 @@ export const Register: React.FC<RegisterProps> = ({
               onSuccess(res);
               actions.setSubmitting(false);
             })
-            .catch((err) => {
-              actions.setErrors({ server: err.message });
+            .catch(() => {
               actions.setSubmitting(false);
             });
         }}
@@ -135,8 +128,6 @@ export const Register: React.FC<RegisterProps> = ({
           values,
           errors,
           touched,
-          handleBlur,
-          handleChange,
           handleSubmit,
           isSubmitting,
           setFieldValue,
@@ -157,7 +148,6 @@ export const Register: React.FC<RegisterProps> = ({
               <CardContent>
                 <form onSubmit={handleSubmit}>
                   <Forms
-                    id="login-fields"
                     form={form}
                     errors={errors}
                     modelSchema={registerSchema}
