@@ -1,5 +1,5 @@
 import React from "react";
-import { Select, InputLabel, MenuItem, FormControl } from "@mui/material";
+import { Select, InputLabel, MenuItem, FormControl, SelectChangeEvent } from "@mui/material";
 
 interface Field {
   name: string;
@@ -11,7 +11,7 @@ interface Field {
 interface SelectInputProps {
   setFieldValue: (field: string, value: unknown) => void;
   field: Field;
-  values: { [key: string]: unknown };
+  values: Record<string, unknown>;
 }
 
 const SelectInput: React.FC<SelectInputProps> = ({ setFieldValue, field, values }) => {
@@ -21,7 +21,7 @@ const SelectInput: React.FC<SelectInputProps> = ({ setFieldValue, field, values 
       <Select
         id={field.name}
         value={values[field.name] || ""}
-        onChange={(event) => {
+        onChange={(event: SelectChangeEvent<unknown>) => {
           setFieldValue(field.name, event.target.value);
         }}
       >
