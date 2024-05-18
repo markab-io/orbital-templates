@@ -13,7 +13,31 @@ import FormsValidate from "../Forms/Forms.Validate";
 import Loading from "../Loading/Loading";
 import ClientNotification from "../ClientNotification/ClientNotification";
 
-const ModelEdit = ({
+interface ModelEditProps {
+  model: any; // Define more specific types if possible
+  modelSchema: any; // Define more specific types if possible
+  onSave: (model: any, values: any) => void;
+  onCancel: () => void;
+  onSelect: (fieldName: string, value: any) => void;
+  form: any; // Define more specific types if possible
+  uploadMedia: (modelId: string, files: File[]) => Promise<any>;
+  deleteMedia: (modelId: string, media: any) => Promise<void>;
+  onMediaUploadComplete: (model: any, media: any) => void;
+  onGalleryUploadComplete: (model: any, gallery: any) => void;
+  onMediaDeleteComplete: (model: any, media: any) => void;
+  onGalleryDeleteComplete: (model: any, media: any, index: number) => void;
+  uploadGallery: (modelId: string, files: File[]) => Promise<any>;
+  gallery: any; // Define more specific types if possible
+  media: any; // Define more specific types if possible
+  notifications: any[]; // Define more specific types if possible
+  removeNotification: (notification: any) => void;
+  classes?: {
+    editContent?: string;
+  };
+  [key: string]: any;
+}
+
+const ModelEdit: React.FC<ModelEditProps> = ({
   model,
   modelSchema,
   onSave,
@@ -60,8 +84,8 @@ const ModelEdit = ({
         setFieldValue,
         setFieldTouched,
       }) => (
-        <Card className={classes && classes.editContent}>
-          <CardHeader title={model && model.title} />
+        <Card className={classes?.editContent}>
+          <CardHeader title={model?.title} />
           <CardContent>
             <form id="edit-form">
               <Forms
@@ -73,9 +97,9 @@ const ModelEdit = ({
                 setFieldTouched={setFieldTouched}
                 values={values}
                 touched={touched}
-                media={model && model.image}
+                media={model?.image}
                 tempMedia={media}
-                gallery={model && model.gallery}
+                gallery={model?.gallery}
                 tempGallery={gallery}
                 isSubmitting={isSubmitting}
                 onMediaDrop={(acceptedFiles) => {
@@ -102,18 +126,10 @@ const ModelEdit = ({
             </form>
           </CardContent>
           <CardActions style={{ justifyContent: "flex-end" }}>
-            <Button
-              variant="contained"
-              color="secondary"
-              onClick={onCancel}
-            >
+            <Button variant="contained" color="secondary" onClick={onCancel}>
               Cancel
             </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleSubmit}
-            >
+            <Button variant="contained" color="primary" onClick={handleSubmit}>
               <Icon>save</Icon>
               <span style={{ marginLeft: "5px" }}>Save</span>
             </Button>
