@@ -1,19 +1,18 @@
 /**
- * @file Table.js
+ * @file Table.tsx
  * @desc A reusable table component with sorting, pagination, and selection functionality.
  */
 
-import React from "react";
+import React, { Component } from "react";
 import classNames from "classnames";
-import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/styles";
-import DeleteIcon from "@material-ui/icons/Delete";
-import FilterListIcon from "@material-ui/icons/FilterList";
+import { withStyles, WithStyles } from "@mui/styles";
+import DeleteIcon from "@mui/icons-material/Delete";
+import FilterListIcon from "@mui/icons-material/FilterList";
 import theme from "theme";
 import { styles, toolbarStyles } from "./Table.styles";
 import {
   Grid,
-  MaterialTable,
+  Table as MaterialTable,
   TableBody,
   TableCell,
   TableHead,
@@ -25,8 +24,39 @@ import {
   Paper,
   Checkbox,
   IconButton,
-  Tooltip
-} from "Templates";
+  Tooltip,
+} from "@mui/material";
+
+interface Column {
+  id: string;
+  numeric?: boolean;
+  disablePadding?: boolean;
+  label: string;
+}
+
+interface Row {
+  _id: string;
+  [key: string]: any;
+}
+
+interface EnhancedTableProps extends WithStyles<typeof styles> {
+  rows: Row[];
+  columns: Column[];
+  title: string;
+  page: number;
+  rowsPerPage: number;
+  setPage: (page: number) => void;
+  setRowsPerPage: (rowsPerPage: number) => void;
+  count: number;
+}
+
+interface EnhancedTableState {
+  order: "asc" | "desc";
+  orderBy: string;
+  selected: string[];
+  page: number;
+  rowsPerPage: number;
+}
 
 /**
  * Sorts the array in descending order based on the specified property.
@@ -35,7 +65,7 @@ import {
  * @param {string} orderBy - The property to sort by.
  * @returns {number} - The comparison result.
  */
-function desc(a, b, orderBy) {
+function desc(a: any, b: any, orderBy: string): number {
   if (b[orderBy] < a[orderBy]) {
     return -1;
   }
@@ -51,14 +81,14 @@ function desc(a, b, orderBy) {
  * @param {Function} cmp - The comparison function.
  * @returns {Array} - The sorted array.
  */
-function stableSort(array, cmp) {
-  const stabilizedThis = array.map((el, index) => [el, index]);
+function stableSort(array: any[], cmp: (a: any, b: any) => number): any[] {
+  const stabilizedThis = array.map((el, index) => [el, index] as [any, number]);
   stabilizedThis.sort((a, b) => {
     const order = cmp(a[0], b[0]);
     if (order !== 0) return order;
     return a[1] - b[1];
   });
-  return stabilizedThis.map(el => el[0]);
+  return stabilizedThis.map((el) => el[0]);
 }
 
 /**
@@ -67,22 +97,33 @@ function stableSort(array, cmp) {
  * @param {string} orderBy - The property to sort by.
  * @returns {Function} - The sorting function.
  */
-function getSorting(order, orderBy) {
+function getSorting(order: "asc" | "desc", orderBy: string) {
   return order === "desc"
-    ? (a, b) => desc(a, b, orderBy)
-    : (a, b) => -desc(a, b, orderBy);
+    ? (a: any, b: any) => desc(a, b, orderBy)
+    : (a: any, b: any) => -desc(a, b, orderBy);
+}
+
+interface EnhancedTableHeadProps {
+  onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  order: "asc" | "desc";
+  orderBy: string;
+  numSelected: number;
+  rowCount: number;
+  columns: Column[];
+  onRequestSort: (event: React.MouseEvent<unknown>, property: string) => void;
+  count: number;
 }
 
 /**
  * The table head component with sorting functionality.
  */
-class EnhancedTableHead extends React.Component {
+class EnhancedTableHead extends Component<EnhancedTableHeadProps> {
   /**
    * Creates a sort handler function for the specified property.
    * @param {string} property - The property to sort by.
    * @returns {Function} - The sort handler function.
    */
-  createSortHandler = property => event => {
+  createSortHandler = (property: string) => (event: React.MouseEvent<unknown>) => {
     this.props.onRequestSort(event, property);
   };
 
@@ -94,7 +135,7 @@ class EnhancedTableHead extends React.Component {
       numSelected,
       rowCount,
       columns,
-      count
+      count,
     } = this.props;
 
     return (
@@ -107,45 +148,38 @@ class EnhancedTableHead extends React.Component {
               onChange={onSelectAllClick}
             />
           </TableCell>
-          {columns.map(
-            column => (
-              <TableCell
-                key={column.id}
-                align={column.numeric ? "right" : "left"}
-                padding={column.disablePadding ? "none" : "default"}
-                sortDirection={orderBy === column.id ? order : false}
+          {columns.map((column) => (
+            <TableCell
+              key={column.id}
+              align={column.numeric ? "right" : "left"}
+              padding={column.disablePadding ? "none" : "default"}
+              sortDirection={orderBy === column.id ? order : false}
+            >
+              <Tooltip
+                title="Sort"
+                placement={column.numeric ? "bottom-end" : "bottom-start"}
+                enterDelay={300}
               >
-                <Tooltip
-                  title="Sort"
-                  placement={column.numeric ? "bottom-end" : "bottom-start"}
-                  enterDelay={300}
+                <TableSortLabel
+                  active={orderBy === column.id}
+                  direction={order}
+                  onClick={this.createSortHandler(column.id)}
                 >
-                  <TableSortLabel
-                    active={orderBy === column.id}
-                    direction={order}
-                    onClick={this.createSortHandler(column.id)}
-                  >
-                    {column.label}
-                  </TableSortLabel>
-                </Tooltip>
-              </TableCell>
-            ),
-            this
-          )}
+                  {column.label}
+                </TableSortLabel>
+              </Tooltip>
+            </TableCell>
+          ))}
         </TableRow>
       </TableHead>
     );
   }
 }
 
-EnhancedTableHead.propTypes = {
-  numSelected: PropTypes.number.isRequired,
-  onRequestSort: PropTypes.func.isRequired,
-  onSelectAllClick: PropTypes.func.isRequired,
-  order: PropTypes.string.isRequired,
-  orderBy: PropTypes.string.isRequired,
-  rowCount: PropTypes.number.isRequired
-};
+interface EnhancedTableToolbarProps extends WithStyles<typeof toolbarStyles> {
+  numSelected: number;
+  title: string;
+}
 
 /**
  * The toolbar component for the table.
@@ -155,13 +189,13 @@ EnhancedTableHead.propTypes = {
  * @param {string} props.title - The title of the table.
  * @returns {JSX.Element} - The JSX element representing the toolbar.
  */
-let EnhancedTableToolbar = props => {
+let EnhancedTableToolbar: React.FC<EnhancedTableToolbarProps> = (props) => {
   const { numSelected, classes, title } = props;
 
   return (
     <Toolbar
       className={classNames(classes.root, {
-        [classes.highlight]: numSelected > 0
+        [classes.highlight]: numSelected > 0,
       })}
     >
       <div className={classes.title}>
@@ -195,23 +229,18 @@ let EnhancedTableToolbar = props => {
   );
 };
 
-EnhancedTableToolbar.propTypes = {
-  classes: PropTypes.object.isRequired,
-  numSelected: PropTypes.number.isRequired
-};
-
 EnhancedTableToolbar = withStyles(toolbarStyles)(EnhancedTableToolbar);
 
 /**
  * The enhanced table component with sorting, pagination, and selection functionality.
  */
-class EnhancedTable extends React.Component {
-  state = {
+class EnhancedTable extends Component<EnhancedTableProps, EnhancedTableState> {
+  state: EnhancedTableState = {
     order: "asc",
     orderBy: "calories",
     selected: [],
     page: 0,
-    rowsPerPage: 5
+    rowsPerPage: 5,
   };
 
   /**
@@ -219,7 +248,7 @@ class EnhancedTable extends React.Component {
    * @param {Object} event - The event object.
    * @param {string} property - The property to sort by.
    */
-  handleRequestSort = (event, property) => {
+  handleRequestSort = (event: React.MouseEvent<unknown>, property: string) => {
     const orderBy = property;
     let order = "desc";
 
@@ -235,10 +264,10 @@ class EnhancedTable extends React.Component {
    * @param {Object} event - The event object.
    * @param {string} id - The ID of the clicked row.
    */
-  handleClick = (event, id) => {
+  handleClick = (event: React.MouseEvent<unknown>, id: string) => {
     const { selected } = this.state;
     const selectedIndex = selected.indexOf(id);
-    let newSelected = [];
+    let newSelected: string[] = [];
 
     if (selectedIndex === -1) {
       newSelected = newSelected.concat(selected, id);
@@ -260,7 +289,7 @@ class EnhancedTable extends React.Component {
    * @param {string} id - The ID of the row.
    * @returns {boolean} - True if the row is selected, false otherwise.
    */
-  isSelected = id => this.state.selected.indexOf(id) !== -1;
+  isSelected = (id: string) => this.state.selected.indexOf(id) !== -1;
 
   render() {
     const {
@@ -272,9 +301,10 @@ class EnhancedTable extends React.Component {
       rowsPerPage,
       setPage,
       setRowsPerPage,
-      count
+      count,
     } = this.props;
     const { order, orderBy, selected } = this.state;
+
     return (
       <Paper className={classes.root}>
         <EnhancedTableToolbar title={title} numSelected={selected.length} />
@@ -290,12 +320,12 @@ class EnhancedTable extends React.Component {
               rowCount={rows.length}
             />
             <TableBody>
-              {stableSort(rows, getSorting(order, orderBy)).map(n => {
+              {stableSort(rows, getSorting(order, orderBy)).map((n) => {
                 const isSelected = this.isSelected(n._id);
                 return (
                   <TableRow
                     hover
-                    onClick={event => this.handleClick(event, n._id)}
+                    onClick={(event) => this.handleClick(event, n._id)}
                     role="checkbox"
                     aria-checked={isSelected}
                     tabIndex={-1}
@@ -305,20 +335,18 @@ class EnhancedTable extends React.Component {
                     <TableCell padding="checkbox">
                       <Checkbox checked={isSelected} />
                     </TableCell>
-                    {columns.map(col => {
-                      return (
-                        <TableCell component="th" scope="row" padding="none">
-                          {n[col.label]}
-                        </TableCell>
-                      );
-                    })}
+                    {columns.map((col) => (
+                      <TableCell component="th" scope="row" padding="none">
+                        {n[col.label]}
+                      </TableCell>
+                    ))}
                   </TableRow>
                 );
               })}
             </TableBody>
           </MaterialTable>
         </div>
-        <Grid justify={"flex-start"} container>
+        <Grid container justifyContent="flex-start">
           <Grid item>
             <TablePagination
               rowsPerPageOptions={[5, 10, 25]}
@@ -327,13 +355,13 @@ class EnhancedTable extends React.Component {
               rowsPerPage={rowsPerPage}
               page={page}
               backIconButtonProps={{
-                "aria-label": "Previous Page"
+                "aria-label": "Previous Page",
               }}
               nextIconButtonProps={{
-                "aria-label": "Next Page"
+                "aria-label": "Next Page",
               }}
-              onChangePage={(event, page) => setPage(page)}
-              onChangeRowsPerPage={event => setRowsPerPage(event.target.value)}
+              onPageChange={(event, page) => setPage(page)}
+              onRowsPerPageChange={(event) => setRowsPerPage(parseInt(event.target.value, 10))}
             />
           </Grid>
         </Grid>
@@ -341,9 +369,5 @@ class EnhancedTable extends React.Component {
     );
   }
 }
-
-EnhancedTable.propTypes = {
-  classes: PropTypes.object.isRequired
-};
 
 export default withStyles(styles, { defaultTheme: theme })(EnhancedTable);
