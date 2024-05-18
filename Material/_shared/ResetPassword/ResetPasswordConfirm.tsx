@@ -7,26 +7,24 @@
  * @param {Object} props.history - The history object provided by React Router.
  * @returns {JSX.Element} The JSX element representing the ResetPasswordConfirmation component.
  */
+
 import React from "react";
-import { withStyles } from "@material-ui/styles";
+import { withStyles, WithStyles } from "@mui/styles";
 import theme from "theme";
 import { styles } from "./ResetPassword.styles";
-import {
-  Typography,
-  Grid
-} from "@material-ui/core";
+import { Typography, Grid } from "@mui/material";
 
-export const ResetPasswordConfirmation = ({ classes, onDone, history }) => {
+interface ResetPasswordConfirmationProps extends WithStyles<typeof styles> {
+  onDone: () => void;
+  history: any; // Define a specific type if available
+}
+
+const ResetPasswordConfirmation: React.FC<ResetPasswordConfirmationProps> = ({ classes, onDone, history }) => {
   return (
     <React.Fragment>
-      <Grid
-        alignContent="center"
-        alignItems="center"
-        justify="center"
-        container
-      >
+      <Grid container alignContent="center" alignItems="center" justifyContent="center">
         <Grid item>
-          <Typography variant="headline">
+          <Typography variant="h5">
             Your password has been reset!
           </Typography>
         </Grid>
@@ -35,6 +33,4 @@ export const ResetPasswordConfirmation = ({ classes, onDone, history }) => {
   );
 };
 
-export default withStyles(styles, { defaultTheme: theme })(
-  ResetPasswordConfirmation
-);
+export default withStyles(styles, { defaultTheme: theme })(ResetPasswordConfirmation);
