@@ -1,8 +1,45 @@
 import React from "react";
 import { Grid } from "@material-ui/core";
 import ModelEdit from "../ModelEdit/ModelEdit";
+import { RouteComponentProps } from "react-router-dom";
 
-const ModelEditPage = ({
+interface FormField {
+  name: string;
+  placeholder: string;
+  type: string;
+  value?: any;
+  required?: boolean;
+  options?: string[];
+}
+
+interface Model {
+  _id: string;
+  [key: string]: any; // Add more specific properties as needed
+}
+
+interface ModelEditPageProps extends RouteComponentProps {
+  form: {
+    fields: FormField[];
+  };
+  model: Model;
+  modelSchema: any; // Define more specific types if necessary
+  updateModel: (model: Model, values: any) => Promise<any>;
+  onEditSubmit?: (model: Model) => void;
+  modelName: string;
+  media: any; // Define more specific types if necessary
+  gallery: any; // Define more specific types if necessary
+  uploadMedia: (id: string, files: File[]) => Promise<any>;
+  uploadGallery: (id: string, files: File[]) => Promise<any>;
+  addToGallery?: (id: string, media: any) => void;
+  removeFromGallery?: (id: string, index: number) => void;
+  addToMedia?: (id: string, media: any) => void;
+  deleteMedia: (id: string, media: any) => Promise<void>;
+  removeFromMedia?: (id: string, media: any) => void;
+  notifications: any[]; // Define more specific types if necessary
+  removeNotification: (notification: any) => void;
+}
+
+const ModelEditPage: React.FC<ModelEditPageProps> = ({
   form,
   model,
   modelSchema,
@@ -58,8 +95,9 @@ const ModelEditPage = ({
             updateModel(model, { image: `` });
           }}
           onGalleryDeleteComplete={(model, index) => {
-            model.gallery.remove(index);
-            updateModel(model, { gallery: model.gallery });
+            const updatedGallery = [...model.gallery];
+            updatedGallery.splice(index, 1);
+            updateModel(model, { gallery: updatedGallery });
           }}
           notifications={notifications}
           removeNotification={removeNotification}
