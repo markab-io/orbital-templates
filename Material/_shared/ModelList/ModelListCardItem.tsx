@@ -18,55 +18,57 @@
  * @param {function} props.onView - Function to handle the view action.
  * @returns {JSX.Element} The JSX element representing the model list card item.
  */
+
 import React from "react";
-import KeyboardArrowLeftIcon from "@material-ui/icons/KeyboardArrowLeft";
-import KeyboardArrowRightIcon from "@material-ui/icons/KeyboardArrowRight";
 import ConfirmDeleteModal from "../ConfirmDeleteModal/ConfirmDeleteModal";
-import moment from "moment";
-import { withState, compose } from "recompose";
 import {
   Chip,
   Card,
   CardActionArea,
   CardContent,
   CardActions,
-  CardMedia,
   Typography,
-  IconButton,
-  Divider,
-  Grid
-} from "@material-ui/core";
+  Grid,
+} from "@mui/material";
 
-const enhance = compose(
-  withState("actionOpen", "setActionOpen", false),
-  withState("anchorEl", "setAnchorEl"),
-  withState("fetchedImage", "setFetchedImage", []),
-  withState("isLoading", "setIsLoading", false),
-  withState("selectedImage", "setSelectedImage", 0)
-);
+interface Model {
+  _id: string;
+  name?: string;
+  title?: string;
+  image?: string;
+  tags?: string[];
+}
 
-const ModelListCardItem = ({
+interface ModelListCardItemProps {
+  classes: any;
+  open: boolean;
+  setOpen: (open: boolean) => void;
+  model: Model;
+  updateModel: (model: Model) => void;
+  deleteModel: (model: Model) => Promise<void>;
+  setDeletedModel: (model: Model) => void;
+  deletedModel: Model;
+  mode: string;
+  match: any;
+  history: any;
+  onEdit: (model: Model) => void;
+  onView: (model: Model) => void;
+}
+
+const ModelListCardItem: React.FC<ModelListCardItemProps> = ({
   classes,
   open,
   setOpen,
   model,
-  updateModel,
   deleteModel,
-  setDeletedModel,
   deletedModel,
-  mode,
   match,
   history,
-  onEdit,
-  onView
+  onView,
 }) => {
   return (
     <>
-      <Card
-        style={{ width: "300px" }}
-        key={model._id}
-        className={classes.card}
-      >
+      <Card key={model._id} className={classes.card}>
         <CardActionArea
           onClick={() => {
             onView
@@ -74,7 +76,7 @@ const ModelListCardItem = ({
               : history.push(`${match.url}/view/${model._id}`);
           }}
         >
-          <Grid container direction="column" justify="center">
+          <Grid container direction="column" justifyContent="center">
             {/* <CardMedia
               className={classes.cardImage}
               component="img"
@@ -118,4 +120,4 @@ const ModelListCardItem = ({
   );
 };
 
-export default enhance(ModelListCardItem);
+export default ModelListCardItem;
