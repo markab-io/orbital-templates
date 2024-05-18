@@ -1,5 +1,4 @@
-import { fade } from "@material-ui/core/styles/colorManipulator";
-export const styles = theme => ({
+export const styles = () => ({
   listContainer: {
     marginTop: "2em"
   },

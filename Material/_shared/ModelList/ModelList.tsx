@@ -1,27 +1,16 @@
-/**
- * @file ModelList.js
- * @desc This file contains the implementation of the ModelList component.
- * The ModelList component is responsible for rendering a list of models,
- * allowing users to add, edit, delete, and view individual models.
- * It also provides pagination, search functionality, and various customization options.
- * The component is built using React and Material-UI.
- */
-import React, {useState} from "react";
-//Routing
+import React, { useState } from "react";
 import { Route, Switch, HashRouter as Router } from "react-router-dom";
-import { styles } from "./ModelList.styles";
-import { withStyles } from "@material-ui/core/styles";
-import ModelListItems from "./ModelListItems";
-import ModelFilterList from "./ModelFilterList";
-//shared components
-import theme from "theme";
+import { Theme } from "@mui/material/styles";
 import {
   Grid,
   Button,
   Paper,
   Backdrop,
   useMediaQuery,
-} from "@material-ui/core";
+} from "@mui/material";
+import { styles } from "./ModelList.styles";
+import ModelListItems from "./ModelListItems";
+import ModelFilterList from "./ModelFilterList";
 import Pagination from "../Pagination/Pagination";
 import Autocomplete from "../Autocomplete/Autocomplete";
 import FloatingAddButton from "../FloatingAddButton/FloatingAddButton";
@@ -30,8 +19,94 @@ import Loading from "../Loading/Loading";
 import ModelAddPage from "./ModelAddPage";
 import ModelEditPage from "./ModelEditPage";
 import ModelViewPage from "./ModelViewPage";
+import { makeStyles } from '@mui/styles';
 
-const ModelList = ({
+interface Model {
+  _id: string;
+  [key: string]: unknown;
+}
+
+interface ModelArray {
+  data: Model[];
+  count: number;
+}
+
+interface FormField {
+  name: string;
+  type: string;
+}
+
+interface Form {
+  fields: FormField[];
+}
+
+interface Notification {
+  message: string;
+  type: string;
+}
+
+interface ModelListProps {
+  modelArray: ModelArray;
+  modelSchema: any; // Add a specific type if available
+  createModel: (values: any, callback: (model: Model) => void) => void;
+  modelName: string;
+  updateModel: (model: Model, values: any) => Promise<void>;
+  deleteModel: (model: Model) => void;
+  searchModel: (query: any) => Promise<{ data: Model[] }>;
+  uploadMedia: (id: string, files: File[]) => Promise<{ data: any }>;
+  setFilter?: (filter: any) => void;
+  removeFilter?: (filter: any) => void;
+  modelCount?: (args: any, callback: any, fieldName: string) => Promise<any>;
+  loading: boolean;
+  gallery: any[];
+  uploadGallery: (id: string, files: File[]) => Promise<{ data: any }>;
+  addToGallery?: (gallery: any) => void;
+  removeFromGallery?: (gallery: any) => void;
+  addToMedia?: (media: any) => void;
+  removeFromMedia?: (media: any) => void;
+  deleteMedia: (id: string, media: any) => Promise<void>;
+  media: any[];
+  match: any; // Define a specific type if available
+  history: any; // Define a specific type if available
+  location: any; // Define a specific type if available
+  form: Form;
+  notifications: Notification[];
+  saveNotification?: (notification: Notification) => void;
+  removeNotification: (notification: Notification) => void;
+  ModelPreviewActions?: React.ComponentType<any>;
+  ModelPreviewAction?: React.ComponentType<any>;
+  ModelPreviewAttachment?: React.ComponentType<any>;
+  modelKey?: string;
+  columnNumber?: number;
+  onSearch?: (query: any) => Promise<Model[]>;
+  onSearchSelect?: (suggestion: Model) => void;
+  page?: number;
+  rowsPerPage?: number;
+  setPage?: (page: number) => void;
+  setRowsPerPage?: (rowsPerPage: number) => void;
+  ModelListActions?: React.ComponentType<any>;
+  ModelListItemComponent?: React.ComponentType<any>;
+  noPagination?: boolean;
+  onChangePage?: (page: number) => void;
+  onAdd?: () => void;
+  onAddText?: string;
+  onDelete?: (model: Model) => void;
+  onEdit?: (model: Model) => void;
+  onEditSubmit?: (model: Model) => void;
+  onCreate?: (model: Model) => void;
+  onCreateSubmit?: (model: Model) => void;
+  onView?: (model: Model) => void;
+  justify?: "flex-start" | "center" | "flex-end";
+  disableViewPage?: boolean;
+  disableEditPage?: boolean;
+  enableSearch?: boolean;
+  gridSizes?: any; // Define a specific type if available
+  defaultView?: React.ReactNode;
+}
+
+const useStyles = makeStyles(styles);
+
+const ModelList: React.FC<ModelListProps> = ({
   modelArray,
   modelSchema,
   createModel,
@@ -40,8 +115,6 @@ const ModelList = ({
   deleteModel,
   searchModel,
   uploadMedia,
-  setFilter,
-  removeFilter,
   modelCount,
   loading,
   gallery,
@@ -55,10 +128,8 @@ const ModelList = ({
   match,
   history,
   location,
-  classes,
   form,
   notifications,
-  saveNotification,
   removeNotification,
   ModelPreviewActions,
   ModelPreviewAction,
@@ -68,9 +139,6 @@ const ModelList = ({
   onSearch,
   onSearchSelect,
   page,
-  rowsPerPage,
-  setPage,
-  setRowsPerPage,
   ModelListActions,
   ModelListItemComponent,
   noPagination,
@@ -88,18 +156,19 @@ const ModelList = ({
   disableEditPage,
   enableSearch,
   gridSizes,
-  defaultView
+  defaultView,
 }) => {
-  const [viewOption, setViewOption] = useState(0);
+  const classes = useStyles();
+  const [viewOption] = useState<number>(0);
 
-  const onEditWrapper = (model) => {
+  const onEditWrapper = (model: Model) => {
     if (onEdit) {
       return onEdit(model);
     }
     history.push(`${match.path}/edit/${model._id}`);
   };
 
-  const onDeleteWrapper = (model) => {
+  const onDeleteWrapper = (model: Model) => {
     if (onDelete) {
       return onDelete(model);
     }
@@ -113,22 +182,21 @@ const ModelList = ({
     history.push(`${match.path}/add`);
   };
 
-  const onCreateWrapper = (model) => {
+  const onCreateWrapper = (model: Model) => {
     if (onCreate) {
       return onCreate(model);
     }
     model && onViewWrapper(model);
   };
 
-  const onViewWrapper = (model) => {
+  const onViewWrapper = (model: Model) => {
     if (onView) {
       return onView(model);
     }
     history.push(`${match.path}/view/${model._id}`);
   };
 
-  const isXS = useMediaQuery((theme) => theme.breakpoints.down("xs"));
-  const isSm = useMediaQuery((theme) => theme.breakpoints.down("sm"));
+  const isSm = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"));
 
   const Actions = {
     onEdit: onEditWrapper,
@@ -138,7 +206,7 @@ const ModelList = ({
     onAdd: onAddWrapper,
   };
 
-  let models = modelArray.data;
+  const models = modelArray.data;
 
   return (
     <Router>
@@ -218,7 +286,7 @@ const ModelList = ({
         )}
         <Route
           path={`${match.path}`}
-          render={(props) => (
+          render={() => (
             <>
               <Backdrop
                 style={{
@@ -230,7 +298,7 @@ const ModelList = ({
                 <Loading />
               </Backdrop>
               {enableSearch && (
-                <Grid style={{ marginBottom: "1em" }} container justify="flex-end">
+                <Grid style={{ marginBottom: "1em" }} container justifyContent="flex-end">
                   <Grid item xs={12}>
                     <Paper
                       style={{ padding: "1em", borderRadius: "50px" }}
@@ -241,12 +309,12 @@ const ModelList = ({
                         placeholder={"Search…"}
                         onSelect={(suggestion) => {
                           onSearchSelect || disableViewPage
-                            ? onSearchSelect(suggestion)
+                            ? onSearchSelect?.(suggestion)
                             : history.push(`${match.path}/view/${suggestion._id}`);
                         }}
                         loadSuggestions={(text) => {
-                          let query = {
-                            [modelKey]: { $regex: text },
+                          const query = {
+                            [modelKey as string]: { $regex: text },
                           };
                           if (onSearch) {
                             return onSearch(query);
@@ -256,6 +324,7 @@ const ModelList = ({
                               if (res) {
                                 return resolve(res.data);
                               }
+                              reject();
                             });
                           });
                         }}
@@ -267,7 +336,6 @@ const ModelList = ({
               {(ModelListActions && <ModelListActions {...Actions} />) || (
                 <Button
                   color="secondary"
-                  classes={classes.addButton}
                   onClick={onAddWrapper}
                   variant="contained"
                 >
@@ -275,13 +343,13 @@ const ModelList = ({
                 </Button>
               )}
               {viewOption === 0 && (
-                <Grid container justify={justify}>
+                <Grid container justifyContent={justify}>
                   {modelCount && <ModelFilterList form={form} modelCount={modelCount} />}
                   <Grid item md={12}>
                     {defaultView ? (
                       defaultView
                     ) : (
-                      <Grid container justify={justify}>
+                      <Grid container justifyContent={justify}>
                         <ModelListItems
                           models={models}
                           classes={classes}
@@ -306,12 +374,11 @@ const ModelList = ({
                         <Paper>
                           <Pagination
                             isSm={isSm}
-                            component="div"
                             count={modelArray.count}
                             rowsPerPage={10}
                             page={page}
-                            onChangePage={(p) => {
-                              onChangePage(p);
+                            onChangeRowsPerPage={(p) => {
+                              onChangePage?.(p);
                             }}
                           />
                         </Paper>
@@ -328,7 +395,7 @@ const ModelList = ({
                   removeNotification(notification);
                 }}
               />
-              <FloatingAddButton classes={classes} onClick={onAddWrapper} />
+              <FloatingAddButton onClick={onAddWrapper} />
             </>
           )}
         />
@@ -337,4 +404,4 @@ const ModelList = ({
   );
 };
 
-export default withStyles(styles, { defaultTheme: theme })(ModelList);
+export default ModelList;
