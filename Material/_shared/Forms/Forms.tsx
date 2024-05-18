@@ -1,16 +1,11 @@
 import React, { useState } from "react";
-import { makeStyles } from "@mui/styles";
 import { CircularProgress, Button, Typography } from "@mui/material";
 import moment from "moment";
 import * as Inputs from "./Inputs";
 import Autocomplete from "../Autocomplete/Autocomplete";
-import { KeyboardTimePicker, KeyboardDatePicker } from "@mui/lab";
 import { visibleWhenFilter } from "./VisibleWhenFilter";
 import { FormikErrors, FormikTouched } from "formik";
 
-const useStyles = makeStyles((theme: Theme) => ({
-  // Add your styles here
-}));
 
 interface FormField {
   name: string;
@@ -18,36 +13,36 @@ interface FormField {
   placeholder?: string;
   required?: boolean;
   editable?: boolean;
-  form?: any; // Define more specific types if necessary
+  form?: unknown; // Define more specific types if necessary
 }
 
 interface FormsProps {
   form: {
     fields: FormField[];
   };
-  setFieldValue: (field: string, value: any) => void;
-  errors: FormikErrors<any>;
-  touched: FormikTouched<any>;
-  handleBlur: (e: React.FocusEvent<any>) => void;
+  setFieldValue: (field: string, value: unknown) => void;
+  errors: FormikErrors<unknown>;
+  touched: FormikTouched<unknown>;
+  handleBlur: (e: React.FocusEvent<unknown>) => void;
   setFieldTouched: (field: string, touched: boolean, shouldValidate?: boolean) => void;
-  values: any;
-  media?: any;
-  onMediaDrop?: (media: any) => void;
-  onGalleryDrop?: (gallery: any) => void;
-  onMediaDelete?: (media: any) => void;
-  gallery?: any;
-  textEditorValue?: any;
-  setTextEditorValue?: (value: any) => void;
+  values: unknown;
+  media?: unknown;
+  onMediaDrop?: (media: unknown) => void;
+  onGalleryDrop?: (gallery: unknown) => void;
+  onMediaDelete?: (media: unknown) => void;
+  gallery?: unknown;
+  textEditorValue?: unknown;
+  setTextEditorValue?: (value: unknown) => void;
   isSubmitting?: boolean;
-  onRefGet?: (fieldName: string, text: string, updateSuggestions: (newState: any[]) => void) => Promise<any[]>;
-  onSelect?: (fieldName: string, value: any) => void;
+  onRefGet?: (fieldName: string, text: string, updateSuggestions: (newState: unknown[]) => void) => Promise<unknown[]>;
+  onSelect?: (fieldName: string, value: unknown) => void;
   onRefCreate?: () => void;
-  onRefUpdate?: (key: string, value: any) => void;
+  onRefUpdate?: (key: string, value: unknown) => void;
   onRefFormGet?: (fieldName: string) => void;
-  onRefMediaGet?: (media: any) => void;
-  onRefGalleryGet?: (gallery: any) => void;
-  onRefMediaDrop?: (media: any) => void;
-  onRefGalleryDrop?: (gallery: any) => void;
+  onRefMediaGet?: (media: unknown) => void;
+  onRefGalleryGet?: (gallery: unknown) => void;
+  onRefMediaDrop?: (media: unknown) => void;
+  onRefGalleryDrop?: (gallery: unknown) => void;
   onRefDelete?: (fieldName: string) => void;
 }
 
@@ -64,9 +59,6 @@ const Fields: React.FC<FormsProps> = ({
   onGalleryDrop,
   onMediaDelete,
   gallery,
-  textEditorValue,
-  setTextEditorValue,
-  isSubmitting,
   onRefGet,
   onSelect,
   onRefCreate,
@@ -74,12 +66,8 @@ const Fields: React.FC<FormsProps> = ({
   onRefFormGet,
   onRefMediaGet,
   onRefGalleryGet,
-  onRefMediaDrop,
-  onRefGalleryDrop,
   onRefDelete,
 }) => {
-  const classes = useStyles();
-  const [timeoutValue, setTimeoutValue] = useState<any>(null);
   const [currentGalleryIndex, setCurrentGalleryIndex] = useState<number>(0);
 
   if (!form) return <CircularProgress />;

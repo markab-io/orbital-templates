@@ -1,14 +1,11 @@
-export const styles = theme => ({
+import { Theme } from "@mui/material";
+
+export const styles = (theme: Theme) => ({
   layout: {
     width: "auto",
     display: "block", // Fix IE11 issue.
     marginLeft: theme && theme.spacing(3),
     marginRight: theme && theme.spacing(3),
-    [theme && theme.breakpoints.up(400 + theme && theme.spacing(3) * 2)]: {
-      width: 400,
-      marginLeft: "auto",
-      marginRight: "auto"
-    },
     position: "relative",
     top: "7em"
   },
