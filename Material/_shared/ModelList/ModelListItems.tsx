@@ -26,9 +26,9 @@
  * @returns {React.Component} The rendered list of model items.
  */
 
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import ModelListCardItem from "./ModelListCardItem";
-import { Paper, Grid, Grow, Fade } from "@mui/material";
+import { Grid } from "@mui/material";
 import Empty from "../Empty/Empty";
 
 interface Model {
