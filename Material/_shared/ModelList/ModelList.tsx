@@ -8,6 +8,7 @@ import {
   Backdrop,
   useMediaQuery,
 } from "@mui/material";
+import { makeStyles } from '@mui/styles';
 import { styles } from "./ModelList.styles";
 import ModelListItems from "./ModelListItems";
 import ModelFilterList from "./ModelFilterList";
@@ -19,7 +20,6 @@ import Loading from "../Loading/Loading";
 import ModelAddPage from "./ModelAddPage";
 import ModelEditPage from "./ModelEditPage";
 import ModelViewPage from "./ModelViewPage";
-import { makeStyles } from '@mui/styles';
 
 interface Model {
   _id: string;
