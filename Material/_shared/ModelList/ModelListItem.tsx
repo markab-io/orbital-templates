@@ -3,43 +3,45 @@
  * @module ModelListItem
  */
 
-import React from "react";
-import DeleteIcon from "@material-ui/icons/Delete";
-import EditIcon from "@material-ui/icons/Edit";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
-import { ConfirmDeleteModal } from "Templates";
-import { withState, compose } from "recompose";
-
+import React, { useState, MouseEvent } from "react";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import ConfirmDeleteModal from "../ConfirmDeleteModal/ConfirmDeleteModal";
 import {
   ListItem,
   ListItemText,
-  ListItemIcon,
   Typography,
   Avatar,
   Menu,
   MenuItem,
   IconButton,
   Button
-} from "@material-ui/core";
+} from "@mui/material";
 
-/**
- * Enhances the ModelListItem component with additional state and functionality.
- * @function enhance
- * @param {Object} props - The component props.
- * @returns {React.Component} The enhanced ModelListItem component.
- */
-const enhance = compose(
-  withState("actionOpen", "setActionOpen", false),
-  withState("anchorEl", "setAnchorEl")
-);
+interface Model {
+  _id: string;
+  name?: string;
+  title?: string;
+  image?: string;
+}
 
-/**
- * Represents a single item in the model list.
- * @function ModelListItem
- * @param {Object} props - The component props.
- * @returns {React.Component} The ModelListItem component.
- */
-const ModelListItem = ({
+interface ModelListItemProps {
+  classes: any;
+  open: boolean;
+  setOpen: (open: boolean) => void;
+  model: Model;
+  deleteModel: (model: Model) => Promise<void>;
+  setDeletedModel: (model: Model) => void;
+  deletedModel: Model;
+  match: any; // Define a specific type if available
+  history: any; // Define a specific type if available
+  onEdit?: (model: Model) => void;
+  gridDisplay?: boolean;
+  onView?: (model: Model) => void;
+}
+
+const ModelListItem: React.FC<ModelListItemProps> = ({
   classes,
   open,
   setOpen,
@@ -49,20 +51,18 @@ const ModelListItem = ({
   deletedModel,
   match,
   history,
-  actionOpen,
-  setActionOpen,
-  anchorEl,
-  setAnchorEl,
   onEdit,
-  gridDisplay,
   onView
 }) => {
+  const [actionOpen, setActionOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
   /**
    * Handles the click event of the "more" button to open the action menu.
    * @function handleMoreButtonClick
    * @param {Object} event - The click event object.
    */
-  const handleMoreButtonClick = (event) => {
+  const handleMoreButtonClick = (event: MouseEvent<HTMLElement>) => {
     setActionOpen(true);
     setAnchorEl(event.currentTarget);
   };
@@ -72,9 +72,9 @@ const ModelListItem = ({
    * @function handleMenuClose
    * @param {Object} event - The close event object.
    */
-  const handleMenuClose = (event) => {
+  const handleMenuClose = () => {
     setActionOpen(false);
-    setAnchorEl(event.currentTarget);
+    setAnchorEl(null);
   };
 
   /**
@@ -82,7 +82,7 @@ const ModelListItem = ({
    * @function handleViewClick
    */
   const handleViewClick = () => {
-    onEdit ? onView(model) : history.push(`${match.url}/view/${model._id}`);
+    onView ? onView(model) : history.push(`${match.url}/view/${model._id}`);
   };
 
   /**
@@ -98,9 +98,8 @@ const ModelListItem = ({
    * @function handleDeleteClick
    */
   const handleDeleteClick = () => {
-    setDeletedModel(model, () => {
-      setOpen(true);
-    });
+    setDeletedModel(model);
+    setOpen(true);
   };
 
   /**
@@ -138,13 +137,13 @@ const ModelListItem = ({
           <MenuItem onClick={handleViewClick}>
             <Button>view</Button>
           </MenuItem>
-          <MenuItem>
-            <IconButton onClick={handleEditClick}>
+          <MenuItem onClick={handleEditClick}>
+            <IconButton>
               <EditIcon />
             </IconButton>
           </MenuItem>
-          <MenuItem>
-            <IconButton onClick={handleDeleteClick}>
+          <MenuItem onClick={handleDeleteClick}>
+            <IconButton>
               <DeleteIcon />
             </IconButton>
           </MenuItem>
@@ -159,4 +158,4 @@ const ModelListItem = ({
   );
 };
 
-export default enhance(ModelListItem);
+export default ModelListItem;
