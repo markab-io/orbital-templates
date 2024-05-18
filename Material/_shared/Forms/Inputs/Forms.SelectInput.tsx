@@ -1,28 +1,37 @@
 import React from "react";
-import { Select, InputLabel, MenuItem } from "@material-ui/core";
+import { Select, InputLabel, MenuItem, FormControl } from "@mui/material";
 
-const SelectInput = ({ setFieldValue, field, values }) => {
+interface Field {
+  name: string;
+  placeholder: string;
+  required?: boolean;
+  options: string[];
+}
+
+interface SelectInputProps {
+  setFieldValue: (field: string, value: unknown) => void;
+  field: Field;
+  values: { [key: string]: unknown };
+}
+
+const SelectInput: React.FC<SelectInputProps> = ({ setFieldValue, field, values }) => {
   return (
-    <div>
+    <FormControl fullWidth required={field.required || false}>
       <InputLabel htmlFor={field.name}>{field.placeholder}</InputLabel>
       <Select
         id={field.name}
         value={values[field.name] || ""}
-        onChange={event => {
+        onChange={(event) => {
           setFieldValue(field.name, event.target.value);
         }}
-        fullWidth={true}
-        required={field.required || false}
       >
-        {field.options.map((option, index) => {
-          return (
-            <MenuItem key={index} value={option}>
-              {option}
-            </MenuItem>
-          );
-        })}
+        {field.options.map((option, index) => (
+          <MenuItem key={index} value={option}>
+            {option}
+          </MenuItem>
+        ))}
       </Select>
-    </div>
+    </FormControl>
   );
 };
 
