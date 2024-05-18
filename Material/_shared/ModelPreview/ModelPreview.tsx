@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import DeleteIcon from "@material-ui/icons/Delete";
-import EditIcon from "@material-ui/icons/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 import ImageGallery from "react-image-gallery";
 import ConfirmDeleteModal from "../ConfirmDeleteModal/ConfirmDeleteModal";
 import * as Inputs from "../Forms/Inputs";
@@ -21,9 +21,48 @@ import {
   TableRow,
   IconButton,
   Typography,
-} from "@material-ui/core";
+} from "@mui/material";
 
-const ModelPreview = ({
+interface Model {
+  _id: string;
+  title?: string;
+  name?: string;
+  image?: string;
+  gallery?: string[];
+  [key: string]: any;
+}
+
+interface Field {
+  name: string;
+  type: string;
+  placeholder: string;
+  form?: any;
+}
+
+interface Form {
+  fields: Field[];
+}
+
+interface Notification {
+  message: string;
+  type: string;
+}
+
+interface ModelPreviewProps {
+  model: Model;
+  onEdit: (model: Model) => void;
+  form: Form;
+  deleteModel: (model: Model) => Promise<void>;
+  onDelete: () => void;
+  classes: any;
+  ModelPreviewActions?: React.ComponentType<any>;
+  ModelPreviewAction?: React.ComponentType<any>;
+  onAction: (event: any, model: Model, from?: any) => void;
+  notifications: Notification[];
+  removeNotification: (notification: Notification) => void;
+}
+
+const ModelPreview: React.FC<ModelPreviewProps> = ({
   model,
   onEdit,
   form,
@@ -46,8 +85,8 @@ const ModelPreview = ({
       const placeholder = field.placeholder;
       const fieldName = model[field.name];
 
-      const getTableRow = (content) => (
-        <TableRow selected={isEven}>
+      const getTableRow = (content: any) => (
+        <TableRow key={index} selected={isEven}>
           <TableCell>
             <Typography variant="subtitle2">{placeholder}</Typography>
           </TableCell>
@@ -79,7 +118,7 @@ const ModelPreview = ({
           return getTableRow(fieldName);
         case "code-editor":
           return (
-            <TableRow selected={isEven}>
+            <TableRow key={index} selected={isEven}>
               <TableCell>
                 <Typography variant="subtitle2">{placeholder}</Typography>
               </TableCell>
@@ -90,7 +129,7 @@ const ModelPreview = ({
           );
         case "object-array":
           return (
-            <TableRow selected={isEven}>
+            <TableRow key={index} selected={isEven}>
               <Formik>
                 <Inputs.EditableObjectArray
                   form={field.form}
@@ -99,20 +138,20 @@ const ModelPreview = ({
                   hideAdd={true}
                   hideDelete={true}
                   Actions={ModelPreviewActions}
-                  onAction={(event, from) => onAction(event, model, from)}
+                  onAction={(event: any, from: any) => onAction(event, model, from)}
                   FieldsComponent={Forms}
                 />
               </Formik>
-              <Grid container justify="flex-end">
+              <Grid container justifyContent="flex-end">
                 {ModelPreviewAction && (
-                  <ModelPreviewAction onAction={(event) => onAction(event, model)} model={model} />
+                  <ModelPreviewAction onAction={(event: any) => onAction(event, model)} model={model} />
                 )}
               </Grid>
             </TableRow>
           );
         case "markdown":
           return (
-            <TableRow selected={isEven}>
+            <TableRow key={index} selected={isEven}>
               <TableCell>
                 <Typography variant="subtitle2">{placeholder}</Typography>
               </TableCell>
@@ -143,7 +182,7 @@ const ModelPreview = ({
             }
           />
           {model.image && (
-            <Grid container justify="center" style={{ height: "200px" }}>
+            <Grid container justifyContent="center" style={{ height: "200px" }}>
               <CardMedia
                 component="img"
                 alt={model.title || model.name}

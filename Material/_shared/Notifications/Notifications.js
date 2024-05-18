@@ -20,7 +20,6 @@ import {
   Card,
   CardContent,
   CardHeader,
-  CardActions,
   Button,
   Typography,
   Avatar,
@@ -29,7 +28,6 @@ import {
 } from "@material-ui/core";
 import Forms from "../Forms/Forms";
 import { Formik } from "formik";
-import * as Yup from "yup";
 
 let form = {
   fields: [
