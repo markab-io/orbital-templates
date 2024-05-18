@@ -1,6 +1,5 @@
 import React from "react";
 import { ListItem, ListItemText } from "@mui/material";
-import { makeStyles, createStyles } from "@mui/styles";
 
 interface Route {
   name: string;
@@ -16,17 +15,6 @@ interface RoutesProps {
   routeList: Route[];
   classes: { [key: string]: string };
 }
-
-const useStyles = makeStyles(() =>
-  createStyles({
-    listItem: {
-      // Add your styles here
-    },
-    buttonListItem: {
-      // Add your styles here
-    },
-  })
-);
 
 const Icon: React.FC<{ style?: React.CSSProperties; children?: React.ReactNode }> = ({ children, style }) => {
   return (
