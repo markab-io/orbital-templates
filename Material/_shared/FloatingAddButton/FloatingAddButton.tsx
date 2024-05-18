@@ -1,41 +1,26 @@
 import React from "react";
-import PropTypes from "prop-types";
-import AddIcon from "@material-ui/icons/Add";
-import { Fab } from "@material-ui/core";
+import AddIcon from "@mui/icons-material/Add";
+import { Fab } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 
-/**
- * FloatingAddButton component.
- * Renders a floating add button using Material-UI's Fab component.
- */
-class FloatingAddButton extends React.Component {
-  /**
-   * Renders the FloatingAddButton component.
-   * @returns {JSX.Element} The rendered component.
-   */
-  render() {
-    const { classes, onClick } = this.props;
-    return (
-      <Fab
-        style={{ position: "fixed" }}
-        onClick={onClick}
-        className={classes.fab}
-        color={"primary"}
-      >
-        <AddIcon />
-      </Fab>
-    );
-  }
+const useStyles = makeStyles({
+  fab: {
+    position: "fixed",
+  },
+});
+
+interface FloatingAddButtonProps {
+  onClick: () => void;
 }
 
-FloatingAddButton.propTypes = {
-  /**
-   * The classes object provided by the withStyles HOC.
-   */
-  classes: PropTypes.object.isRequired,
-  /**
-   * The click event handler for the button.
-   */
-  onClick: PropTypes.func.isRequired
+const FloatingAddButton: React.FC<FloatingAddButtonProps> = ({ onClick }) => {
+  const classes = useStyles();
+
+  return (
+    <Fab onClick={onClick} className={classes.fab} color="primary">
+      <AddIcon />
+    </Fab>
+  );
 };
 
 export default FloatingAddButton;

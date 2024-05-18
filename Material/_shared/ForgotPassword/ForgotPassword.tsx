@@ -82,8 +82,7 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = ({ forgotPassword, history
                     history.push(`${match.url}/confirm`);
                     actions.setSubmitting(false);
                   })
-                  .catch((err) => {
-                    actions.setErrors({ server: err.message });
+                  .catch(() => {
                     actions.setSubmitting(false);
                   });
               }}
@@ -118,7 +117,7 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = ({ forgotPassword, history
                         variant="contained"
                         size="small"
                         color="secondary"
-                        onClick={handleSubmit}
+                        onClick={() => handleSubmit()}
                         type="submit"
                         disabled={isSubmitting}
                       >
