@@ -15,5 +15,13 @@
   "bugs": {
     "url": "https://github.com/markab-io/orbital-templates/issues"
   },
-  "homepage": "https://github.com/markab-io/orbital-templates#readme"
+  "homepage": "https://github.com/markab-io/orbital-templates#readme",
+  "devDependencies": {
+    "@types/autosuggest-highlight": "^3.2.3",
+    "@types/prismjs": "^1.26.4",
+    "@types/react-autosuggest": "^10.1.11",
+    "@types/react-image-gallery": "^1.2.4",
+    "@types/recharts": "^1.8.29",
+    "@types/showdown": "^2.0.6"
+  }
 }
